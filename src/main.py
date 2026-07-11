@@ -9,24 +9,45 @@ class Prompt:
     def __init__(self, personal_question, screen_question, audio,suggestions, x, us):
         self.personal_question = personal_question
         self.screen_question = screen_question
-        self.hasAudio = audio is not None
+        self.hasAudio = audio is not "(No audio)"
         self.audio = audio
         self.suggestions = suggestions
         self.x = x
         self.us = us
+    def get_prompt_data(self):
+        return {
+            "personalQuestion": self.personal_question,
+            "screenQuestion": self.screen_question,
+            "hasAudio": self.hasAudio,
+            "audio": self.audio,
+            "suggestions": self.suggestions,
+            "x": self.x,
+            "us": self.us
+        }
+    def has_audio(self):
+        return self.hasAudio
 
 class MainWindow(QMainWindow):
     def add_suggestion(self, suggestions_list, suggestion_input):
         suggestions_list.addItem(suggestion_input.text())
         suggestion_input.clear()
-    def save_episode(self):
-        print("Pack saved!")
+    def save_episode(self, episodeName, prompts):
+        print("Length: " + str(len(prompts)))
+        episode_file = {
+            "episodeName": episodeName,
+            "audioCount": 0, # add logic later
+            "prompts": []
+        }
+        for prompt in prompts:
+            prompt_data = prompt.get_prompt_data()
+            episode_file["audioCount"] += 1 if prompt.has_audio() else 0
+            episode_file["prompts"].append(prompt_data)
+        print(episode_file)
 
     def __init__(self):
         super().__init__()
         prompts = []
         self.setWindowTitle("My App")
-        
         layout = QVBoxLayout()
         
         # Toolbar
@@ -38,7 +59,7 @@ class MainWindow(QMainWindow):
         # toolbar.addAction(button_new)
         button_save = QAction(QIcon("assets/disk.png"), "Save Current Episode", self)
         button_save.setStatusTip("Save the current episode")
-        button_save.triggered.connect(self.save_episode)
+        button_save.triggered.connect(lambda: self.save_episode(episode_input.text(), prompts))
         # toolbar.addAction(button_save)
         button_mainmenu = QAction(QIcon("assets/arrow-circle-225.png"), "Return to Main Menu", self)
         button_mainmenu.setStatusTip("Return to the main menu")
@@ -102,12 +123,14 @@ class MainWindow(QMainWindow):
         episode_input.setPlaceholderText("Example: Inside Jokes")
         
         add_prompt_button = QPushButton("Add Prompt")
-        add_prompt_button.clicked.connect(lambda: prompts.append(self.add_prompt(prompt_table, personal_prompt_input, screen_prompt_input, audio_label, suggestions_list, us_checkbox, x_checkbox)))
+        add_prompt_button.clicked.connect(lambda: prompts.append(self.add_prompt(prompt_table, personal_prompt_input, screen_prompt_input, audio_label, suggestions_list, us_checkbox, x_checkbox, prompts)))
         
         save_episode_button = QPushButton("Save Episode and Return to Main Menu")
         save_episode_button.setCheckable(True)
-        save_episode_button.clicked.connect(lambda: self.save_episode())
+        save_episode_button.clicked.connect(lambda: self.save_episode(episode_input.text(), prompts))
 
+
+        
         layout.addWidget(episode_label)
         layout.addWidget(episode_input)
         layout.addWidget(personal_prompt_label)
@@ -126,6 +149,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(x_checkbox)
         layout.addWidget(add_prompt_button)
         layout.addWidget(prompt_table) 
+        layout.addWidget(save_episode_button) 
         widget = QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
@@ -138,19 +162,21 @@ class MainWindow(QMainWindow):
     def edit_row(self, prompt_table, row):
         pass
 
-    def add_prompt(self, prompt_table, personal_prompt_input, screen_prompt_input, audio_label, suggestions_list, us_checkbox, x_checkbox):
+    def add_prompt(self, prompt_table, personal_prompt_input, screen_prompt_input, audio_label, suggestions_list, us_checkbox, x_checkbox, prompts):
         # Get the values from the input fields
         personal_prompt = personal_prompt_input.text()
         screen_prompt = screen_prompt_input.text()
         audio = audio_label.text()
+        suggestions = [suggestions_list.item(i).text() for i in range(suggestions_list.count())]
         family_friendly = us_checkbox.isChecked()
         us_centric = x_checkbox.isChecked()
+        
 
         # Define buttons
         edit_button = QPushButton("Edit")
         edit_button.clicked.connect(lambda: self.edit_row(prompt_table, prompt_table.currentRow()))
         remove_button = QPushButton("Remove")
-        remove_button.clicked.connect(lambda: prompt_table.removeRow(prompt_table.currentRow()))
+        remove_button.clicked.connect(lambda: self.remove_prompt(prompt_table, prompts))
 
         # Add the prompt to the table
         row_position = prompt_table.rowCount()
@@ -163,22 +189,30 @@ class MainWindow(QMainWindow):
         prompt_table.setItem(row_position, 5, QTableWidgetItem("Yes" if us_centric else "No"))
         prompt_table.setCellWidget(row_position, 6, edit_button)
         prompt_table.setCellWidget(row_position, 7, remove_button)
-
-        # Clear the input fields
+        # print(personal_prompt, screen_prompt, audio, [suggestions_list.item(i).text() for i in range(suggestions_list.count())], x_checkbox.isChecked(), us_checkbox.isChecked())
+        
         personal_prompt_input.clear()
         screen_prompt_input.clear()
         suggestions_list.clear()
-        audio_label.clear()
+        audio_label.setText("(No audio)")
+        
         return Prompt(
-            personal_prompt_input.text(),
-            screen_prompt_input.text(),
-            audio_label.setText("(No audio)"),
-            [suggestions_list.item(i).text() for i in range(suggestions_list.count())],
+            personal_prompt,
+            screen_prompt,
+            audio,
+            suggestions,
             x_checkbox.isChecked(),
             us_checkbox.isChecked()
         )
-    def generate_episode(self):
+    
+    def remove_prompt(self, prompt_table, prompts):
+        currentRow = prompt_table.currentRow()
+        prompts.pop(currentRow)
+        prompt_table.removeRow(currentRow)
         
+    
+    
+    def generate_episode(self, episode_name, prompts):
         pass
 
 app = QApplication(sys.argv)
