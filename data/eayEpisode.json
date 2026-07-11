@@ -1,0 +1,18 @@
+{
+    "episodeName": "Example name",
+    "audioCount": 0,
+    "prompts": [
+        {
+            "personal": "Personal question",
+            "screen": "Screen question",
+            "hasAudio": false,
+            "audio": "Audio file name",
+            "x": false,
+            "us": false,
+            "suggestions": [
+                "Sug 1",
+                "Sug 2"
+            ]
+        }
+    ]
+}
