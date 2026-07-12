@@ -22,6 +22,18 @@ class Prompt:
     def has_audio(self):
         return self.hasAudio
 
+# EAY Custom Episode template:
+class EAYCustomEpisode:
+    def __init__(self, episode_name, prompts):
+        self.episode_name = episode_name
+        self.prompts = [prompt.get_prompt_data() for prompt in prompts]
+    def to_dict(self):
+        return {
+            "episodeName": self.episode_name,
+            "audioCount": 0,
+            "prompts": [p.get_prompt_data() for p in self.prompts]
+        }
+
 # Fibbage 3 tmiShortie.jet:
 class fib3Template:
     def __init__(self, prompts):
