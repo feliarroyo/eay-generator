@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         # button_save.triggered.connect(lambda: self.save_episode(episode_input.text(), self.prompts))
         button_mainmenu = QAction(QIcon("assets/arrow-circle-225.png"), self.tr("Return to Main Menu"), self)
         button_mainmenu.setStatusTip(self.tr("Return to the main menu"))
-        button_mainmenu.triggered.connect(lambda: self.switch_to_menu()) # The current episode will be lost. Are you sure?
+        button_mainmenu.triggered.connect(lambda: self.switch_to_menu())
         
         # Submenus
         menu = self.menuBar()
@@ -42,9 +42,11 @@ class MainWindow(QMainWindow):
     def switch_to_editor(self, episode_name=None):
         if episode_name:
             self.episode_editor.load_episode(episode_name)
+            self.setWindowTitle("EAY Generator - Episode: " + episode_name)
         self.stacked_widget.setCurrentIndex(1)
 
     def switch_to_menu(self):
+        self.setWindowTitle("EAY Generator")
         self.stacked_widget.setCurrentIndex(0)
 
 if __name__ == "__main__":
