@@ -2,8 +2,6 @@ from posixpath import basename
 import sys
 from tkinter import filedialog
 from PySide6.QtWidgets import QCheckBox, QLabel, QLineEdit, QListWidget, QMainWindow, QPushButton,  QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
-from PySide6.QtGui import QAction, QIcon
-from PySide6.QtCore import QSize
 
 from core.models import Prompt
 from ui.prompt_editor import PromptEditor
@@ -46,7 +44,6 @@ class EpisodeEditWidget(QWidget):
         family_friendly = us_checkbox.isChecked()
         us_centric = x_checkbox.isChecked()
         
-
         # Define buttons
         edit_button = QPushButton("Edit")
         edit_button.clicked.connect(lambda: self.edit_row(prompt_table, prompt_table.currentRow()))
@@ -97,39 +94,39 @@ class EpisodeEditWidget(QWidget):
         layout = QVBoxLayout()
         
         # Personal Prompt
-        personal_prompt_label = QLabel("Personal Prompt")
+        personal_prompt_label = QLabel(self.tr("Personal Prompt"))
         personal_prompt_input = QLineEdit()
-        personal_prompt_input.setPlaceholderText("e.g. What is your favorite color?")
+        personal_prompt_input.setPlaceholderText(self.tr("e.g. What is your favorite color?"))
         
         # Screen Prompt
-        screen_prompt_label = QLabel("Screen Prompt")
+        screen_prompt_label = QLabel(self.tr("Screen Prompt"))
         screen_prompt_input = QLineEdit()
-        screen_prompt_input.setPlaceholderText("e.g. <PLAYER>'s favorite color is <BLANK>.")
-        add_player_button = QPushButton("Insert Player Name into the Prompt")
+        screen_prompt_input.setPlaceholderText(self.tr("e.g. <PLAYER>'s favorite color is <BLANK>."))
+        add_player_button = QPushButton(self.tr("Insert Player Name into the Prompt"))
         add_player_button.clicked.connect(lambda: screen_prompt_input.insert("<PLAYER>"))
-        add_blank_button = QPushButton("Insert Blank into the Prompt")
+        add_blank_button = QPushButton(self.tr("Insert Blank into the Prompt"))
         add_blank_button.clicked.connect(lambda: screen_prompt_input.insert("<BLANK>"))
         
         # Audio
         audio_label = QLabel("(No audio)")
-        add_audio_button = QPushButton("Add audio to current prompt (.ogg only)")
+        add_audio_button = QPushButton(self.tr("Add audio to current prompt (.ogg only)"))
         add_audio_button.clicked.connect(lambda: self.select_audio(audio_label))
         add_audio_button.setCheckable(True) # This should have the select_audio value
         
         
         # Suggestions
-        suggestions_label = QLabel("Suggestions")
+        suggestions_label = QLabel(self.tr("Suggestions"))
         suggestions_input = QLineEdit()
-        suggestions_input.setPlaceholderText("e.g. chocolate")
+        suggestions_input.setPlaceholderText(self.tr("e.g. chocolate"))
         suggestions_input.returnPressed.connect(lambda: self.add_suggestion(suggestions_list, suggestions_input))
-        remove_suggestion_button = QPushButton("Remove Suggestion")
+        remove_suggestion_button = QPushButton(self.tr("Remove Suggestion"))
         remove_suggestion_button.setEnabled(False)
         remove_suggestion_button.clicked.connect(lambda: [suggestions_list.takeItem(suggestions_list.currentRow()), remove_suggestion_button.setEnabled(False)])
         suggestions_list = QListWidget()
         suggestions_list.currentItemChanged.connect(lambda: remove_suggestion_button.setEnabled(True))
         # Checkboxes
-        us_checkbox = QCheckBox("Mark as U.S.-Centric Prompt")
-        x_checkbox = QCheckBox("Mark as Not Family-Friendly Prompt")
+        us_checkbox = QCheckBox(self.tr("Mark as U.S.-Centric Prompt"))
+        x_checkbox = QCheckBox(self.tr("Mark as Not Family-Friendly Prompt"))
         
         # Table widget
         prompt_table = QTableWidget()
@@ -138,14 +135,25 @@ class EpisodeEditWidget(QWidget):
         prompt_table.setHorizontalHeaderLabels(["Personal Prompt", "Screen Prompt", "Audio", "Suggestions", "Family-Friendly?", "U.S.-Centric?", "Edit", "Remove"])
 
         # Episode Name
-        episode_label = QLabel("Episode Name")
+        episode_label = QLabel(self.tr("Episode Name"))
         episode_input = QLineEdit()
-        episode_input.setPlaceholderText("Example: Inside Jokes")
+        episode_input.setPlaceholderText(self.tr("Example: Inside Jokes"))
         
-        add_prompt_button = QPushButton("Add Prompt")
-        add_prompt_button.clicked.connect(lambda: self.prompts.append(self.add_prompt(prompt_table, personal_prompt_input, screen_prompt_input, audio_label, suggestions_list, us_checkbox, x_checkbox, self.prompts)))
+        add_prompt_button = QPushButton(self.tr("Add Prompt"))
+        add_prompt_button.clicked.connect(lambda: self.prompts.append(
+            self.add_prompt(
+                prompt_table, 
+                personal_prompt_input, 
+                screen_prompt_input, 
+                audio_label, 
+                suggestions_list, 
+                us_checkbox, 
+                x_checkbox, 
+                self.prompts
+            )
+        ))
         
-        save_episode_button = QPushButton("Save Episode and Return to Main Menu")
+        save_episode_button = QPushButton(self.tr("Save Episode and Return to Main Menu"))
         save_episode_button.setCheckable(True)
         save_episode_button.clicked.connect(lambda: self.save_episode(episode_input.text(), self.prompts))
 

@@ -25,25 +25,6 @@ class PromptFormWidget(QWidget):
         family_friendly = us_checkbox.isChecked()
         us_centric = x_checkbox.isChecked()
         
-        # Define buttons
-        edit_button = QPushButton("Edit")
-        edit_button.clicked.connect(lambda: self.edit_row(prompt_table, prompt_table.currentRow()))
-        remove_button = QPushButton("Remove")
-        remove_button.clicked.connect(lambda: self.remove_prompt(prompt_table, prompts))
-
-        # Add the prompt to the table
-        row_position = prompt_table.rowCount()
-        prompt_table.insertRow(row_position)
-        prompt_table.setItem(row_position, 0, QTableWidgetItem(personal_prompt))
-        prompt_table.setItem(row_position, 1, QTableWidgetItem(screen_prompt))
-        prompt_table.setItem(row_position, 2, QTableWidgetItem(audio))
-        prompt_table.setItem(row_position, 3, QTableWidgetItem(", ".join(suggestions_list.item(i).text() for i in range(suggestions_list.count()))))
-        prompt_table.setItem(row_position, 4, QTableWidgetItem("Yes" if family_friendly else "No"))
-        prompt_table.setItem(row_position, 5, QTableWidgetItem("Yes" if us_centric else "No"))
-        prompt_table.setCellWidget(row_position, 6, edit_button)
-        prompt_table.setCellWidget(row_position, 7, remove_button)
-        # print(personal_prompt, screen_prompt, audio, [suggestions_list.item(i).text() for i in range(suggestions_list.count())], x_checkbox.isChecked(), us_checkbox.isChecked())
-        
         personal_prompt_input.clear()
         screen_prompt_input.clear()
         suggestions_list.clear()

@@ -20,14 +20,14 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.main_menu)
         self.stacked_widget.addWidget(self.episode_editor)
         
-        button_new = QAction(QIcon("assets/plus.png"), "Create New Episode", self)
-        button_new.setStatusTip("Start a new episode")
+        button_new = QAction(QIcon("assets/plus.png"), self.tr("Create New Episode"), self)
+        button_new.setStatusTip(self.tr("Start a new episode"))
         button_new.triggered.connect(lambda: self.switch_to_editor()) # The current episode will be lost. Are you sure?
-        button_save = QAction(QIcon("assets/disk.png"), "Save Current Episode", self)
-        button_save.setStatusTip("Save the current episode")
+        button_save = QAction(QIcon("assets/disk.png"), self.tr("Save Current Episode"), self)
+        button_save.setStatusTip(self.tr("Save the current episode"))
         # button_save.triggered.connect(lambda: self.save_episode(episode_input.text(), self.prompts))
-        button_mainmenu = QAction(QIcon("assets/arrow-circle-225.png"), "Return to Main Menu", self)
-        button_mainmenu.setStatusTip("Return to the main menu")
+        button_mainmenu = QAction(QIcon("assets/arrow-circle-225.png"), self.tr("Return to Main Menu"), self)
+        button_mainmenu.setStatusTip(self.tr("Return to the main menu"))
         button_mainmenu.triggered.connect(lambda: self.switch_to_menu()) # The current episode will be lost. Are you sure?
         
         # Submenus
@@ -36,8 +36,8 @@ class MainWindow(QMainWindow):
         file_menu.addAction(button_new)
         file_menu.addAction(button_save)
         file_menu.addAction(button_mainmenu)
-        help_menu = menu.addMenu("&Help")
-        help_menu.addAction(QAction(QIcon("assets/question-frame.png"), "About", self))
+        help_menu = menu.addMenu(self.tr("&Help"))
+        help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
         
     def switch_to_editor(self):
         self.stacked_widget.setCurrentIndex(1)
