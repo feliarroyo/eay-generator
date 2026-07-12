@@ -1,5 +1,5 @@
 import os
-from src.core.fileManager import create_base_folder, create_episode_folder, list_episode_folders
+from core.fileManager import create_base_folder, create_episode_folder, list_episode_folders
 from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
 
 create_base_folder()  # Ensure the base folder exists
@@ -8,7 +8,7 @@ class MainMenuWidget(QWidget):
     def __init__(self, parent_window, parent=None):
         super().__init__(parent)
         self.parent_window = parent_window
-        self.setWindowTitle("Main Menu")
+        self.parent_window.setWindowTitle("EAY Generator")
         self.setFixedSize(400, 300)
 
         layout = QVBoxLayout()
