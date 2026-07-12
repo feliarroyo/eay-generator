@@ -39,7 +39,9 @@ class MainWindow(QMainWindow):
         help_menu = menu.addMenu(self.tr("&Help"))
         help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
         
-    def switch_to_editor(self):
+    def switch_to_editor(self, episode_name=None):
+        if episode_name:
+            self.episode_editor.load_episode(episode_name)
         self.stacked_widget.setCurrentIndex(1)
 
     def switch_to_menu(self):
