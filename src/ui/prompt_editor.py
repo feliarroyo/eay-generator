@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QVBoxLayout, QWidget
 
 from ui.prompt_form import PromptFormWidget
 
