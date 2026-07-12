@@ -22,3 +22,8 @@ def create_episode_folder(episode_name):
         print(f"Episode folder '{episode_name}' created at {episode_path}.")
     else:
         print(f"Episode folder '{episode_name}' already exists.")
+        
+def list_episode_folders():
+    folderList = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
+    print(folderList)
+    return folderList
