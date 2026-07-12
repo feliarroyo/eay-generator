@@ -22,7 +22,10 @@ class EpisodeEditWidget(QWidget):
             episode_file["audioCount"] += 1 if prompt.has_audio() else 0
             episode_file["prompts"].append(prompt_data)
         print(episode_file)
-
+    def load_episode(self, episode_name):
+        self.episode_name = episode_name
+        # TBD: Load folder contents and populate the prompts list and table. For now, just set the episode name.
+        pass
     
     def select_audio(self, audio_label):
         filename = filedialog.askopenfilename(filetypes=[("Audio Files", "*.ogg")])
@@ -81,8 +84,6 @@ class EpisodeEditWidget(QWidget):
         currentRow = prompt_table.currentRow()
         prompts.pop(currentRow)
         prompt_table.removeRow(currentRow)
-        
-    
     
     def generate_episode(self, episode_name, prompts):
         pass
@@ -133,11 +134,6 @@ class EpisodeEditWidget(QWidget):
         prompt_table.setRowCount(0)
         prompt_table.setColumnCount(8)
         prompt_table.setHorizontalHeaderLabels(["Personal Prompt", "Screen Prompt", "Audio", "Suggestions", "Family-Friendly?", "U.S.-Centric?", "Edit", "Remove"])
-
-        # Episode Name
-        episode_label = QLabel(self.tr("Episode Name"))
-        episode_input = QLineEdit()
-        episode_input.setPlaceholderText(self.tr("Example: Inside Jokes"))
         
         add_prompt_button = QPushButton(self.tr("Add Prompt"))
         add_prompt_button.clicked.connect(lambda: self.prompts.append(
@@ -155,12 +151,7 @@ class EpisodeEditWidget(QWidget):
         
         save_episode_button = QPushButton(self.tr("Save Episode and Return to Main Menu"))
         save_episode_button.setCheckable(True)
-        save_episode_button.clicked.connect(lambda: self.save_episode(episode_input.text(), self.prompts))
-
-
-        
-        layout.addWidget(episode_label)
-        layout.addWidget(episode_input)
+        save_episode_button.clicked.connect(lambda: self.save_episode(self.episode_name, self.prompts))
         layout.addWidget(personal_prompt_label)
         layout.addWidget(personal_prompt_input)
         layout.addWidget(screen_prompt_label)
