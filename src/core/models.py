@@ -1,4 +1,4 @@
-class Prompt:
+class Prompt:   
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
         self.personal_question = personal_question
         self.screen_question = screen_question
@@ -10,8 +10,8 @@ class Prompt:
 
     def get_prompt_data(self):
         return {
-            "personalQuestion": self.personal_question,
-            "screenQuestion": self.screen_question,
+            "personal_question": self.personal_question,
+            "screen_question": self.screen_question,
             "hasAudio": self.hasAudio,
             "audio": self.audio,
             "suggestions": self.suggestions,
@@ -26,11 +26,12 @@ class Prompt:
 class EAYCustomEpisode:
     def __init__(self, episode_name, prompts):
         self.episode_name = episode_name
-        self.prompts = [prompt.get_prompt_data() for prompt in prompts]
+        self.audioCount = sum(1 for prompt in prompts if prompt.has_audio())
+        self.prompts = prompts
     def to_dict(self):
         return {
             "episodeName": self.episode_name,
-            "audioCount": 0,
+            "audioCount": self.audioCount,
             "prompts": [p.get_prompt_data() for p in self.prompts]
         }
 
