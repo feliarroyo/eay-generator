@@ -1,5 +1,5 @@
 import os
-from core.fileManager import create_base_folder, create_episode_folder, list_episode_folders
+from core.fileManager import create_base_folder, create_episode_folder, list_episode_folders, read_episode_prompts
 from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
 
 create_base_folder()  # Ensure the base folder exists
@@ -24,11 +24,13 @@ class MainMenuWidget(QWidget):
         layout.addWidget(new_episode_button)
 
         load_episode_button = QPushButton("Load Episode")
-        load_episode_button.clicked.connect(self.load_episode)
+        load_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
+        load_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(load_episode_button)
-        folderDisplay = QListWidget()
-        folderDisplay.addItems(list_episode_folders())
-        layout.addWidget(folderDisplay)
+        self.folder_display = QListWidget()
+        self.update_folder_display()
+        self.folder_display.currentItemChanged.connect(lambda: load_episode_button.setEnabled(True))
+        layout.addWidget(self.folder_display)
         self.setLayout(layout)
 
     def validate_episode_name(self, name):
@@ -41,7 +43,9 @@ class MainMenuWidget(QWidget):
         self.parent_window.switch_to_editor(episode_name)
         
 
-    def load_episode(self):
-        self.parent_window.switch_to_editor()
-        # Implement loading episode
-        pass
+    def load_episode(self, episode_name):
+        self.parent_window.switch_to_editor(episode_name, read_episode_prompts(episode_name))
+    
+    def update_folder_display(self):
+        self.folder_display.clear()
+        self.folder_display.addItems(list_episode_folders())
