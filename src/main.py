@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         
         button_new = QAction(QIcon("assets/plus.png"), self.tr("Create New Episode"), self)
         button_new.setStatusTip(self.tr("Start a new episode"))
-        button_new.triggered.connect(lambda: self.switch_to_editor()) # The current episode will be lost. Are you sure?
+        button_new.triggered.connect(lambda: self.switch_to_editor())
         button_save = QAction(QIcon("assets/disk.png"), self.tr("Save Current Episode"), self)
         button_save.setStatusTip(self.tr("Save the current episode"))
         # button_save.triggered.connect(lambda: self.save_episode(episode_input.text(), self.prompts))
@@ -39,14 +39,15 @@ class MainWindow(QMainWindow):
         help_menu = menu.addMenu(self.tr("&Help"))
         help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
         
-    def switch_to_editor(self, episode_name=None):
+    def switch_to_editor(self, episode_name=None, prompts=[]):
         if episode_name:
-            self.episode_editor.load_episode(episode_name)
+            self.episode_editor.load_episode(episode_name, prompts)
             self.setWindowTitle("EAY Generator - Episode: " + episode_name)
         self.stacked_widget.setCurrentIndex(1)
 
     def switch_to_menu(self):
         self.setWindowTitle("EAY Generator")
+        self.main_menu.update_folder_display()
         self.stacked_widget.setCurrentIndex(0)
 
 if __name__ == "__main__":
