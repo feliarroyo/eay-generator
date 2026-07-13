@@ -23,14 +23,18 @@ class MainMenuWidget(QWidget):
         layout.addWidget(episode_input)
         layout.addWidget(new_episode_button)
 
-        load_episode_button = QPushButton("Load Episode")
-        load_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
-        load_episode_button.setEnabled(False)  # Disable the button by default
-        layout.addWidget(load_episode_button)
+        edit_episode_button = QPushButton("Edit Episode")
+        edit_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
+        edit_episode_button.setEnabled(False)  # Disable the button by default
+        layout.addWidget(edit_episode_button)
         self.folder_display = QListWidget()
         self.update_folder_display()
-        self.folder_display.currentItemChanged.connect(lambda: load_episode_button.setEnabled(True))
+        self.folder_display.currentItemChanged.connect(lambda: edit_episode_button.setEnabled(True))
         layout.addWidget(self.folder_display)
+        
+        open_folder_button = QPushButton("Open Episode Folder")
+        open_folder_button.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), "episodes")))
+        layout.addWidget(open_folder_button)
         self.setLayout(layout)
 
     def validate_episode_name(self, name):
