@@ -1,3 +1,4 @@
+import os
 from posixpath import basename
 import sys
 from tkinter import filedialog
@@ -53,5 +54,16 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
+
+    # Add application icon
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.abspath(os.path.join(current_dir, ".."))
+    icon_path = os.path.join(root_dir, "assets", "icon.ico")
+    if os.path.exists(icon_path):
+        app_icon = QIcon(icon_path)
+        app.setWindowIcon(app_icon)
+    else:
+        print(f"Warning: Icon asset not found at {icon_path}")
+
     window.show()
     sys.exit(app.exec())
