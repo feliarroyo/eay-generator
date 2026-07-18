@@ -1,12 +1,28 @@
 from posixpath import basename
 import sys
 from tkinter import filedialog
-from PySide6.QtWidgets import QCheckBox, QLabel, QLineEdit, QListWidget, QMainWindow, QPushButton,  QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QMainWindow, QPushButton,  QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtCore import QSize
 
 from core.models import Prompt
-from ui import episode_editor
+
+class CustomDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Error: Invalid Prompt")
+
+        QBtn = QDialogButtonBox.Ok
+
+        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+
+        layout = QVBoxLayout()
+        message = QLabel("The prompt is missing required fields or has no suggestions.")
+        layout.addWidget(message)
+        layout.addWidget(self.buttonBox)
+        self.setLayout(layout)
 
 class PromptFormWidget(QWidget):
     def get_current_prompt(self):
@@ -36,6 +52,14 @@ class PromptFormWidget(QWidget):
             for i in range(self.suggestions_list.count())
         ]
         
+    def add_prompt_if_valid(self):
+        prompt = self.get_current_prompt()
+        if not prompt.is_valid_prompt():
+            dlg = CustomDialog()
+            dlg.exec()
+            return
+        self.parent_window.add_prompt_at_the_end()
+
     def clear_inputs(self):
         self.personal_prompt_input.clear()
         self.screen_prompt_input.clear()
@@ -44,8 +68,9 @@ class PromptFormWidget(QWidget):
         self.us_checkbox.setChecked(False)
         self.x_checkbox.setChecked(False)
     
-    def __init__(self):
+    def __init__(self, parent_window):
         super().__init__()
+        self.parent_window = parent_window
         layout = QVBoxLayout()
         
         # Personal Prompt
@@ -82,7 +107,7 @@ class PromptFormWidget(QWidget):
         self.x_checkbox = QCheckBox(self.tr("Mark as Not Family-Friendly Prompt"))
         # Add Prompt Button
         self.add_prompt_button = QPushButton(self.tr("Add Prompt"))
-        self.add_prompt_button.clicked.connect(lambda: episode_editor.add_prompt_at_the_end())
+        self.add_prompt_button.clicked.connect(lambda: self.add_prompt_if_valid())
         
         # Add elements to layout
         layout.addWidget(self.personal_prompt_label)

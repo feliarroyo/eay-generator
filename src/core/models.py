@@ -21,6 +21,13 @@ class Prompt:
         
     def has_audio(self):
         return self.hasAudio
+    
+    def is_valid_prompt(self):
+        if self.personal_question.strip() == "" or self.screen_question.strip() == "":
+            return False
+        if len(self.suggestions) < 1: # could need more, requires testing
+            return False
+        return True
 
 # EAY Custom Episode template:
 class EAYCustomEpisode:
