@@ -56,10 +56,10 @@ class EpisodeEditWidget(QWidget):
         self.save_episode_button.clicked.connect(lambda: self.save_episode())
         
         # Prompt Form
-        self.prompt_form = PromptFormWidget()
+        self.prompt_form = PromptFormWidget(self)
 
         # Table widget
-        self.prompt_table = PromptTable()
+        self.prompt_table = PromptTable(self)
 
         layout = QVBoxLayout()
         mainLayout = QHBoxLayout()
