@@ -1,7 +1,8 @@
 import os
 from core.fileManager import create_base_folder, create_episode_folder, list_episode_folders, read_episode_prompts
-from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
-
+from PySide6.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
+from tkinter import filedialog
+from core.fileManager import registerPack
 create_base_folder()  # Ensure the base folder exists
 
 class MainMenuWidget(QWidget):
@@ -16,25 +17,38 @@ class MainMenuWidget(QWidget):
         episode_input = QLineEdit()
         episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
         episode_input.textChanged.connect(lambda name: new_episode_button.setEnabled(self.validate_episode_name(name)))
-        new_episode_button = QPushButton("New Episode")
+        new_episode_button = QPushButton(self.tr("Create New Episode"))
         new_episode_button.clicked.connect(lambda: self.create_episode(episode_input.text()))
         new_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(episode_label)
         layout.addWidget(episode_input)
         layout.addWidget(new_episode_button)
 
-        edit_episode_button = QPushButton("Edit Episode")
-        edit_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
-        edit_episode_button.setEnabled(False)  # Disable the button by default
-        layout.addWidget(edit_episode_button)
+        self.edit_episode_button = QPushButton(self.tr("Edit Selected Episode"))
+        self.edit_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
+        
+        layout.addWidget(self.edit_episode_button)
+        self.delete_episode_button = QPushButton(self.tr("Delete Selected Episode"))
+        self.delete_episode_button.clicked.connect(lambda: self.delete_episode(self.folder_display.currentItem().text()))
+        self.delete_episode_button.setEnabled(False)  # Disable the button by default
+        layout.addWidget(self.delete_episode_button)
         self.folder_display = QListWidget()
         self.update_folder_display()
-        self.folder_display.currentItemChanged.connect(lambda: edit_episode_button.setEnabled(True))
+        self.folder_display.currentItemChanged.connect(self.update_buttons)
         layout.addWidget(self.folder_display)
-        
-        open_folder_button = QPushButton("Open Episode Folder")
+        self.language = "en"
+        open_folder_button = QPushButton(self.tr("Open Episode Folder"))
         open_folder_button.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), "episodes")))
         layout.addWidget(open_folder_button)
+        link_game_button = QPushButton(self.tr("Link Game Pack"))
+        link_game_button.clicked.connect(lambda: self.link_game_pack(self.language))
+        layout.addWidget(link_game_button)
+        link_game_lang_label = QLabel(self.tr("Select language locale (Pack 9 only):"))
+        link_game_lang_combobox = QComboBox()
+        link_game_lang_combobox.addItems(["en", "fr", "de", "es", "es-XL", "it"])
+        link_game_lang_combobox.currentTextChanged.connect(lambda lang: setattr(self, 'language', lang))
+        layout.addWidget(link_game_lang_combobox)
+        
         self.setLayout(layout)
 
     def validate_episode_name(self, name):
@@ -44,12 +58,35 @@ class MainMenuWidget(QWidget):
     def create_episode(self, episode_name):
         # Create episode folder.
         create_episode_folder(episode_name)
-        self.parent_window.switch_to_editor(episode_name)
-        
+        self.parent_window.switch_to_editor(episode_name)        
 
     def load_episode(self, episode_name):
         self.parent_window.switch_to_editor(episode_name, read_episode_prompts(episode_name))
+        
+    def delete_episode(self, episode_name):
+        episode_path = os.path.join(os.getcwd(), "episodes", episode_name)
+        if os.path.exists(episode_path):
+            import shutil
+            shutil.rmtree(episode_path)
+            print(f"Episode folder '{episode_name}' deleted.")
+            self.update_folder_display()
+        else:
+            print(f"Episode folder '{episode_name}' does not exist.")
     
     def update_folder_display(self):
         self.folder_display.clear()
         self.folder_display.addItems(list_episode_folders())
+    
+    def update_buttons(self, current):
+        value = current is not None        
+        self.delete_episode_button.setEnabled(value)
+        self.edit_episode_button.setEnabled(value)
+
+    def link_game_pack(self, language):
+        pack_path = filedialog.askdirectory(title=self.tr("Select the game pack directory"))
+        if pack_path:
+            pack_number = registerPack(pack_path, language)
+            if pack_number:
+                print(f"Game Pack {pack_number} linked successfully.")
+            else:
+                print("Invalid game pack directory selected.")

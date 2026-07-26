@@ -1,11 +1,14 @@
 import json
 import os
+import shutil
+from tkinter import Pack
 
 from core.models import EAYCustomEpisode, Prompt
 
 current_file_dir = os.path.dirname(os.path.abspath(__file__))
 root_project_dir = os.path.abspath(os.path.join(current_file_dir, "..", ".."))
 base_path = os.path.join(root_project_dir, "episodes")
+backup_path = os.path.join(root_project_dir, "backup")
 
 def create_base_folder():
     """
@@ -57,3 +60,44 @@ def read_episode_prompts(episode_name):
     prompts_data = episode_data.get("prompts", [])
     prompts = [Prompt(p["personal_question"], p["screen_question"], p["audio"], p["suggestions"], p["x"], p["us"]) for p in prompts_data]
     return prompts
+
+def checkPackDirectory(path, lang="en"):
+    # PACK 4
+    jpp4_base = "./games/Fibbage3/content"
+    # PACK 9
+    lang_values = ["en", "de", "es", "es-XL", "fr", "it"]
+    jpp9_base = "./games/Fibbage4/content"
+    
+    if os.path.isdir(os.path.join(path, jpp4_base)):
+        return 4
+    if os.path.isdir(os.path.join(path, jpp9_base)) and lang in lang_values:
+        return 9
+    return False
+
+def registerPack(path, lang="en"):
+    pack_number = checkPackDirectory(path, lang)
+    if not pack_number:
+        print(f"Invalid game pack directory: {path}")
+        return None
+    
+    # Save the path to a file for later use
+    with open(os.path.join(root_project_dir, f"game_pack_{pack_number}.txt"), 'w') as f:
+        f.write(path)
+    
+    if pack_number == 4:
+        jpp4_jet = os.path.join(path, "games/Fibbage3/content/tmishortie.jet")
+        print (jpp4_jet)
+        jpp4_folder = os.path.join(path, "games/Fibbage3/content/tmishortie")
+        print (jpp4_folder)
+        print (os.path.join(backup_path, "games/Fibbage3/content/tmishortie.jet"))
+        os.makedirs(os.path.dirname(os.path.join(backup_path, "games/Fibbage3/content/tmishortie")), exist_ok=True)
+        shutil.copy2(jpp4_jet, os.path.join(backup_path, "games/Fibbage3/content/tmishortie.jet"))
+        shutil.copytree(jpp4_folder, os.path.join(backup_path, "games/Fibbage3/content/tmishortie"), dirs_exist_ok=True)
+    if pack_number == 9:
+        jpp9_jet = os.path.join(path, f"games/Fibbage4/content/{lang}/eayblankie.jet")
+        jpp9_folder = os.path.join(path, f"games/Fibbage4/content/{lang}/eayblankie")
+        os.makedirs(os.path.dirname(os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie")), exist_ok=True)
+        shutil.copy2(jpp9_jet, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie.jet"))
+        shutil.copytree(jpp9_folder, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie"), dirs_exist_ok=True)
+    print(f"Game Pack {pack_number} registered successfully.")
+    return pack_number
