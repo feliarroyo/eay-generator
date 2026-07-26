@@ -75,16 +75,20 @@ class PromptFormWidget(QWidget):
         
         # Personal Prompt
         self.personal_prompt_label = QLabel(self.tr("Personal Prompt"))
+        self.personal_prompt_label.setToolTip(self.tr("(Required Field)\nThis is the question that will be asked to the player in question on their device at the start."))
         self.personal_prompt_input = QLineEdit()
         self.personal_prompt_input.setPlaceholderText(self.tr("e.g. What is your favorite color?"))
         
         # Screen Prompt
         self.screen_prompt_label = QLabel(self.tr("Screen Prompt"))
+        self.screen_prompt_label.setToolTip(self.tr("(Required Field)\nThis is the question that will be shown to other players when coming up with lies, and will also be shown on screen alongside everyone's answers."))
         self.screen_prompt_input = QLineEdit()
         self.screen_prompt_input.setPlaceholderText(self.tr("e.g. <PLAYER>'s favorite color is <BLANK>."))
         self.add_player_button = QPushButton(self.tr("Insert Player Name into the Prompt"))
+        self.add_player_button.setToolTip(self.tr("Inserts the <PLAYER> placeholder into the prompt, which will be replaced with the player's name when the prompt is displayed."))
         self.add_player_button.clicked.connect(lambda: self.screen_prompt_input.insert("<PLAYER>"))
         self.add_blank_button = QPushButton(self.tr("Insert Blank into the Prompt"))
+        self.add_blank_button.setToolTip(self.tr("Inserts the <BLANK> placeholder into the prompt, which will be replaced with a blank when the prompt is displayed."))
         self.add_blank_button.clicked.connect(lambda: self.screen_prompt_input.insert("<BLANK>"))
         
         # Audio
@@ -94,6 +98,7 @@ class PromptFormWidget(QWidget):
         
         # Suggestions
         self.suggestions_label = QLabel(self.tr("Suggestions"))
+        self.suggestions_label.setToolTip(self.tr("Dummy answers, used for Audience Lies, filler lies (on 3 player games) and the Lie For Me button (Fibbage 4 only).")) # Unknown if required or not so far, nor how many are needed if so (8-10?).
         self.suggestions_input = QLineEdit()
         self.suggestions_input.setPlaceholderText(self.tr("e.g. chocolate"))
         self.suggestions_input.returnPressed.connect(lambda: self.add_suggestion_to_list())
@@ -104,7 +109,9 @@ class PromptFormWidget(QWidget):
         self.suggestions_list.currentItemChanged.connect(lambda: self.remove_suggestion_button.setEnabled(True))
         # Checkboxes
         self.us_checkbox = QCheckBox(self.tr("Mark as U.S.-Centric Prompt"))
+        self.us_checkbox.setToolTip(self.tr("Check this box if the prompt is specific to U.S. culture, and should be removed when playing using the U.S. filter in compatible games."))
         self.x_checkbox = QCheckBox(self.tr("Mark as Not Family-Friendly Prompt"))
+        self.x_checkbox.setToolTip(self.tr("Check this box if the prompt is not family-friendly, and should be removed when playing using the Family-Friendly Filter in compatible games."))
         # Add Prompt Button
         self.add_prompt_button = QPushButton(self.tr("Add Prompt"))
         self.add_prompt_button.clicked.connect(lambda: self.add_prompt_if_valid())
