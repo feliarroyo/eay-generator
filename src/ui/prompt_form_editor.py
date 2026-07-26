@@ -9,7 +9,7 @@ from core.models import Prompt
 from ui.prompt_form import PromptFormWidget
 
 class PromptFormWidget_ForEditor(PromptFormWidget):
-    def updatePromp(self):
+    def updatePrompt(self):
         pass
     
     def set_fields(self, prompt):
@@ -23,7 +23,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         self.x_checkbox.setChecked(prompt.x)
     
     def __init__(self, parent_window):
-        super().__init__()
+        super().__init__(parent_window)
         self.parent_window = parent_window
         self.add_prompt_button.setText("Update Prompt")
         self.add_prompt_button.clicked.disconnect()
