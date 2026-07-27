@@ -1,10 +1,6 @@
 from posixpath import basename
-import sys
 from tkinter import filedialog
-from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QMainWindow, QPushButton,  QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
-from PySide6.QtGui import QAction, QIcon
-from PySide6.QtCore import QSize
-
+from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QPushButton,  QVBoxLayout, QWidget
 from core.models import Prompt
 
 class CustomDialog(QDialog):
