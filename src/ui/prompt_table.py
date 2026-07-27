@@ -9,8 +9,7 @@ class PromptTable(QTableWidget):
         self.setRowCount(0)
         self.setColumnCount(8)
         self.setHorizontalHeaderLabels(["Personal Prompt", "Screen Prompt", "Audio", "Suggestions", "Family-Friendly?", "U.S.-Centric?", "Edit", "Remove"])
-        from PySide6.QtWidgets import QHeaderView, QFrame
-
+        
         # To size table properly
         self.resizeColumnsToContents()
         total_width = 0
@@ -21,7 +20,7 @@ class PromptTable(QTableWidget):
         self.setMinimumWidth(final_min_width)
     
     def open_prompt_editor(self):
-        self.prompt_edit_window = PromptEditor()
+        self.prompt_edit_window = PromptEditor(self.parent_window)
         self.prompt_edit_window.set_fields(self.parent_window.prompts[self.currentRow()], self.currentRow())
         self.prompt_edit_window.show()
         self.setEnabled(False)
@@ -59,6 +58,26 @@ class PromptTable(QTableWidget):
         self.setItem(row_position, 5, item)
         self.setCellWidget(row_position, 6, edit_button)
         self.setCellWidget(row_position, 7, remove_button)
+    
+    def update_prompt_in_table(self, row_position, prompt):
+        item = QTableWidgetItem(prompt.personal_question)
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.setItem(row_position, 0, item)
+        item = QTableWidgetItem(prompt.screen_question)
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.setItem(row_position, 1, item)
+        item = QTableWidgetItem(prompt.audio)
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.setItem(row_position, 2, item)
+        item = QTableWidgetItem(", ".join(prompt.suggestions[i] for i in range(len(prompt.suggestions))))
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.setItem(row_position, 3, item)
+        item = QTableWidgetItem("Yes" if prompt.x else "No")
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.setItem(row_position, 4, item)
+        item = QTableWidgetItem("Yes" if prompt.us else "No")
+        item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+        self.setItem(row_position, 5, item)
     
     def remove_prompt_from_table(self):
         currentRow = self.currentRow()

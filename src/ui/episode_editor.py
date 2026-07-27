@@ -33,6 +33,10 @@ class EpisodeEditWidget(QWidget):
         self.prompt_table.add_prompt_to_table(prompt)
         self.prompt_form.clear_inputs()  # Clear the input fields after adding the prompt
         self.prompts.append(prompt)
+        
+    def edit_prompt_in_index(self, index, prompt):
+        self.prompts[index] = prompt
+        self.prompt_table.update_prompt_in_table(index, prompt)
 
     def remove_prompt(self):
         currentRow = self.prompt_table.remove_prompt_from_table()
