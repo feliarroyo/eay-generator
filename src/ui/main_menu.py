@@ -1,8 +1,7 @@
 import os
 from core.fileManager import create_base_folder, create_episode_folder, list_episode_folders, read_episode_prompts
-from PySide6.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
-from tkinter import filedialog
-from core.fileManager import registerPack
+from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
+from ui.build_menu import BuildMenuWidget
 create_base_folder()  # Ensure the base folder exists
 
 class MainMenuWidget(QWidget):
@@ -40,15 +39,9 @@ class MainMenuWidget(QWidget):
         open_folder_button = QPushButton(self.tr("Open Episode Folder"))
         open_folder_button.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), "episodes")))
         layout.addWidget(open_folder_button)
-        link_game_button = QPushButton(self.tr("Link Game Pack"))
-        link_game_button.clicked.connect(lambda: self.link_game_pack(self.language))
-        layout.addWidget(link_game_button)
-        link_game_lang_label = QLabel(self.tr("Select language locale (Pack 9 only):"))
-        link_game_lang_combobox = QComboBox()
-        link_game_lang_combobox.addItems(["en", "fr", "de", "es", "es-XL", "it"])
-        link_game_lang_combobox.currentTextChanged.connect(lambda lang: setattr(self, 'language', lang))
-        layout.addWidget(link_game_lang_combobox)
-        
+        apply_episodes_button = QPushButton(self.tr("Apply Custom Episodes"))
+        layout.addWidget(apply_episodes_button)
+        apply_episodes_button.clicked.connect(lambda: self.open_build_menu())
         self.setLayout(layout)
 
     def validate_episode_name(self, name):
@@ -81,12 +74,9 @@ class MainMenuWidget(QWidget):
         value = current is not None        
         self.delete_episode_button.setEnabled(value)
         self.edit_episode_button.setEnabled(value)
-
-    def link_game_pack(self, language):
-        pack_path = filedialog.askdirectory(title=self.tr("Select the game pack directory"))
-        if pack_path:
-            pack_number = registerPack(pack_path, language)
-            if pack_number:
-                print(f"Game Pack {pack_number} linked successfully.")
-            else:
-                print("Invalid game pack directory selected.")
+        
+    def open_build_menu(self):
+            self.build_menu = BuildMenuWidget(self.parent_window)
+            self.build_menu.show()
+            self.setEnabled(False)
+            self.build_menu.closeEvent = lambda event: self.setEnabled(True)

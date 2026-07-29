@@ -1,4 +1,7 @@
-class Prompt:   
+VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
+LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
+
+class Prompt:
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
         self.personal_question = personal_question
         self.screen_question = screen_question
@@ -21,7 +24,7 @@ class Prompt:
         
     def has_audio(self):
         return self.hasAudio
-    
+
     def is_valid_prompt(self):
         if self.personal_question.strip() == "" or self.screen_question.strip() == "":
             return False
@@ -35,6 +38,7 @@ class EAYCustomEpisode:
         self.episode_name = episode_name
         self.audioCount = sum(1 for prompt in prompts if prompt.has_audio())
         self.prompts = prompts
+
     def to_dict(self):
         return {
             "episodeName": self.episode_name,
