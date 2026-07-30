@@ -2,7 +2,7 @@ from tkinter import filedialog
 
 from PySide6.QtWidgets import QCheckBox, QComboBox, QLabel, QPushButton, QVBoxLayout, QWidget
 
-from core.fileManager import registerPack
+from core.fileManager import list_episode_folders, registerPack
 from core.models import LANGUAGE_NAMES, VALID_LANGUAGES
 
 class BuildMenuWidget(QWidget):
@@ -25,8 +25,8 @@ class BuildMenuWidget(QWidget):
         
         # Checkboxes for episode
         episode_checkboxes = []
-        for i in range(1, 6):
-            checkbox = QCheckBox(f"Episode {i}")
+        for episode in list_episode_folders():
+            checkbox = QCheckBox(f"{episode}")
             layout.addWidget(checkbox)
             episode_checkboxes.append(checkbox)
 
