@@ -13,14 +13,14 @@ class MainMenuWidget(QWidget):
 
         layout = QVBoxLayout()
         episode_label = QLabel(self.tr("Episode Name"))
+        layout.addWidget(episode_label)
         episode_input = QLineEdit()
         episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
         episode_input.textChanged.connect(lambda name: new_episode_button.setEnabled(self.validate_episode_name(name)))
+        layout.addWidget(episode_input)
         new_episode_button = QPushButton(self.tr("Create New Episode"))
         new_episode_button.clicked.connect(lambda: self.create_episode(episode_input.text()))
         new_episode_button.setEnabled(False)  # Disable the button by default
-        layout.addWidget(episode_label)
-        layout.addWidget(episode_input)
         layout.addWidget(new_episode_button)
 
         self.edit_episode_button = QPushButton(self.tr("Edit Selected Episode"))
@@ -31,6 +31,9 @@ class MainMenuWidget(QWidget):
         self.delete_episode_button.clicked.connect(lambda: self.delete_episode(self.folder_display.currentItem().text()))
         self.delete_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(self.delete_episode_button)
+        refresh_folders_button = QPushButton(self.tr("Refresh Episode List"))
+        refresh_folders_button.clicked.connect(self.update_folder_display)
+        layout.addWidget(refresh_folders_button)
         self.folder_display = QListWidget()
         self.update_folder_display()
         self.folder_display.currentItemChanged.connect(self.update_buttons)
@@ -46,7 +49,8 @@ class MainMenuWidget(QWidget):
 
     def validate_episode_name(self, name):
         # For now, it only checks that it isn't empty or whitespace. When episode select is implemented, it must check that the name isn't already in use, and also typical file name restrictions
-        return len(name.strip()) > 0 
+        episode_name = name.strip()
+        return len(episode_name) > 0 and (episode_name not in list_episode_folders())
 
     def create_episode(self, episode_name):
         # Create episode folder.
