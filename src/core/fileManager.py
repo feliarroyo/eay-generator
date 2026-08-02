@@ -3,12 +3,13 @@ import os
 import shutil
 from tkinter import Pack
 
-from core.models import VALID_LANGUAGES, EAYCustomEpisode, Prompt
+from core.models import VALID_LANGUAGES, EAYCustomEpisode, Prompt, fib3Template, fib3Template_Data, fib4Template, fib4Template_Data
 
 current_file_dir = os.path.dirname(os.path.abspath(__file__))
 root_project_dir = os.path.abspath(os.path.join(current_file_dir, "..", ".."))
 base_path = os.path.join(root_project_dir, "episodes")
 backup_path = os.path.join(root_project_dir, "backup")
+build_path = os.path.join(root_project_dir, "build")
 
 def create_base_folder():
     """Creates the base folder for episodes if it doesn't exist."""
@@ -110,3 +111,23 @@ def backupFibbage4(path):
         os.makedirs(os.path.dirname(os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie")), exist_ok=True)
         shutil.copy2(jpp9_jet, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie.jet"))
         shutil.copytree(jpp9_folder, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie"), dirs_exist_ok=True)
+
+def generateFibbageFiles(prompts, shortieFileType, dataFileType, fileName):
+    if not os.path.exists(build_path):
+            os.makedirs(build_path)
+    tmiShortie = shortieFileType(prompts)
+    json.dump(tmiShortie.to_dict(), open(os.path.join(build_path, fileName + ".jet"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
+    for prompt in prompts:
+        # Fibbage 3 tmiShortie/<id>/data.jet:
+        prompt_data = dataFileType(prompt)
+        prompt_path = os.path.join(build_path, fileName, str(prompts.index(prompt)))
+        os.makedirs(prompt_path)
+        json.dump(prompt_data.to_dict(), open(os.path.join(prompt_path, "data.jet"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
+
+def generateFibbage3Files(prompts):
+    """Generates the necessary files for Fibbage 3 based on the provided prompts."""
+    generateFibbageFiles(prompts, fib3Template, fib3Template_Data, "tmiShortie")
+    
+def generateFibbage4Files(prompts):
+    """Generates the necessary files for Fibbage 4 based on the provided prompts."""
+    generateFibbageFiles(prompts, fib4Template, fib4Template_Data, "eayblankie")

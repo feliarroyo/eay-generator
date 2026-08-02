@@ -1,3 +1,6 @@
+from operator import index
+
+
 VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
 LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
 
@@ -54,14 +57,20 @@ class fib3Template:
             {
                 "x": prompt.x,
                 "personal": prompt.personal_question,
-                "id": prompt.prompt_id,
+                "id": index,
                 "portrait": False,
                 "category": "",
                 "bumper": "",
                 "us": prompt.us,
             }
-            for prompt in prompts
+            for index, prompt in enumerate(prompts)
         ]
+    
+    def to_dict(self):
+        return {
+            "episodeid": self.episodeid,
+            "content": self.content
+        }
 
 
 # Fibbage 3 tmiShortie/<id>/data.jet:
@@ -75,7 +84,7 @@ class fib3Template_Data:
             {"t": "B", "v": "true", "n": "HasQuestionAudio"},
             {
                 "t": "S",
-                "v": prompt.suggestions,
+                "v": ", ".join(prompt.suggestions[i] for i in range(len(prompt.suggestions))),
                 "n": "Suggestions",
             },
             {
@@ -107,9 +116,18 @@ class fib3Template_Data:
             },
         ]
 
+    def to_dict(self):
+        return {
+            "fields": self.fields
+        }
+
 
 # Fibbage 4 eayBlankie.jet:
 class fib4Template:
+    def adjust_formatting(self, text):
+        # Replace <PLAYER> and <BLANK> with {{PLAYER}} and {{BLANK}}
+        text = text.replace("<PLAYER>", "{{PLAYER}}").replace("<BLANK>", "{{BLANK}}")
+        return text
     def __init__(self, prompts):
         self.content = [
             {
@@ -118,21 +136,29 @@ class fib4Template:
                 "category": "",
                 "correctText": "",
                 "extraCategories": [],
-                "id": prompt.prompt_id,
+                "id": str(index),
                 "isValid": "",
-                "personal": prompt.personal_question,
+                "personal": self.adjust_formatting(prompt.personal_question),
                 "portrait": False,
-                "questionText": prompt.screen_question,
+                "questionText": self.adjust_formatting(prompt.screen_question),
                 "suggestions": prompt.suggestions,
                 "us": prompt.us,
                 "x": prompt.x,
             }
-            for prompt in prompts
+            for index, prompt in enumerate(prompts)
         ]
+    def to_dict(self):
+        return {
+            "content": self.content
+        }
 
 
 # Fibbage 4 eayBlankie/<id>/data.jet:
 class fib4Template_Data:
+    def adjust_formatting(self, text):
+            # Replace <PLAYER> and <BLANK> with {{PLAYER}} and {{BLANK}}
+            text = text.replace("<PLAYER>", "{{PLAYER}}").replace("<BLANK>", "{{BLANK}}")
+            return text
     def __init__(self, prompt):
         self.fields = [
             {"t": "B", "v": "false", "n": "HasBumperAudio"},
@@ -145,7 +171,7 @@ class fib4Template_Data:
                 "t": "A",
                 "v": "questionAudio",
                 "n": "QuestionAudio",
-                "s": prompt.screenQuestion,
+                "s": self.adjust_formatting(prompt.screen_question),
             },
             {"t": "B", "v": "false", "n": "HasPic"},
             {"t": "G", "v": "picture", "n": "Pic"},
@@ -166,3 +192,8 @@ class fib4Template_Data:
             {"t": "B", "v": "false", "n": "HasRevealSubtitles"},
             {"t": "", "v": "revealSubtitles", "n": "RevealSubtitles"},
         ]
+
+    def to_dict(self):
+        return {
+            "fields": self.fields
+        }

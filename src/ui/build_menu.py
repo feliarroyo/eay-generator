@@ -1,8 +1,8 @@
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 from PySide6.QtWidgets import QCheckBox, QComboBox, QLabel, QPushButton, QVBoxLayout, QWidget
 
-from core.fileManager import list_episode_folders, registerPack
+from core.fileManager import generateFibbage3Files, generateFibbage4Files, list_episode_folders, read_episode_prompts, registerPack
 from core.models import LANGUAGE_NAMES, VALID_LANGUAGES
 
 class BuildMenuWidget(QWidget):
@@ -17,10 +17,11 @@ class BuildMenuWidget(QWidget):
         choose_modding_game_label = QLabel(self.tr("Choose game to set prompts on:"))
         layout.addWidget(choose_modding_game_label)
         choose_modding_game_combobox = QComboBox()
+        self.buildType = "Fibbage 3"  # Default build type
         choose_modding_game_combobox.addItem("Fibbage 3")
         for lang in VALID_LANGUAGES:
             choose_modding_game_combobox.addItem(f"Fibbage 4 - {LANGUAGE_NAMES[VALID_LANGUAGES.index(lang)]}")
-        # choose_modding_game_combobox.currentTextChanged.connect(lambda lang: setattr(self, 'language', lang))
+        choose_modding_game_combobox.currentTextChanged.connect(lambda lang: setattr(self, 'buildType', lang))
         layout.addWidget(choose_modding_game_combobox)
         
         # Checkboxes for episode
@@ -32,7 +33,7 @@ class BuildMenuWidget(QWidget):
 
         # Apply episode button
         apply_episode_button = QPushButton(self.tr("Apply Episode"))
-        apply_episode_button.clicked.connect(lambda: self.apply_episode(episode_checkboxes))
+        apply_episode_button.clicked.connect(lambda: self.apply_episode([checkbox for checkbox in episode_checkboxes if checkbox.isChecked()]))
         layout.addWidget(apply_episode_button)
 
         self.setLayout(layout)
@@ -42,6 +43,22 @@ class BuildMenuWidget(QWidget):
         if pack_path:
             pack_number = registerPack(pack_path)
             if pack_number:
-                print(f"Game Pack {pack_number} linked successfully.")
+                messagebox.showinfo("Success", f"Game Pack {pack_number} linked successfully.")
             else:
-                print("Invalid game pack directory selected.")
+                messagebox.showerror("Error", "Invalid game pack directory selected.")
+
+    def apply_episode(self, selected_episodes):
+        if not selected_episodes:
+            messagebox.showwarning("Warning", "No episodes selected!")
+            return
+        result_prompts = []
+        for episode in selected_episodes:
+            result_prompts.extend(read_episode_prompts(episode.text()))
+        # Here you would implement the logic to apply the selected episodes to the game pack.
+        # This is a placeholder for demonstration purposes.
+        print(f"Applying episodes: {', '.join([checkbox.text() for checkbox in selected_episodes if checkbox.isChecked()])}")
+        # Generate the necessary files for the selected game.
+        if self.buildType == "Fibbage 3":
+            generateFibbage3Files(result_prompts)
+        elif self.buildType.startswith("Fibbage 4"):
+            generateFibbage4Files(result_prompts)
