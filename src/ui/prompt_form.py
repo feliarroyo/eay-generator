@@ -94,13 +94,13 @@ class PromptFormWidget(QWidget):
         
         # Suggestions
         self.suggestions_label = QLabel(self.tr("Suggestions"))
-        self.suggestions_label.setToolTip(self.tr("Dummy answers, used for Audience Lies, filler lies (on 3 player games) and the Lie For Me button (Fibbage 4 only).")) # Unknown if required or not so far, nor how many are needed if so (8-10?).
+        self.suggestions_label.setToolTip(self.tr("Dummy answers, used for Audience Lies in both games, as well as Jackbox Lies and Lie For Me button on Fibbage 4 only.")) # Unknown if required or not so far, nor how many are needed if so (8-10?).
         self.suggestions_input = QLineEdit()
         self.suggestions_input.setPlaceholderText(self.tr("e.g. chocolate"))
         self.suggestions_input.returnPressed.connect(lambda: self.add_suggestion_to_list())
         self.remove_suggestion_button = QPushButton(self.tr("Remove Suggestion"))
         self.remove_suggestion_button.setEnabled(False)
-        self.remove_suggestion_button.clicked.connect(lambda: [self.suggestions_list.takeItem(self.suggestions_list.currentRow()), self.remove_suggestion_button.setEnabled(False)])
+        self.remove_suggestion_button.clicked.connect(lambda: [self.suggestions_list.takeItem(self.suggestions_list.currentRow()), self.remove_suggestion_button.setEnabled(self.suggestions_list.count() != 0)])
         self.suggestions_list = QListWidget()
         self.suggestions_list.currentItemChanged.connect(lambda: self.remove_suggestion_button.setEnabled(True))
         # Checkboxes
