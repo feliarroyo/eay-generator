@@ -9,7 +9,6 @@ class MainMenuWidget(QWidget):
         super().__init__(parent)
         self.parent_window = parent_window
         self.parent_window.setWindowTitle("EAY Generator")
-        self.setFixedSize(400, 300)
 
         layout = QVBoxLayout()
         episode_label = QLabel(self.tr("Episode Name"))
@@ -35,6 +34,7 @@ class MainMenuWidget(QWidget):
         refresh_folders_button.clicked.connect(self.update_folder_display)
         layout.addWidget(refresh_folders_button)
         self.folder_display = QListWidget()
+        self.folder_display.setFixedHeight(100)
         self.update_folder_display()
         self.folder_display.currentItemChanged.connect(self.update_buttons)
         layout.addWidget(self.folder_display)
@@ -46,6 +46,7 @@ class MainMenuWidget(QWidget):
         layout.addWidget(apply_episodes_button)
         apply_episodes_button.clicked.connect(lambda: self.open_build_menu())
         self.setLayout(layout)
+        parent_window.setFixedSize(layout.sizeHint().width(), layout.sizeHint().height())
 
     def validate_episode_name(self, name):
         # For now, it only checks that it isn't empty or whitespace. When episode select is implemented, it must check that the name isn't already in use, and also typical file name restrictions

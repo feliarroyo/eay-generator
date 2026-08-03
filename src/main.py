@@ -8,54 +8,48 @@ from PySide6.QtCore import QSize
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
-class MainWindow(QMainWindow):
-    def __init__(self):
+class EditorWindow(QMainWindow):
+    def __init__(self, main_menu_window):
         super().__init__()
-        self.setWindowTitle("EAY Generator")
-        self.stacked_widget = QStackedWidget()
-        self.setCentralWidget(self.stacked_widget)
-        self.main_menu = MainMenuWidget(self)
+        self.main_menu_window = main_menu_window
         self.episode_editor = EpisodeEditWidget(self)
-        self.stacked_widget.addWidget(self.main_menu)
-        self.stacked_widget.addWidget(self.episode_editor)
+        self.setCentralWidget(self.episode_editor)
         
-
+        # Set Menu Bar
+        editor_menubar = self.menuBar()
         
-         # Submenus
-        self.setMenuBar(None)
-        
-    def switch_to_editor(self, episode_name=None, prompts=[]):
-        # button_new = QAction(QIcon("assets/plus.png"), self.tr("Create New Episode"), self)
-        # button_new.setStatusTip(self.tr("Start a new episode"))
-        # button_new.triggered.connect(lambda: self.switch_to_editor())
-        # button_save = QAction(QIcon("assets/disk.png"), self.tr("Save Current Episode"), self)
-        # button_save.setStatusTip(self.tr("Save the current episode"))
-        # button_save.triggered.connect(lambda: self.save_episode(episode_input.text(), self.prompts))
+        file_menu = editor_menubar.addMenu(self.tr("&File"))
         button_mainmenu = QAction(QIcon("assets/arrow-circle-225.png"), self.tr("Return to Main Menu"), self)
         button_mainmenu.setStatusTip(self.tr("Return to the main menu"))
         button_mainmenu.triggered.connect(lambda: self.switch_to_menu())
-        editor_menubar = QMenuBar()
-        file_menu = editor_menubar.addMenu(self.tr("&File"))
-            # file_menu.addAction(button_new)
-            # file_menu.addAction(button_save)
         file_menu.addAction(button_mainmenu)
-        help_menu = editor_menubar.addMenu(self.tr("&Help"))
-        help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
-        self.setMenuBar(editor_menubar)
-        if episode_name:
-            self.episode_editor.load_episode(episode_name, prompts)
-            self.setWindowTitle("EAY Generator - Episode: " + episode_name)
-        self.stacked_widget.setCurrentIndex(1)
+        # help_menu = editor_menubar.addMenu(self.tr("&Help"))
+        # help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
+    
+    def load_episode_data(self, episode_name, prompts=[]):
+        self.episode_editor.load_episode(episode_name, prompts)
+        self.setWindowTitle("EAY Generator - Episode: " + episode_name)
 
     def switch_to_menu(self):
-        self.setMenuBar(None)
+        self.main_menu_window.main_menu.update_folder_display()
+        self.main_menu_window.show()
+        self.close()
+
+class MainMenuWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
         self.setWindowTitle("EAY Generator")
-        self.main_menu.update_folder_display()
-        self.stacked_widget.setCurrentIndex(0)
+        self.main_menu = MainMenuWidget(self)
+        self.setCentralWidget(self.main_menu)
+    
+    def switch_to_editor(self, episode_name=None, prompts=[]):
+        self.editor_window = EditorWindow(self)
+        self.editor_window.load_episode_data(episode_name, prompts)
+        self.editor_window.show()
+        self.hide()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
 
     # Add application icon
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -67,5 +61,6 @@ if __name__ == "__main__":
     else:
         print(f"Warning: Icon asset not found at {icon_path}")
 
+    window = MainMenuWindow()
     window.show()
     sys.exit(app.exec())
