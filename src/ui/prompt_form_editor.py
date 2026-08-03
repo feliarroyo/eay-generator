@@ -29,6 +29,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
     
     def __init__(self, parent_window):
         super().__init__(parent_window)
-        self.add_prompt_button.setText("Update Prompt")
+        self.setWindowTitle(self.tr("Prompt Editor"))
+        self.add_prompt_button.setText(self.tr("Update Prompt"))
         self.add_prompt_button.clicked.disconnect()
         self.add_prompt_button.clicked.connect(lambda: self.update_prompt_if_valid())
