@@ -25,7 +25,7 @@ class MainMenuWidget(QWidget):
 
         self.edit_episode_button = QPushButton(self.tr("Edit Selected Episode"))
         self.edit_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
-        
+        self.edit_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(self.edit_episode_button)
         self.delete_episode_button = QPushButton(self.tr("Delete Selected Episode"))
         self.delete_episode_button.clicked.connect(lambda: self.delete_episode(self.folder_display.currentItem().text()))
