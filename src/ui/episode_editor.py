@@ -12,7 +12,7 @@ from ui.prompt_table import PromptTable
 
 class EpisodeEditWidget(QWidget):
 
-    def save_episode(self):
+    def save_episode_and_return(self):
         print("Length: " + str(len(self.prompts)))
         episode_file = EAYCustomEpisode(self.episode_name, self.prompts)
         create_episode_folder(self.episode_name, episode_file)
@@ -21,13 +21,10 @@ class EpisodeEditWidget(QWidget):
         self.parent_window.switch_to_menu()
 
     def load_episode(self, episode_name, prompts=[]):
-        self.prompt_table.clear_table()
         self.episode_name = episode_name
         self.episode_label.setText(self.tr("Episode: ") + episode_name)
-        for prompt in prompts:
-            self.prompt_table.add_prompt_to_table(prompt)
+        self.prompt_table.set_prompts_on_table(prompts)
         self.prompts = prompts
-        pass
 
     def add_prompt_at_the_end(self):
         prompt = self.prompt_form.get_current_prompt()
@@ -58,7 +55,7 @@ class EpisodeEditWidget(QWidget):
             self.tr("Save Episode and Return to Main Menu")
         )
         self.save_episode_button.setCheckable(True)
-        self.save_episode_button.clicked.connect(lambda: self.save_episode())
+        self.save_episode_button.clicked.connect(lambda: self.save_episode_and_return())
         
         # Prompt Form
         self.prompt_form = PromptFormWidget(self)

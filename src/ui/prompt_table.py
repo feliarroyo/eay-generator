@@ -25,6 +25,11 @@ class PromptTable(QTableWidget):
         self.prompt_edit_window.show()
         self.setEnabled(False)
         self.prompt_edit_window.closeEvent = lambda event: self.setEnabled(True)
+    
+    def set_prompts_on_table(self, prompts):
+        self.clear_table()
+        for prompt in prompts:
+            self.add_prompt_to_table(prompt)
         
     def add_prompt_to_table(self, prompt, row_position=None):
         # Default value = at the end of the table
