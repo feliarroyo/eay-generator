@@ -21,6 +21,7 @@ class EpisodeEditWidget(QWidget):
         self.parent_window.switch_to_menu()
 
     def load_episode(self, episode_name, prompts=[]):
+        self.prompt_table.clear_table()
         self.episode_name = episode_name
         self.episode_label.setText(self.tr("Episode: ") + episode_name)
         for prompt in prompts:
