@@ -10,6 +10,7 @@ class BuildMenuWidget(QWidget):
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
+        self.setWindowTitle("EAY Generator - Build Episode")
         layout = QVBoxLayout()
         link_game_button = QPushButton(self.tr("Link Game Pack"))
         link_game_button.clicked.connect(lambda: self.link_game_pack(self.language))
@@ -25,16 +26,18 @@ class BuildMenuWidget(QWidget):
         layout.addWidget(choose_modding_game_combobox)
         
         # Checkboxes for episode
-        episode_checkboxes = []
+        base_prompt_checkbox = QCheckBox(self.tr("Base Prompts"))
+        layout.addWidget(base_prompt_checkbox)
+        episode_checkboxes = [ ]
         for episode in list_episode_folders():
             checkbox = QCheckBox(f"{episode}")
             layout.addWidget(checkbox)
             episode_checkboxes.append(checkbox)
 
         # Apply episode button
-        apply_episode_button = QPushButton(self.tr("Apply Episode"))
-        apply_episode_button.clicked.connect(lambda: self.apply_episode([checkbox for checkbox in episode_checkboxes if checkbox.isChecked()]))
-        layout.addWidget(apply_episode_button)
+        generate_files_button = QPushButton(self.tr("Generate Files On Build Folder"))
+        generate_files_button.clicked.connect(lambda: self.apply_episode([checkbox for checkbox in episode_checkboxes if checkbox.isChecked()]))
+        layout.addWidget(generate_files_button)
 
         self.setLayout(layout)
         
