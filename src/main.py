@@ -1,10 +1,7 @@
 import os
-from posixpath import basename
 import sys
-from tkinter import filedialog
-from PySide6.QtWidgets import QApplication, QMainWindow, QMenuBar, QStackedWidget, QStatusBar, QToolBar
+from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QAction, QIcon
-from PySide6.QtCore import QSize
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
