@@ -8,7 +8,7 @@ class PromptTable(QTableWidget):
         self.parent_window = parent_window
         self.setRowCount(0)
         self.setColumnCount(8)
-        self.setHorizontalHeaderLabels(["Personal Prompt", "Screen Prompt", "Audio", "Suggestions", "Family-Friendly?", "U.S.-Centric?", "Edit", "Remove"])
+        self.setHorizontalHeaderLabels(["Personal Prompt", "Screen Prompt", "Audio?", "Suggestions", "Family-Friendly?", "U.S.-Centric?", "Edit", "Remove"])
         
         # To size table properly
         self.resizeColumnsToContents()
@@ -49,7 +49,7 @@ class PromptTable(QTableWidget):
         item = QTableWidgetItem(prompt.screen_question)
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 1, item)
-        item = QTableWidgetItem(prompt.audio)
+        item = QTableWidgetItem("Yes" if prompt.hasAudio else "No")
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 2, item)
         item = QTableWidgetItem(", ".join(prompt.suggestions[i] for i in range(len(prompt.suggestions))))
@@ -71,7 +71,7 @@ class PromptTable(QTableWidget):
         item = QTableWidgetItem(prompt.screen_question)
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 1, item)
-        item = QTableWidgetItem(prompt.audio)
+        item = QTableWidgetItem("Yes" if prompt.hasAudio else "No")
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 2, item)
         item = QTableWidgetItem(", ".join(prompt.suggestions[i] for i in range(len(prompt.suggestions))))
