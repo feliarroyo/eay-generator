@@ -2,6 +2,9 @@ import json
 import os
 import shutil
 from tkinter import Pack
+from tkinter import filedialog
+from tkinter.filedialog import FileDialog
+import uuid
 
 from core.models import VALID_LANGUAGES, EAYCustomEpisode, Prompt, fib3Template, fib3Template_Data, fib4Template, fib4Template_Data
 
@@ -10,13 +13,14 @@ root_project_dir = os.path.abspath(os.path.join(current_file_dir, "..", ".."))
 base_path = os.path.join(root_project_dir, "episodes")
 backup_path = os.path.join(root_project_dir, "backup")
 build_path = os.path.join(root_project_dir, "build")
+temp_path = os.path.join(root_project_dir, ".temp_session")
 
 def create_base_folder():
     """Creates the base folder for episodes if it doesn't exist."""
     if not os.path.exists(base_path):
         os.makedirs(base_path)
 
-def create_episode_folder(episode_name, content=None, audios=None):
+def create_episode_folder(episode_name, content=None):
     """Creates a new folder for the episode with the given name and base file."""
     episode_path = os.path.join(base_path, episode_name)
 
@@ -28,20 +32,51 @@ def create_episode_folder(episode_name, content=None, audios=None):
     
     if content is None:
         content = EAYCustomEpisode(episode_name, [])
+    move_audio_to_episode_folder(episode_path, content)
+    content.remove_temp_reference(temp_path)
     print(content)
     print(content.to_dict())
     json.dump(content.to_dict(), open(os.path.join(episode_path, "episode.json"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
+    # FALTA: Cambiar en el json que tenga solo el nombre del archivo de audio, no la ruta completa. Y luego mover el audio a la carpeta del episodio.
     
-    #if audios is not None:
-     #   for audio in audios:
-      #      audio_path = os.path.join(episode_path, audio['filename'])
-       #     with open(audio_path, 'wb') as f:
-        #        f.write(audio['data'])
-        
+    
+
+def move_audio_to_episode_folder(episode_path, content):
+    # Move audio files to the episode folder
+    if content is not None:
+        for audio in content.get_temp_audios(temp_path):
+            print(f"Moving audio file: {audio}")
+            audio_filename = os.path.basename(audio)
+            shutil.move(os.path.join(temp_path, audio), os.path.join(episode_path, audio_filename))
+            
+
 def list_episode_folders():
     folderList = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
     print(folderList)
     return folderList
+
+def choose_audio_file(self):
+    source_file_path = filedialog.askopenfilename(filetypes=[("Audio Files", "*.ogg")])
+    return source_file_path
+
+def delete_unused_audios(audio_list):
+    for audio in audio_list:
+        if os.path.exists(audio):
+            os.remove(audio)
+
+def remove_temp_session_folder():
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+        print(f"Temporary session folder '{temp_path}' deleted.")
+
+def save_temp_audio(audio_path):
+    os.makedirs(temp_path, exist_ok=True)
+    # Generate a unique name for the copy to avoid same-name conflicts
+    unique_filename = f"{uuid.uuid4().hex[:8]}.ogg"
+    temp_file_path = os.path.join(temp_path, unique_filename)
+    # Copy the file into the staging area
+    shutil.copy2(audio_path, temp_file_path)
+    return temp_file_path
 
 def read_episode_prompts(episode_name):
     """Reads the prompts from the episode.json file in the specified episode folder."""

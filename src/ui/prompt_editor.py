@@ -15,6 +15,6 @@ class PromptEditor(QWidget):
         self.currentPromptId = id
         self.form.set_fields(prompt)
         
-    def edit_prompt_in_index(self):
-        self.parent_window.edit_prompt_in_index(self.currentPromptId, self.form.get_current_prompt())
+    def edit_prompt_in_index(self, potential_audio_removal):
+        self.parent_window.edit_prompt_in_index(self.currentPromptId, self.form.get_current_prompt(), potential_audio_removal)
         self.close()

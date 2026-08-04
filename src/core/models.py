@@ -1,4 +1,5 @@
 from operator import index
+import os
 
 
 VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
@@ -48,6 +49,14 @@ class EAYCustomEpisode:
             "audioCount": self.audioCount,
             "prompts": [p.get_prompt_data() for p in self.prompts]
         }
+        
+    def get_temp_audios(self, temp_dir):
+        return [p.audio for p in self.prompts if p.has_audio() and p.audio.startswith(temp_dir)]
+    
+    def remove_temp_reference(self, temp_dir):
+        for p in self.prompts:
+            if p.has_audio() and p.audio.startswith(temp_dir):
+                p.audio = os.path.basename(p.audio)
 
 # Fibbage 3 tmiShortie.jet:
 class fib3Template:

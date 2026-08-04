@@ -1,11 +1,5 @@
-from posixpath import basename
-import sys
-from tkinter import filedialog
-from PySide6.QtWidgets import QCheckBox, QLabel, QLineEdit, QListWidget, QMainWindow, QPushButton,  QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
-from PySide6.QtGui import QAction, QIcon
-from PySide6.QtCore import QSize
-
-from core.models import Prompt
+import os
+from core.fileManager import choose_audio_file, save_temp_audio
 from ui.prompt_form import CustomDialog, PromptFormWidget
 
 class PromptFormWidget_ForEditor(PromptFormWidget):
@@ -25,10 +19,23 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
                 dlg = CustomDialog()
                 dlg.exec()
                 return
-            self.parent_window.edit_prompt_in_index()
+            self.parent_window.edit_prompt_in_index(self.potential_audio_removal)
+            
+    def select_audio_while_safekeeping_saved_prompt(self):
+        source_file_path = choose_audio_file(self)
+        if not source_file_path:
+            return
+        previous_audio_path = self.current_audio_path
+        
+        self.current_audio_path = save_temp_audio(source_file_path)
+        # Save previous audio as potential deletion.
+        if previous_audio_path and os.path.exists(previous_audio_path):
+            self.potential_audio_removal.append(previous_audio_path)
+        self.audio_label.setText(self.tr("Audio loaded: ") + os.path.basename(source_file_path))
     
     def __init__(self, parent_window):
         super().__init__(parent_window)
+        self.potential_audio_removal = []
         self.setWindowTitle(self.tr("Prompt Editor"))
         self.add_prompt_button.setText(self.tr("Update Prompt"))
         self.add_prompt_button.clicked.disconnect()
