@@ -17,13 +17,12 @@ class BuildMenuWidget(QWidget):
         layout.addWidget(link_game_button)
         choose_modding_game_label = QLabel(self.tr("Choose game to set prompts on:"))
         layout.addWidget(choose_modding_game_label)
-        choose_modding_game_combobox = QComboBox()
-        self.buildType = "Fibbage 3"  # Default build type
-        choose_modding_game_combobox.addItem("Fibbage 3")
+        self.choose_modding_game_combobox = QComboBox()
+        self.choose_modding_game_combobox.addItem("Fibbage 3")
         for lang in VALID_LANGUAGES:
-            choose_modding_game_combobox.addItem(f"Fibbage 4 - {LANGUAGE_NAMES[VALID_LANGUAGES.index(lang)]}")
-        choose_modding_game_combobox.currentTextChanged.connect(lambda lang: setattr(self, 'buildType', lang))
-        layout.addWidget(choose_modding_game_combobox)
+            text = f"Fibbage 4 - {LANGUAGE_NAMES[VALID_LANGUAGES.index(lang)]}"
+            self.choose_modding_game_combobox.addItem(text, lang)
+        layout.addWidget(self.choose_modding_game_combobox)
         
         # Checkboxes for episode
         base_prompt_checkbox = QCheckBox(self.tr("Base Prompts"))
@@ -36,7 +35,7 @@ class BuildMenuWidget(QWidget):
 
         # Apply episode button
         generate_files_button = QPushButton(self.tr("Generate Files On Build Folder"))
-        generate_files_button.clicked.connect(lambda: self.apply_episode([checkbox for checkbox in episode_checkboxes if checkbox.isChecked()]))
+        generate_files_button.clicked.connect(lambda: self.apply_episode(base_prompt_checkbox.isChecked(), [checkbox for checkbox in episode_checkboxes if checkbox.isChecked()]))
         layout.addWidget(generate_files_button)
 
         self.setLayout(layout)
@@ -50,18 +49,18 @@ class BuildMenuWidget(QWidget):
             else:
                 messagebox.showerror("Error", "Invalid game pack directory selected.")
 
-    def apply_episode(self, selected_episodes):
+    def apply_episode(self, include_base_prompts, selected_episodes):
         if not selected_episodes:
             messagebox.showwarning("Warning", "No episodes selected!")
             return
         result_prompts = []
         for episode in selected_episodes:
             result_prompts.extend(read_episode_prompts(episode.text()))
-        # Here you would implement the logic to apply the selected episodes to the game pack.
-        # This is a placeholder for demonstration purposes.
         print(f"Applying episodes: {', '.join([checkbox.text() for checkbox in selected_episodes if checkbox.isChecked()])}")
         # Generate the necessary files for the selected game.
-        if self.buildType == "Fibbage 3":
-            generateFibbage3Files(result_prompts)
-        elif self.buildType.startswith("Fibbage 4"):
-            generateFibbage4Files(result_prompts)
+        build_type = self.choose_modding_game_combobox.currentText()
+        if build_type == "Fibbage 3":
+            generateFibbage3Files(result_prompts, include_base_prompts)
+        elif build_type.startswith("Fibbage 4"):
+            lang = self.choose_modding_game_combobox.currentData()
+            generateFibbage4Files(result_prompts, include_base_prompts, lang)

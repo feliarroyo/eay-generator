@@ -147,22 +147,50 @@ def backupFibbage4(path):
         shutil.copy2(jpp9_jet, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie.jet"))
         shutil.copytree(jpp9_folder, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie"), dirs_exist_ok=True)
 
-def generateFibbageFiles(prompts, shortieFileType, dataFileType, fileName):
-    if not os.path.exists(build_path):
-            os.makedirs(build_path)
-    tmiShortie = shortieFileType(prompts)
-    json.dump(tmiShortie.to_dict(), open(os.path.join(build_path, fileName + ".jet"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
+def generateFibbageFiles(prompts, base_folder_structure, shortieFileType, dataFileType, fileName, include_base_prompts=False):
+    target_path = os.path.join(build_path, base_folder_structure)
+    os.makedirs(target_path, exist_ok=True)
+    tmi_shortie = shortieFileType(prompts).to_dict()
+    
+    if include_base_prompts:
+        # Check backup is valid
+        if not backup_path or not os.path.exists(backup_path):
+            print("Warning: Base game backup not found!")
+            return False
+        # Read base game main file
+        main_jet_path = os.path.join(backup_path, base_folder_structure, fileName + ".jet")
+        with open(main_jet_path, 'r', encoding='utf-8') as f:
+            base_data = json.load(f)
+        tmi_shortie["content"].extend(base_data["content"])
+        pass
+    
+    # games/Fibbage3/content/           tmiShortie.jet:
+    # games/Fibbage4/content/{lang}/    eayblankie.jet:
+    json.dump(tmi_shortie, open(os.path.join(target_path, fileName + ".jet"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
     for prompt in prompts:
-        # Fibbage 3 tmiShortie/<id>/data.jet:
+        # games/Fibbage3/content/           tmiShortie/<id>/data.jet:
+        # games/Fibbage4/content/{lang}/    eayblankie/<id>/data.jet:
         prompt_data = dataFileType(prompt)
-        prompt_path = os.path.join(build_path, fileName, str(prompts.index(prompt)))
+        prompt_path = os.path.join(target_path, fileName, str(prompts.index(prompt)))
         os.makedirs(prompt_path)
         json.dump(prompt_data.to_dict(), open(os.path.join(prompt_path, "data.jet"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
-
-def generateFibbage3Files(prompts):
-    """Generates the necessary files for Fibbage 3 based on the provided prompts."""
-    generateFibbageFiles(prompts, fib3Template, fib3Template_Data, "tmiShortie")
     
-def generateFibbage4Files(prompts):
+    if include_base_prompts:
+        # Copy base game files to build folder
+        if not backup_path or not os.path.exists(backup_path):
+            print("Warning: Base game backup not found!")
+            return False
+        # Copy base game prompt data folders into the build
+        # games/Fibbage3/content/           tmiShortie folder
+        # games/Fibbage4/content/{lang}/    eayblankie folder
+        source_dir = os.path.join(backup_path, base_folder_structure, fileName)
+        copy_dir = os.path.join(target_path, fileName)
+        shutil.copytree(source_dir, copy_dir, dirs_exist_ok=True)
+
+def generateFibbage3Files(prompts, include_base_prompts=False):
+    """Generates the necessary files for Fibbage 3 based on the provided prompts."""
+    generateFibbageFiles(prompts, "games/Fibbage3/content/", fib3Template, fib3Template_Data, "tmiShortie", include_base_prompts)
+    
+def generateFibbage4Files(prompts, include_base_prompts=False, lang="en"):
     """Generates the necessary files for Fibbage 4 based on the provided prompts."""
-    generateFibbageFiles(prompts, fib4Template, fib4Template_Data, "eayblankie")
+    generateFibbageFiles(prompts, f"games/Fibbage4/content/{lang}/", fib4Template, fib4Template_Data, "eayblankie", include_base_prompts)
