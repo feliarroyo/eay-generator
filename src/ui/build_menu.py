@@ -1,6 +1,6 @@
 from tkinter import filedialog, messagebox
 
-from PySide6.QtWidgets import QCheckBox, QComboBox, QLabel, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QCheckBox, QComboBox, QFrame, QLabel, QListWidget, QListWidgetItem, QPushButton, QVBoxLayout, QWidget
 
 from core.fileManager import generateFibbage3Files, generateFibbage4Files, list_episode_folders, read_episode_prompts, registerPack
 from core.models import LANGUAGE_NAMES, VALID_LANGUAGES
@@ -25,17 +25,24 @@ class BuildMenuWidget(QWidget):
         layout.addWidget(self.choose_modding_game_combobox)
         
         # Checkboxes for episode
-        base_prompt_checkbox = QCheckBox(self.tr("Base Prompts"))
+        base_prompt_checkbox = QCheckBox(self.tr("Include base game prompts"))
         layout.addWidget(base_prompt_checkbox)
+        episode_label = QLabel(self.tr("Select episodes to include:"))
+        layout.addWidget(episode_label)
         episode_checkboxes = [ ]
+        episode_display = QListWidget()
+        episode_display.setFixedHeight(100)
+        episode_display.setSelectionMode(QListWidget.MultiSelection)
         for episode in list_episode_folders():
-            checkbox = QCheckBox(f"{episode}")
-            layout.addWidget(checkbox)
-            episode_checkboxes.append(checkbox)
+            episode_display.addItem(episode)
+            episode_checkboxes.append(episode)
 
         # Apply episode button
         generate_files_button = QPushButton(self.tr("Generate Files On Build Folder"))
-        generate_files_button.clicked.connect(lambda: self.apply_episode(base_prompt_checkbox.isChecked(), [checkbox for checkbox in episode_checkboxes if checkbox.isChecked()]))
+        generate_files_button.setEnabled(False)
+        generate_files_button.clicked.connect(lambda: self.apply_episode(base_prompt_checkbox.isChecked(), episode_display.selectedItems()))
+        episode_display.itemSelectionChanged.connect(lambda: generate_files_button.setEnabled(len(episode_display.selectedItems()) > 0))
+        layout.addWidget(episode_display)
         layout.addWidget(generate_files_button)
 
         self.setLayout(layout)
@@ -56,7 +63,7 @@ class BuildMenuWidget(QWidget):
         result_prompts = []
         for episode in selected_episodes:
             result_prompts.extend(read_episode_prompts(episode.text()))
-        print(f"Applying episodes: {', '.join([checkbox.text() for checkbox in selected_episodes if checkbox.isChecked()])}")
+        print(f"Applying episodes: {', '.join([episode.text() for episode in selected_episodes])}")
         # Generate the necessary files for the selected game.
         build_type = self.choose_modding_game_combobox.currentText()
         if build_type == "Fibbage 3":
