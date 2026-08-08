@@ -1,12 +1,11 @@
 import json
 import os
+from posixpath import basename
 import shutil
-from tkinter import Pack
-from tkinter import filedialog
-from tkinter.filedialog import FileDialog
+from PySide6.QtWidgets import QFileDialog
 import uuid
 
-from core.models import VALID_LANGUAGES, EAYCustomEpisode, Prompt, fib3Template, fib3Template_Data, fib4Template, fib4Template_Data
+from core.models import VALID_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
 
 current_file_dir = os.path.dirname(os.path.abspath(__file__))
 root_project_dir = os.path.abspath(os.path.join(current_file_dir, "..", ".."))
@@ -20,26 +19,30 @@ def create_base_folder():
     if not os.path.exists(base_path):
         os.makedirs(base_path)
 
-def create_episode_folder(episode_name, content=None):
+def update_temp_episode_file(episode_name, content=None):
     """Creates a new folder for the episode with the given name and base file."""
-    episode_path = os.path.join(base_path, episode_name)
-
-    if not os.path.exists(episode_path):
-        os.makedirs(episode_path)
-        print(f"Episode folder '{episode_name}' created at {episode_path}.")
-    else:
-        print(f"Episode folder '{episode_name}' already exists.")
+    os.makedirs(temp_path, exist_ok=True)
     
     if content is None:
         content = EAYCustomEpisode(episode_name, [])
-    move_audio_to_episode_folder(episode_path, content)
-    content.remove_temp_reference(temp_path)
-    print(content)
-    print(content.to_dict())
-    json.dump(content.to_dict(), open(os.path.join(episode_path, "episode.json"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
-    # FALTA: Cambiar en el json que tenga solo el nombre del archivo de audio, no la ruta completa. Y luego mover el audio a la carpeta del episodio.
+    # move_audio_to_episode_folder(temp_path, content)
+    # content.remove_temp_reference(temp_path)
+    # print(content)
+    # print(content.to_dict())
+    json.dump(content.to_dict(), open(os.path.join(temp_path, "episode.json"), 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
     
+def place_temp_files_on_episode_folder(episode_name):
+    """Moves the contents of the temporary session folder to the episode directory."""
+    original_path = os.path.join(base_path, episode_name)
+    if not os.path.exists(original_path):
+        os.makedirs(original_path)
+    backup_path = original_path + ".bak"
     
+    if os.path.exists(original_path):
+        os.rename(original_path, backup_path)
+        shutil.move(temp_path, original_path)
+        if os.path.exists(backup_path):
+            shutil.rmtree(backup_path)
 
 def move_audio_to_episode_folder(episode_path, content):
     # Move audio files to the episode folder
@@ -52,17 +55,16 @@ def move_audio_to_episode_folder(episode_path, content):
 
 def list_episode_folders():
     folderList = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
-    print(folderList)
     return folderList
 
 def choose_audio_file(self):
-    source_file_path = filedialog.askopenfilename(filetypes=[("Audio Files", "*.ogg")])
-    return source_file_path
+    source_file_path = QFileDialog.getOpenFileName(self, self.tr("Select Audio File"), "", self.tr("Audio Files (*.ogg)"))
+    return source_file_path[0]
 
-def delete_unused_audios(audio_list):
-    for audio in audio_list:
-        if os.path.exists(audio):
-            os.remove(audio)
+def delete_temp_folder():
+    if os.path.exists(temp_path):
+        shutil.rmtree(temp_path)
+        print(f"Temporary folder '{temp_path}' deleted.")
 
 def remove_temp_session_folder():
     if os.path.exists(temp_path):
@@ -75,8 +77,19 @@ def save_temp_audio(audio_path):
     unique_filename = f"{uuid.uuid4().hex[:8]}.ogg"
     temp_file_path = os.path.join(temp_path, unique_filename)
     # Copy the file into the staging area
+    print(f"Copying audio file '{audio_path}' to temporary session folder as '{temp_file_path}'.")
     shutil.copy2(audio_path, temp_file_path)
     return temp_file_path
+
+def load_episode_to_temp_folder(episode_name):
+    episode_path = os.path.join(base_path, episode_name)
+    # Copy folder to .temp_session
+    if not os.path.exists(episode_path):
+        print(f"No episode folder found for '{episode_name}'.")
+        return
+    
+    shutil.copytree(episode_path, temp_path, dirs_exist_ok=True)
+    
 
 def read_episode_prompts(episode_name):
     """Reads the prompts from the episode.json file in the specified episode folder."""
@@ -91,7 +104,7 @@ def read_episode_prompts(episode_name):
         episode_data = json.load(f)
     
     prompts_data = episode_data.get("prompts", [])
-    prompts = [Prompt(p["personal_question"], p["screen_question"], p["audio"], p["suggestions"], p["x"], p["us"]) for p in prompts_data]
+    prompts = [EAYPrompt(p["personal_question"], p["screen_question"], p["audio"], p["suggestions"], p["x"], p["us"]) for p in prompts_data]
     return prompts
 
 def checkPackDirectory(path):
@@ -147,7 +160,7 @@ def backupFibbage4(path):
         shutil.copy2(jpp9_jet, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie.jet"))
         shutil.copytree(jpp9_folder, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie"), dirs_exist_ok=True)
 
-def generateFibbageFiles(prompts, base_folder_structure, shortieFileType, dataFileType, fileName, include_base_prompts=False):
+def generateFibbageFiles(prompts, base_folder_structure, shortieFileType, dataFileType, fileName, build_path=build_path, include_base_prompts=False):
     target_path = os.path.join(build_path, base_folder_structure)
     os.makedirs(target_path, exist_ok=True)
     tmi_shortie = shortieFileType(prompts).to_dict()
@@ -162,7 +175,6 @@ def generateFibbageFiles(prompts, base_folder_structure, shortieFileType, dataFi
         with open(main_jet_path, 'r', encoding='utf-8') as f:
             base_data = json.load(f)
         tmi_shortie["content"].extend(base_data["content"])
-        pass
     
     # games/Fibbage3/content/           tmiShortie.jet:
     # games/Fibbage4/content/{lang}/    eayblankie.jet:
@@ -187,10 +199,10 @@ def generateFibbageFiles(prompts, base_folder_structure, shortieFileType, dataFi
         copy_dir = os.path.join(target_path, fileName)
         shutil.copytree(source_dir, copy_dir, dirs_exist_ok=True)
 
-def generateFibbage3Files(prompts, include_base_prompts=False):
+def generateFibbage3Files(prompts, build_path=build_path, include_base_prompts=False):
     """Generates the necessary files for Fibbage 3 based on the provided prompts."""
-    generateFibbageFiles(prompts, "games/Fibbage3/content/", fib3Template, fib3Template_Data, "tmiShortie", include_base_prompts)
-    
-def generateFibbage4Files(prompts, include_base_prompts=False, lang="en"):
+    return generateFibbageFiles(prompts, "games/Fibbage3/content/", fib3EAYTemplate, fib3EAYTemplate_Data, "tmiShortie", build_path, include_base_prompts)
+
+def generateFibbage4Files(prompts, build_path=build_path, include_base_prompts=False, lang="en"):
     """Generates the necessary files for Fibbage 4 based on the provided prompts."""
-    generateFibbageFiles(prompts, f"games/Fibbage4/content/{lang}/", fib4Template, fib4Template_Data, "eayblankie", include_base_prompts)
+    return generateFibbageFiles(prompts, f"games/Fibbage4/content/{lang}/", fib4EAYTemplate, fib4EAYTemplate_Data, "eayblankie", build_path, include_base_prompts)

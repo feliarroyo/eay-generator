@@ -1,5 +1,5 @@
 import os
-from core.fileManager import create_base_folder, create_episode_folder, list_episode_folders, read_episode_prompts
+from core.fileManager import create_base_folder, update_temp_episode_file, list_episode_folders, load_episode_to_temp_folder, read_episode_prompts
 from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
 from ui.build_menu import BuildMenuWidget
 create_base_folder()  # Ensure the base folder exists
@@ -54,11 +54,11 @@ class MainMenuWidget(QWidget):
         return len(episode_name) > 0 and (episode_name not in list_episode_folders())
 
     def create_episode(self, episode_name):
-        # Create episode folder.
-        create_episode_folder(episode_name)
-        self.parent_window.switch_to_editor(episode_name)        
+        update_temp_episode_file(episode_name)
+        self.parent_window.switch_to_editor(episode_name, [])
 
     def load_episode(self, episode_name):
+        load_episode_to_temp_folder(episode_name)
         self.parent_window.switch_to_editor(episode_name, read_episode_prompts(episode_name))
         
     def delete_episode(self, episode_name):
