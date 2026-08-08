@@ -5,7 +5,7 @@ import os
 VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
 LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
 
-class Prompt:
+class EAYPrompt:
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
         self.personal_question = personal_question
         self.screen_question = screen_question
@@ -59,7 +59,7 @@ class EAYCustomEpisode:
                 p.audio = os.path.basename(p.audio)
 
 # Fibbage 3 tmiShortie.jet:
-class fib3Template:
+class fib3EAYTemplate:
     def __init__(self, prompts):
         self.episodeid = 1309
         self.content = [
@@ -83,7 +83,7 @@ class fib3Template:
 
 
 # Fibbage 3 tmiShortie/<id>/data.jet:
-class fib3Template_Data:
+class fib3EAYTemplate_Data:
     def __init__(self, prompt):
         self.fields = [
             {"t": "B", "v": "false", "n": "HasBumperAudio"},
@@ -132,7 +132,7 @@ class fib3Template_Data:
 
 
 # Fibbage 4 eayBlankie.jet:
-class fib4Template:
+class fib4EAYTemplate:
     def adjust_formatting(self, text):
         # Replace <PLAYER> and <BLANK> with {{PLAYER}} and {{BLANK}}
         text = text.replace("<PLAYER>", "{{PLAYER}}").replace("<BLANK>", "{{BLANK}}")
@@ -163,7 +163,7 @@ class fib4Template:
 
 
 # Fibbage 4 eayBlankie/<id>/data.jet:
-class fib4Template_Data:
+class fib4EAYTemplate_Data:
     def adjust_formatting(self, text):
             # Replace <PLAYER> and <BLANK> with {{PLAYER}} and {{BLANK}}
             text = text.replace("<PLAYER>", "{{PLAYER}}").replace("<BLANK>", "{{BLANK}}")

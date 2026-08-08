@@ -2,7 +2,7 @@ import os
 import shutil
 import uuid
 from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QPushButton,  QVBoxLayout, QWidget, QFileDialog
-from core.models import Prompt
+from core.models import EAYPrompt
 from core.fileManager import choose_audio_file, save_temp_audio
 
 class CustomDialog(QDialog):
@@ -26,7 +26,7 @@ class PromptFormWidget(QWidget):
     def get_current_prompt(self):
         audio_value = self.current_audio_path if self.current_audio_path is not None else "(No audio)"
         # Get the values from the input fields
-        return Prompt(
+        return EAYPrompt(
             self.personal_prompt_input.text(),
             self.screen_prompt_input.text(),
             audio_value,
@@ -37,6 +37,7 @@ class PromptFormWidget(QWidget):
 
     def select_audio(self):
         source_file_path = choose_audio_file(self)
+        print("Selected audio file: " + str(source_file_path))
         if not source_file_path:
             return
         previous_audio_path = self.current_audio_path
