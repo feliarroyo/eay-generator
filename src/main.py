@@ -2,6 +2,7 @@ import os
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QAction, QIcon
+from core.fileManager import delete_temp_folder
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
@@ -11,7 +12,6 @@ class EditorWindow(QMainWindow):
         self.main_menu_window = main_menu_window
         self.episode_editor = EpisodeEditWidget(self)
         self.setCentralWidget(self.episode_editor)
-        
         # Set Menu Bar
         editor_menubar = self.menuBar()
         
@@ -24,10 +24,13 @@ class EditorWindow(QMainWindow):
         # help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
     
     def load_episode_data(self, episode_name, prompts=[]):
+        print(f"Loading episode data for '{episode_name}' with {len(prompts)} prompts.")
         self.episode_editor.load_episode(episode_name, prompts)
         self.setWindowTitle("EAY Generator - Episode: " + episode_name)
 
     def switch_to_menu(self):
+        print("Switching back to main menu and cleaning up temporary files.")
+        self.episode_editor.clear_editor()
         self.main_menu_window.main_menu.update_folder_display()
         self.main_menu_window.show()
         self.close()
@@ -35,6 +38,7 @@ class EditorWindow(QMainWindow):
 class MainMenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        delete_temp_folder()
         self.setWindowTitle("EAY Generator")
         self.main_menu = MainMenuWidget(self)
         self.setCentralWidget(self.main_menu)
