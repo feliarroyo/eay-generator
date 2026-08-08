@@ -40,13 +40,11 @@ class EAYPrompt:
 class EAYCustomEpisode:
     def __init__(self, episode_name, prompts):
         self.episode_name = episode_name
-        self.audioCount = sum(1 for prompt in prompts if prompt.has_audio())
         self.prompts = prompts
 
     def to_dict(self):
         return {
             "episodeName": self.episode_name,
-            "audioCount": self.audioCount,
             "prompts": [p.get_prompt_data() for p in self.prompts]
         }
 

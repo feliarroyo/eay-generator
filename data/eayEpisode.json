@@ -1,6 +1,5 @@
 {
     "episodeName": "Example name",
-    "audioCount": 0,
     "prompts": [
         {
             "personal": "Personal question",
