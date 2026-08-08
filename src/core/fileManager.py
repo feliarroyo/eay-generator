@@ -42,16 +42,7 @@ def place_temp_files_on_episode_folder(episode_name):
         os.rename(original_path, backup_path)
         shutil.move(temp_path, original_path)
         if os.path.exists(backup_path):
-            shutil.rmtree(backup_path)
-
-def move_audio_to_episode_folder(episode_path, content):
-    # Move audio files to the episode folder
-    if content is not None:
-        for audio in content.get_temp_audios(temp_path):
-            print(f"Moving audio file: {audio}")
-            audio_filename = os.path.basename(audio)
-            shutil.move(os.path.join(temp_path, audio), os.path.join(episode_path, audio_filename))
-            
+            shutil.rmtree(backup_path)            
 
 def list_episode_folders():
     folderList = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
@@ -71,10 +62,13 @@ def remove_temp_session_folder():
         shutil.rmtree(temp_path)
         print(f"Temporary session folder '{temp_path}' deleted.")
 
-def save_temp_audio(audio_path):
+def save_temp_audio(audio_path, previous_audio_name=None):
     os.makedirs(temp_path, exist_ok=True)
     # Generate a unique name for the copy to avoid same-name conflicts
-    unique_filename = f"{uuid.uuid4().hex[:8]}.ogg"
+    if previous_audio_name:
+        unique_filename = previous_audio_name
+    else:
+        unique_filename = f"{uuid.uuid4().hex[:8]}.ogg"
     temp_file_path = os.path.join(temp_path, unique_filename)
     # Copy the file into the staging area
     print(f"Copying audio file '{audio_path}' to temporary session folder as '{temp_file_path}'.")

@@ -24,7 +24,7 @@ class CustomDialog(QDialog):
 
 class PromptFormWidget(QWidget):
     def get_current_prompt(self):
-        audio_value = self.current_audio_path if self.current_audio_path is not None else "(No audio)"
+        audio_value = os.path.basename(self.current_audio_path) if self.current_audio_path is not None else "(No audio)"
         # Get the values from the input fields
         return EAYPrompt(
             self.personal_prompt_input.text(),
@@ -40,12 +40,20 @@ class PromptFormWidget(QWidget):
         print("Selected audio file: " + str(source_file_path))
         if not source_file_path:
             return
-        previous_audio_path = self.current_audio_path
-        self.current_audio_path = save_temp_audio(source_file_path)
+        previous_audio_path = None
+        if self.current_audio_path:
+            previous_audio_path = os.path.basename(self.current_audio_path)
+        self.current_audio_path = save_temp_audio(source_file_path, previous_audio_path)
         # Delete previous audio, if any
         if previous_audio_path is not None and os.path.exists(previous_audio_path):
             os.remove(previous_audio_path)
         self.audio_label.setText(self.tr("Audio loaded: ") + os.path.basename(source_file_path))
+        
+    def remove_audio(self):
+        if self.current_audio_path is not None and os.path.exists(self.current_audio_path):
+            os.remove(self.current_audio_path)
+        self.current_audio_path = None
+        self.audio_label.setText("(No audio)")
     
     def add_suggestion_to_list(self):
         self.suggestions_list.addItem(self.suggestions_input.text())
@@ -69,6 +77,7 @@ class PromptFormWidget(QWidget):
         self.personal_prompt_input.clear()
         self.screen_prompt_input.clear()
         self.audio_label.setText("(No audio)")
+        self.current_audio_path = None
         self.suggestions_list.clear()
         self.us_checkbox.setChecked(False)
         self.x_checkbox.setChecked(False)
@@ -102,6 +111,7 @@ class PromptFormWidget(QWidget):
         self.add_audio_button = QPushButton(self.tr("Set audio for current prompt (.ogg only)"))
         self.add_audio_button.clicked.connect(lambda: self.select_audio())
         self.remove_audio_button = QPushButton(self.tr("Remove audio for current prompt"))
+        self.remove_audio_button.clicked.connect(lambda: self.remove_audio())
         
         # Suggestions
         self.suggestions_label = QLabel(self.tr("Suggestions"))
