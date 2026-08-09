@@ -11,7 +11,7 @@ class EAYPrompt:
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
         self.personal_question = personal_question
         self.screen_question = screen_question
-        self.hasAudio = audio != "(No audio)"
+        self.hasAudio = audio is not None
         self.audio = audio
         self.suggestions = suggestions
         self.x = x
@@ -22,7 +22,7 @@ class EAYPrompt:
             "personal_question": self.personal_question,
             "screen_question": self.screen_question,
             "hasAudio": self.hasAudio,
-            "audio": self.audio,
+            "audio": self.audio if self.hasAudio else "",
             "suggestions": self.suggestions,
             "x": self.x,
             "us": self.us

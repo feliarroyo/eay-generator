@@ -8,7 +8,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         self.personal_prompt_input.setText(prompt.personal_question)
         self.screen_prompt_input.setText(prompt.screen_question)
         self.audio_label.setText(prompt.audio)
-        self.current_audio_path = prompt.audio if prompt.audio != "(No audio)" else None
+        self.current_audio_path = prompt.audio if prompt.hasAudio else None
         self.original_audio_path = self.current_audio_path
         self.suggestions_list.clear()
         for suggestion in prompt.suggestions:
@@ -67,7 +67,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
             self.replace_flag = False
         if os.path.isfile("update.ogg"):
             os.remove("update.ogg")
-        self.audio_label.setText("(No audio)")
+        self.audio_label.setText(self.tr("(No audio)"))
         
     
     def __init__(self, parent_window):

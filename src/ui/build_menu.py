@@ -8,7 +8,7 @@ class BuildMenuWidget(QWidget):
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
-        self.setWindowTitle("EAY Generator - Build Episode")
+        self.setWindowTitle(self.tr("EAY Generator - Build Episode"))
         layout = QVBoxLayout()
         link_game_button = QPushButton(self.tr("Link Game Pack"))
         link_game_button.clicked.connect(lambda: self.link_game_pack())

@@ -1,8 +1,10 @@
 import os
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtCore import QSettings
 from PySide6.QtGui import QAction, QIcon
 from core.fileManager import delete_temp_folder
+from translation import change_app_language
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
@@ -20,13 +22,11 @@ class EditorWindow(QMainWindow):
         button_mainmenu.setStatusTip(self.tr("Return to the main menu"))
         button_mainmenu.triggered.connect(lambda: self.switch_to_menu())
         file_menu.addAction(button_mainmenu)
-        # help_menu = editor_menubar.addMenu(self.tr("&Help"))
-        # help_menu.addAction(QAction(QIcon("assets/question-frame.png"), self.tr("About"), self))
-    
+
     def load_episode_data(self, episode_name, prompts=[]):
         print(f"Loading episode data for '{episode_name}' with {len(prompts)} prompts.")
         self.episode_editor.load_episode(episode_name, prompts)
-        self.setWindowTitle("EAY Generator - Episode: " + episode_name)
+        self.setWindowTitle(self.tr("EAY Generator - Episode: ") + episode_name)
 
     def switch_to_menu(self):
         print("Switching back to main menu and cleaning up temporary files.")
@@ -39,7 +39,7 @@ class MainMenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         delete_temp_folder()
-        self.setWindowTitle("EAY Generator")
+        self.setWindowTitle(self.tr("EAY Generator"))
         self.main_menu = MainMenuWidget(self)
         self.setCentralWidget(self.main_menu)
     
@@ -52,6 +52,10 @@ class MainMenuWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
+    # Language settings
+    settings = QSettings("EAYModding", "EAYGenerator")
+    saved_lang = settings.value("language", "en")
+    change_app_language(app, saved_lang)
     # Add application icon
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.abspath(os.path.join(current_dir, ".."))
