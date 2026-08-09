@@ -2,7 +2,7 @@ import json
 import os
 from posixpath import basename
 import shutil
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QFileDialog, QMessageBox
 import uuid
 
 from core.models import VALID_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
@@ -11,7 +11,7 @@ current_file_dir = os.path.dirname(os.path.abspath(__file__))
 root_project_dir = os.path.abspath(os.path.join(current_file_dir, "..", ".."))
 base_path = os.path.join(root_project_dir, "episodes")
 backup_path = os.path.join(root_project_dir, "backup")
-build_path = os.path.join(root_project_dir, "build")
+app_build_path = os.path.join(root_project_dir, "build")
 temp_path = os.path.join(root_project_dir, ".temp_session")
 
 def create_base_folder():
@@ -133,6 +133,15 @@ def registerPack(path):
     print(f"Game Pack {pack_number} registered successfully.")
     return pack_number
 
+def get_linked_game_pack_path(pack_number):
+        """Return the path of the previously linked game pack."""
+        path_file = os.path.join(root_project_dir, f"game_pack_{pack_number}.txt")
+        if not os.path.exists(path_file):
+            return None
+
+        with open(os.path.join(root_project_dir, f"game_pack_{pack_number}.txt"), 'r') as f:
+            return f.read().strip()
+
 def backupFibbage3(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 3 game pack directory."""
     jpp4_jet = os.path.join(path, "games/Fibbage3/content/tmishortie.jet")
@@ -154,10 +163,10 @@ def backupFibbage4(path):
         shutil.copy2(jpp9_jet, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie.jet"))
         shutil.copytree(jpp9_folder, os.path.join(backup_path, f"./games/Fibbage4/content/{lang}/eayblankie"), dirs_exist_ok=True)
 
-def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileType, dataFileType, fileName, build_path=build_path, include_base_prompts=False):
+def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileType, dataFileType, fileName, build_path=app_build_path, include_base_prompts=False):
     """Generates the proper files for Enough About You games."""
-    # Empty build folder
-    if os.path.exists(build_path):
+    # Empty build folder if building on app folder
+    if os.path.exists(build_path) and build_path == app_build_path:
         shutil.rmtree(build_path)
     # Create root directory for the files
     target_path = os.path.join(build_path, base_folder_structure)
@@ -198,7 +207,7 @@ def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileTy
             # Create a folder for each prompt
             prompt_data = dataFileType(prompt)
             prompt_path = os.path.join(target_path, fileName, str(prompt_index))
-            os.makedirs(prompt_path)
+            os.makedirs(prompt_path, exist_ok=True)
             
             # Add audio file if needed
             if prompt.has_audio():
@@ -215,10 +224,10 @@ def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileTy
             prompt_index += 1
     return True
 
-def generateFibbage3Files(selected_episodes, include_base_prompts=False, build_path=build_path):
+def generateFibbage3Files(selected_episodes, include_base_prompts=False, build_path=app_build_path):
     """Generates the necessary files for Fibbage 3 based on the provided prompts."""
     return generateFibbageFiles(selected_episodes, "games/Fibbage3/content/", fib3EAYTemplate, fib3EAYTemplate_Data, "tmiShortie", build_path, include_base_prompts)
 
-def generateFibbage4Files(selected_episodes, include_base_prompts=False, lang="en", build_path=build_path):
+def generateFibbage4Files(selected_episodes, include_base_prompts=False, lang="en", build_path=app_build_path):
     """Generates the necessary files for Fibbage 4 based on the provided prompts."""
     return generateFibbageFiles(selected_episodes, f"games/Fibbage4/content/{lang}/", fib4EAYTemplate, fib4EAYTemplate_Data, "eayblankie", build_path, include_base_prompts)
