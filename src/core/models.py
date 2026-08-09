@@ -110,7 +110,7 @@ class fib3EAYTemplate_Data:
             {
                 "s": prompt.screen_question,
                 "t": "A",
-                "v": prompt.audio,
+                "v": "questionAudio",
                 "n": "QuestionAudio",
             },
         ]

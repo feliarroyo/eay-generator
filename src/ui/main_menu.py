@@ -13,12 +13,12 @@ class MainMenuWidget(QWidget):
         layout = QVBoxLayout()
         episode_label = QLabel(self.tr("Episode Name"))
         layout.addWidget(episode_label)
-        episode_input = QLineEdit()
-        episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
-        episode_input.textChanged.connect(lambda name: new_episode_button.setEnabled(self.validate_episode_name(name)))
-        layout.addWidget(episode_input)
+        self.episode_input = QLineEdit()
+        self.episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
+        self.episode_input.textChanged.connect(lambda name: new_episode_button.setEnabled(self.validate_episode_name(name)))
+        layout.addWidget(self.episode_input)
         new_episode_button = QPushButton(self.tr("Create New Episode"))
-        new_episode_button.clicked.connect(lambda: self.create_episode(episode_input.text()))
+        new_episode_button.clicked.connect(lambda: self.create_episode(self.episode_input.text()))
         new_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(new_episode_button)
 
@@ -55,6 +55,7 @@ class MainMenuWidget(QWidget):
 
     def create_episode(self, episode_name):
         update_temp_episode_file(episode_name)
+        self.episode_input.clear()
         self.parent_window.switch_to_editor(episode_name, [])
 
     def load_episode(self, episode_name):

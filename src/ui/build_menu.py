@@ -72,17 +72,13 @@ class BuildMenuWidget(QWidget):
         if not selected_episodes:
             QMessageBox.warning(self, "Warning", "No episodes selected!")
             return
-        result_prompts = []
-        for episode in selected_episodes:
-            result_prompts.extend(read_episode_prompts(episode.text()))
-        print(f"Applying episodes: {', '.join([episode.text() for episode in selected_episodes])}")
         # Generate the necessary files for the selected game.
         build_type = self.choose_modding_game_combobox.currentText()
         if build_type == "Fibbage 3":
-            success = generateFibbage3Files(result_prompts, include_base_prompts)
+            success = generateFibbage3Files(selected_episodes, include_base_prompts)
         elif build_type.startswith("Fibbage 4"):
             lang = self.choose_modding_game_combobox.currentData()
-            success = generateFibbage4Files(result_prompts, include_base_prompts, lang)
+            success = generateFibbage4Files(selected_episodes, include_base_prompts, lang)
             
         if success:
             QMessageBox.information(self, "Success", f"Files generated successfully for {build_type}.")
