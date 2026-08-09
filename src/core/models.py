@@ -5,6 +5,8 @@ import os
 VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
 LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
 
+EARWAX_CATEGORIES = ["household", "tools", "alarm", "vehicle", "Animal", "cartoon", "Music", "voice", "bodily functions", "sports", "liquid", "electronic/machine", "human", "crowd", "violence", "weather", "sexual", "sci-fi", "explosion"]
+
 class EAYPrompt:
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
         self.personal_question = personal_question
@@ -35,6 +37,13 @@ class EAYPrompt:
         if len(self.suggestions) < 1: # could need more, requires testing
             return False
         return True
+
+class EarwaxSound:
+    def __init__(self, name, short, x, category):
+        self.name = name
+        self.short = short
+        self.x = x
+        self.category = category
 
 # EAY Custom Episode template:
 class EAYCustomEpisode:
