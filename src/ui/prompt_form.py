@@ -2,7 +2,7 @@ import os
 import shutil
 import uuid
 from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QPushButton,  QVBoxLayout, QWidget
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, Qt
 from core.models import EAYPrompt
 from core.fileManager import choose_audio_file, save_temp_audio
 
@@ -105,9 +105,11 @@ class PromptFormWidget(QWidget):
         self.add_player_button = QPushButton(self.tr("Insert Player Name into the Prompt"))
         self.add_player_button.setToolTip(self.tr("Inserts the <PLAYER> placeholder into the prompt, which will be replaced with the player's name when the prompt is displayed."))
         self.add_player_button.clicked.connect(lambda: self.screen_prompt_input.insert("<PLAYER>"))
+        self.add_player_button.setFocusPolicy(Qt.NoFocus)
         self.add_blank_button = QPushButton(self.tr("Insert Blank into the Prompt"))
         self.add_blank_button.setToolTip(self.tr("Inserts the <BLANK> placeholder into the prompt, which will be replaced with a blank when the prompt is displayed."))
         self.add_blank_button.clicked.connect(lambda: self.screen_prompt_input.insert("<BLANK>"))
+        self.add_blank_button.setFocusPolicy(Qt.NoFocus)
         
         # Audio
         self.audio_label = QLabel(self.tr("(No audio)"))
