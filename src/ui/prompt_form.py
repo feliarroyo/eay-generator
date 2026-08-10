@@ -56,7 +56,10 @@ class PromptFormWidget(QWidget):
         self.audio_label.setText(self.tr("(No audio)"))
     
     def add_suggestion_to_list(self):
-        self.suggestions_list.addItem(self.suggestions_input.text())
+        suggestion = self.suggestions_input.text().strip()
+        
+        if len(suggestion) > 0 and (suggestion not in self.get_suggestions()):
+            self.suggestions_list.addItem(suggestion)
         self.suggestions_input.clear()
         
     def get_suggestions(self):
