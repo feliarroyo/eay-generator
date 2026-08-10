@@ -1,5 +1,5 @@
 # EAY Generator
-
+<img src="https://raw.githubusercontent.com/feliarroyo/eay-generator/main/ReadmeElements/image.png">
 Tool for creating custom prompt episodes for the Enough About You mode in Fibbage 3 and 4. Made using Python and PySide6.
 
 ## Features
