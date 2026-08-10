@@ -10,6 +10,8 @@ class BuildMenuWidget(QWidget):
         self.parent_window = parent_window
         self.setWindowTitle(self.tr("EAY Generator - Build Episode"))
         layout = QVBoxLayout()
+        link_game_label = QLabel(self.tr("You need to choose a game pack to:\n - Use base prompts\n - Apply episodes directly into the game"))
+        layout.addWidget(link_game_label)
         link_game_button = QPushButton(self.tr("Select Party Pack Folder"))
         link_game_button.clicked.connect(lambda: self.link_game_pack())
         layout.addWidget(link_game_button)
@@ -60,7 +62,7 @@ class BuildMenuWidget(QWidget):
         if pack_path:
             pack_number = registerPack(pack_path)
             if pack_number:
-                QMessageBox.show(self, "Success", f"Game Pack {pack_number} linked successfully.")
+                QMessageBox.information(self, "Success", f"Game Pack {pack_number} linked successfully.")
             else:
                 QMessageBox.critical(self, "Error", "Invalid game pack directory selected.")
     
