@@ -1,8 +1,8 @@
 import os
-from core.fileManager import create_base_folder, update_temp_episode_file, list_episode_folders, load_episode_to_temp_folder, read_episode_prompts
+from core.fileManager import create_base_folder, get_user_data_path, update_temp_episode_file, list_episode_folders, load_episode_to_temp_folder, read_episode_prompts
 from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
 from PySide6.QtCore import QCoreApplication, QEvent
-from translation import change_app_language
+from core.assetsManager import change_app_language
 from ui.build_menu import BuildMenuWidget
 create_base_folder()  # Ensure the base folder exists
 
@@ -46,7 +46,8 @@ class MainMenuWidget(QWidget):
         layout.addWidget(self.folder_display)
         self.language = "en"
         self.open_folder_button = QPushButton(self.tr("Open Episode Folder"))
-        self.open_folder_button.clicked.connect(lambda: os.startfile(os.path.join(os.getcwd(), "episodes")))
+        episode_path = get_user_data_path() / "episodes"
+        self.open_folder_button.clicked.connect(lambda: os.startfile(episode_path))
         layout.addWidget(self.open_folder_button)
         self.apply_episodes_button = QPushButton(self.tr("Apply Custom Episodes"))
         layout.addWidget(self.apply_episodes_button)
@@ -69,7 +70,7 @@ class MainMenuWidget(QWidget):
         self.parent_window.switch_to_editor(episode_name, read_episode_prompts(episode_name))
         
     def delete_episode(self, episode_name):
-        episode_path = os.path.join(os.getcwd(), "episodes", episode_name)
+        episode_path = get_user_data_path() / "episodes" / episode_name
         if os.path.exists(episode_path):
             import shutil
             shutil.rmtree(episode_path)

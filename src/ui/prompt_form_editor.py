@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from core.fileManager import choose_audio_file, save_temp_audio
 from ui.prompt_form import CustomDialog, PromptFormWidget
 
@@ -36,19 +37,6 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
                 return
             self.update_audio_if_needed()
             self.parent_window.edit_prompt_in_index()
-            
-    
-    # def select_audio_while_safekeeping_saved_prompt(self):
-    #     source_file_path = choose_audio_file(self)
-    #     if not source_file_path:
-    #         return
-    #     previous_audio_path = self.current_audio_path
-        
-    #     self.current_audio_path = save_temp_audio(source_file_path)
-    #     # Save previous audio as potential deletion.
-    #     if previous_audio_path and os.path.exists(previous_audio_path):
-    #         self.potential_audio_removal.append(previous_audio_path)
-    #     self.audio_label.setText(self.tr("Audio loaded: ") + os.path.basename(source_file_path))
     
     def select_updated_audio(self):
             """Savekeeps selected audio with an specific name, to replace if update is confirmed."""
@@ -65,7 +53,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         if self.current_audio_path is not None and os.path.exists(self.current_audio_path):
             self.remove_flag = True
             self.replace_flag = False
-        if os.path.isfile("update.ogg"):
+        if Path("update.ogg").is_file():
             os.remove("update.ogg")
         self.audio_label.setText(self.tr("(No audio)"))
         
@@ -74,8 +62,11 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         super().__init__(parent_window)
         self.remove_flag = False
         self.replace_flag = False
+        self.remove_audio_button.clicked.disconnect()
         self.remove_audio_button.clicked.connect(lambda: self.set_up_audio_removal())
         self.setWindowTitle(self.tr("Prompt Editor"))
+        self.add_audio_button.clicked.disconnect()
+        self.add_audio_button.clicked.connect(lambda: self.select_updated_audio())
         self.add_prompt_button.setText(self.tr("Update Prompt"))
         self.add_prompt_button.clicked.disconnect()
         self.add_prompt_button.clicked.connect(lambda: self.update_prompt_if_valid())
