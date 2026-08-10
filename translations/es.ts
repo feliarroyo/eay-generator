@@ -17,9 +17,8 @@
 <context>
     <name>BuildMenuWidget</name>
     <message>
-        <location filename="../src/ui/build_menu.py" line="13"/>
         <source>Link Game Pack</source>
-        <translation>Vincular pack de juegos</translation>
+        <translation type="vanished">Vincular pack de juegos</translation>
     </message>
     <message>
         <location filename="../src/ui/build_menu.py" line="16"/>
@@ -44,6 +43,11 @@
         <location filename="../src/ui/build_menu.py" line="11"/>
         <source>EAY Generator - Build Episode</source>
         <translation>EAY Generator - Aplicar episodio</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="13"/>
+        <source>Select Party Pack Folder</source>
+        <translation>Seleccionar carpeta del Party Pack</translation>
     </message>
     <message>
         <location filename="../src/ui/build_menu.py" line="39"/>
@@ -96,22 +100,22 @@
 <context>
     <name>EditorWindow</name>
     <message>
-        <location filename="../src/main.py" line="18"/>
+        <location filename="../src/main.py" line="20"/>
         <source>&amp;File</source>
         <translation>&amp;Archivo</translation>
     </message>
     <message>
-        <location filename="../src/main.py" line="19"/>
+        <location filename="../src/main.py" line="21"/>
         <source>Return to Main Menu</source>
         <translation>Volver al menú principal</translation>
     </message>
     <message>
-        <location filename="../src/main.py" line="20"/>
+        <location filename="../src/main.py" line="22"/>
         <source>Return to the main menu</source>
         <translation>Volver al menú principal</translation>
     </message>
     <message>
-        <location filename="../src/main.py" line="27"/>
+        <location filename="../src/main.py" line="29"/>
         <source>EAY Generator - Episode: </source>
         <translation>EAY Generator - Episodio: </translation>
     </message>
@@ -199,7 +203,7 @@
 <context>
     <name>MainMenuWindow</name>
     <message>
-        <location filename="../src/main.py" line="40"/>
+        <location filename="../src/main.py" line="42"/>
         <source>EAY Generator</source>
         <translation>EAY Generator</translation>
     </message>

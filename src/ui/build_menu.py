@@ -10,7 +10,7 @@ class BuildMenuWidget(QWidget):
         self.parent_window = parent_window
         self.setWindowTitle(self.tr("EAY Generator - Build Episode"))
         layout = QVBoxLayout()
-        link_game_button = QPushButton(self.tr("Link Game Pack"))
+        link_game_button = QPushButton(self.tr("Select Party Pack Folder"))
         link_game_button.clicked.connect(lambda: self.link_game_pack())
         layout.addWidget(link_game_button)
         choose_modding_game_label = QLabel(self.tr("Choose game to set prompts on:"))
