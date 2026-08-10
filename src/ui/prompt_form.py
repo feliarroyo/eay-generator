@@ -1,7 +1,8 @@
 import os
 import shutil
 import uuid
-from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QPushButton,  QVBoxLayout, QWidget, QFileDialog
+from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QPushButton,  QVBoxLayout, QWidget
+from PySide6.QtGui import QIcon
 from core.models import EAYPrompt
 from core.fileManager import choose_audio_file, save_temp_audio
 
@@ -121,6 +122,9 @@ class PromptFormWidget(QWidget):
         self.suggestions_label.setToolTip(self.tr("Dummy answers, used for Audience Lies in both games, as well as Jackbox Lies and Lie For Me button on Fibbage 4 only.")) # Unknown if required or not so far, nor how many are needed if so (8-10?).
         self.suggestions_input = QLineEdit()
         self.suggestions_input.setPlaceholderText(self.tr("e.g. chocolate"))
+        key_icon = QIcon("assets/keyboard-enter.png")
+        browse_action = self.suggestions_input.addAction(key_icon, QLineEdit.TrailingPosition)
+        browse_action.triggered.connect(lambda: self.add_suggestion_to_list())
         self.suggestions_input.returnPressed.connect(lambda: self.add_suggestion_to_list())
         self.remove_suggestion_button = QPushButton(self.tr("Remove Suggestion"))
         self.remove_suggestion_button.setEnabled(False)
