@@ -1,10 +1,11 @@
 import os
+from pathlib import Path
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QSettings
 from PySide6.QtGui import QAction, QIcon
 from core.fileManager import delete_temp_folder
-from translation import change_app_language
+from core.assetsManager import change_app_language, get_internal_assets_path
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
@@ -57,11 +58,9 @@ if __name__ == "__main__":
     saved_lang = settings.value("language", "en")
     change_app_language(app, saved_lang)
     # Add application icon
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.abspath(os.path.join(current_dir, ".."))
-    icon_path = os.path.join(root_dir, "assets", "icon.ico")
+    icon_path = get_internal_assets_path() / "assets" / "icon.ico"
     if os.path.exists(icon_path):
-        app_icon = QIcon(icon_path)
+        app_icon = QIcon(str(icon_path))
         app.setWindowIcon(app_icon)
     else:
         print(f"Warning: Icon asset not found at {icon_path}")
