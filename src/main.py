@@ -1,12 +1,11 @@
 import os
-from pathlib import Path
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QSettings
-from PySide6.QtGui import QAction, QIcon
+from PySide6.QtGui import QIcon
 from core.fileManager import delete_temp_folder
 from core.assetsManager import change_app_language, get_internal_assets_path
-from ui.constants import APP_TITLE
+from ui.constants import APP_TITLE, EPISODE_WINDOW
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
@@ -16,19 +15,11 @@ class EditorWindow(QMainWindow):
         self.main_menu_window = main_menu_window
         self.episode_editor = EpisodeEditWidget(self)
         self.setCentralWidget(self.episode_editor)
-        # Set Menu Bar
-        editor_menubar = self.menuBar()
-        
-        file_menu = editor_menubar.addMenu(self.tr("&File"))
-        button_mainmenu = QAction(QIcon("assets/arrow-circle-225.png"), self.tr("Return to Main Menu"), self)
-        button_mainmenu.setStatusTip(self.tr("Return to the main menu"))
-        button_mainmenu.triggered.connect(lambda: self.switch_to_menu())
-        file_menu.addAction(button_mainmenu)
 
     def load_episode_data(self, episode_name, prompts=[]):
         print(f"Loading episode data for '{episode_name}' with {len(prompts)} prompts.")
         self.episode_editor.load_episode(episode_name, prompts)
-        self.setWindowTitle(self.tr("EAY Generator - Episode: ") + episode_name)
+        self.setWindowTitle(self.tr(EPISODE_WINDOW) + episode_name)
 
     def switch_to_menu(self):
         print("Switching back to main menu and cleaning up temporary files.")

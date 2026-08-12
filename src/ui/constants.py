@@ -52,8 +52,10 @@ YES = "Yes"
 NO = "No"
 
 # Episode Editor
-EPISODE = "Episode:"
-SAVE_AND_RETURN = "Save Episode and Return to Main Menu"
+EPISODE_WINDOW = "EAY Generator - Episode: "
+EPISODE = "Episode: "
+SAVE_EPISODE = "Save Episode"
+RETURN_TO_MENU = "Return to Main Menu"
 
 # Build Menu
 APP_TITLE_BUILD = "EAY Generator - Build Episode"

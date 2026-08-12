@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from core.models import VALID_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
-from src.ui.constants import AUDIO_TYPE, SELECT_AUDIOFILE, UPDATE_AUDIOFILE
+from ui.constants import AUDIO_TYPE, SELECT_AUDIOFILE, UPDATE_AUDIOFILE
 
 def get_user_data_path():
     if getattr(sys, 'frozen', False):
@@ -39,15 +39,15 @@ def update_temp_episode_file(episode_name, content=None):
     # print(content.to_dict())
     json.dump(content.to_dict(), open(temp_path / "episode.json", 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
     
-def place_temp_files_on_episode_folder(episode_name):
-    """Moves the contents of the temporary session folder to the episode directory."""
+def copy_temp_files_on_episode_folder(episode_name):
+    """Copy the contents of the temporary session folder to the episode directory."""
     original_path = episodes_path / episode_name
     os.makedirs(original_path, exist_ok=True)
     backup_path = original_path.parent / (original_path.name + ".bak")
     
     if os.path.exists(original_path):
         os.rename(original_path, backup_path)
-        shutil.move(temp_path, original_path)
+        shutil.copy2(temp_path, original_path)
         if os.path.exists(backup_path):
             shutil.rmtree(backup_path)            
 

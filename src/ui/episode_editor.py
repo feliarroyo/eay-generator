@@ -2,18 +2,21 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 
 from core.models import EAYCustomEpisode
 from core.fileManager import remove_audio, update_temp_episode_file, delete_temp_folder, place_temp_files_on_episode_folder
-from src.ui.constants import EPISODE, SAVE_AND_RETURN
+from ui.constants import EPISODE, RETURN_TO_MENU, SAVE_EPISODE
 from ui.prompt_form import PromptFormWidget
 from ui.prompt_table import PromptTable
 
 
 class EpisodeEditWidget(QWidget):
 
-    def save_episode_and_return(self):
+    def save_episode(self):
         """Generate the episode file, place its contents on the episode folder, and return to the main menu."""
         episode_file = EAYCustomEpisode(self.episode_name, self.prompts)
         update_temp_episode_file(self.episode_name, episode_file)
         place_temp_files_on_episode_folder(self.episode_name)
+        self.return_to_menu()
+        
+    def return_to_menu(self):
         self.clear_editor()
         self.parent_window.switch_to_menu()
 
@@ -55,10 +58,14 @@ class EpisodeEditWidget(QWidget):
         # Save Button
         self.episode_label = QLabel(self.tr(EPISODE))
         self.save_episode_button = QPushButton(
-            self.tr(SAVE_AND_RETURN)
+            self.tr(SAVE_EPISODE)
         )
         self.save_episode_button.setCheckable(True)
-        self.save_episode_button.clicked.connect(lambda: self.save_episode_and_return())
+        self.save_episode_button.clicked.connect(lambda: self.save_episode())
+        
+        # Discard Button
+        self.main_menu_button = QPushButton(self.tr(RETURN_TO_MENU))
+        self.main_menu_button.clicked.connect(lambda: self.return_to_menu())
         
         # Prompt Form
         self.prompt_form = PromptFormWidget(self)
@@ -67,9 +74,12 @@ class EpisodeEditWidget(QWidget):
         self.prompt_table = PromptTable(self)
 
         layout = QVBoxLayout()
+        button_layout = QHBoxLayout()
         mainLayout = QHBoxLayout()
         layout.addWidget(self.episode_label)
-        layout.addWidget(self.save_episode_button)
+        button_layout.addWidget(self.main_menu_button)
+        button_layout.addWidget(self.save_episode_button)
+        layout.addLayout(button_layout)
         mainLayout.addWidget(self.prompt_form, 1)
         mainLayout.addWidget(self.prompt_table, 3)
         layout.addLayout(mainLayout)

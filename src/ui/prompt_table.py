@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QPushButton, QTableWidget, QTableWidgetItem
 from PySide6 import QtCore
-from src.ui.constants import EDIT, HAS_AUDIO, NO, NOT_FAMILY_PROMPT_SHORT, PERSONAL_PROMPT, REMOVE, SCREEN_PROMPT, SUGGESTIONS, US_PROMPT_SHORT, YES
+from ui.constants import EDIT, HAS_AUDIO, NO, NOT_FAMILY_PROMPT_SHORT, PERSONAL_PROMPT, REMOVE, SCREEN_PROMPT, SUGGESTIONS, US_PROMPT_SHORT, YES
 from ui.prompt_editor import PromptEditor
 
 class PromptTable(QTableWidget):
