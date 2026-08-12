@@ -68,17 +68,38 @@ def remove_temp_session_folder():
         shutil.rmtree(temp_path)
         print(f"Temporary session folder '{temp_path}' deleted.")
 
-def save_temp_audio(audio_path, previous_audio_name=None):
+def exists_audio(audio_name):
+    audio_path = Path(temp_path / audio_name)
+    return audio_path.is_file()
+
+def remove_audio(audio_name):
+    audio_path = Path(temp_path / audio_name)
+    if audio_path.is_file():
+        os.remove(audio_path)
+        print(f"Audio file '{audio_name}' removed from temporary session folder.")
+
+def update_audio(new_name=None):
+    """Updates the audio file in the temporary session folder."""
+    updated_audio = temp_path / "update.ogg"
+    if new_name is None:
+        new_name = get_unique_filename()
+    pass
+
+def get_unique_filename():
+    return f"{uuid.uuid4().hex[:8]}.ogg"
+
+def save_temp_audio(audio_name, previous_audio_name=None):
+    """Save the audio file to the temp session folder, either with a unique name or replacing the previous file"""
     os.makedirs(temp_path, exist_ok=True)
     # Generate a unique name for the copy to avoid same-name conflicts
     if previous_audio_name:
         unique_filename = previous_audio_name
     else:
-        unique_filename = f"{uuid.uuid4().hex[:8]}.ogg"
+        unique_filename = get_unique_filename()
+    audio_path = temp_path / audio_name
     temp_file_path = temp_path / unique_filename
-    print("")
     # Copy the file into the staging area
-    print(f"Copying audio file '{audio_path}' to temporary session folder as '{temp_file_path}'.")
+    print(f"Copying audio file '{audio_name}' to temporary session folder as '{temp_file_path}'.")
     shutil.copy2(audio_path, temp_file_path)
     return temp_file_path
 
