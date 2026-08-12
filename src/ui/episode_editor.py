@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 
 from core.models import EAYCustomEpisode
 from core.fileManager import remove_audio, update_temp_episode_file, delete_temp_folder, place_temp_files_on_episode_folder
+from src.ui.constants import EPISODE, SAVE_AND_RETURN
 from ui.prompt_form import PromptFormWidget
 from ui.prompt_table import PromptTable
 
@@ -18,7 +19,7 @@ class EpisodeEditWidget(QWidget):
 
     def load_episode(self, episode_name, prompts=[]):
         self.episode_name = episode_name
-        self.episode_label.setText(self.tr("Episode: ") + episode_name)
+        self.episode_label.setText(self.tr(EPISODE) + episode_name)
         self.prompt_table.set_prompts_on_table(prompts)
         self.prompts = prompts
 
@@ -52,9 +53,9 @@ class EpisodeEditWidget(QWidget):
         self.prompts = []
         
         # Save Button
-        self.episode_label = QLabel(self.tr("Episode: (No episode loaded)"))
+        self.episode_label = QLabel(self.tr(EPISODE))
         self.save_episode_button = QPushButton(
-            self.tr("Save Episode and Return to Main Menu")
+            self.tr(SAVE_AND_RETURN)
         )
         self.save_episode_button.setCheckable(True)
         self.save_episode_button.clicked.connect(lambda: self.save_episode_and_return())

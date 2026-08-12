@@ -6,6 +6,7 @@ from PySide6.QtCore import QSettings
 from PySide6.QtGui import QAction, QIcon
 from core.fileManager import delete_temp_folder
 from core.assetsManager import change_app_language, get_internal_assets_path
+from ui.constants import APP_TITLE
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
@@ -40,7 +41,7 @@ class MainMenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         delete_temp_folder()
-        self.setWindowTitle(self.tr("EAY Generator"))
+        self.setWindowTitle(self.tr(APP_TITLE))
         self.main_menu = MainMenuWidget(self)
         self.setCentralWidget(self.main_menu)
     

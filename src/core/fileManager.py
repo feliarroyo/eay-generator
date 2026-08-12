@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from core.models import VALID_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
+from src.ui.constants import AUDIO_TYPE, SELECT_AUDIOFILE, UPDATE_AUDIOFILE
 
 def get_user_data_path():
     if getattr(sys, 'frozen', False):
@@ -55,7 +56,7 @@ def list_episode_folders():
     return folderList
 
 def choose_audio_file(self):
-    source_file_path = QFileDialog.getOpenFileName(self, self.tr("Select Audio File"), "", self.tr("Audio Files (*.ogg)"))
+    source_file_path = QFileDialog.getOpenFileName(self, self.tr(SELECT_AUDIOFILE), "", self.tr(AUDIO_TYPE))
     return source_file_path[0]
 
 def delete_temp_folder():
@@ -77,13 +78,6 @@ def remove_audio(audio_name):
     if audio_path.is_file():
         os.remove(audio_path)
         print(f"Audio file '{audio_name}' removed from temporary session folder.")
-
-def update_audio(new_name=None):
-    """Updates the audio file in the temporary session folder."""
-    updated_audio = temp_path / "update.ogg"
-    if new_name is None:
-        new_name = get_unique_filename()
-    pass
 
 def get_unique_filename():
     return f"{uuid.uuid4().hex[:8]}.ogg"
@@ -111,7 +105,6 @@ def load_episode_to_temp_folder(episode_name):
         return
     
     shutil.copytree(episode_path, temp_path, dirs_exist_ok=True)
-    
 
 def read_episode_prompts(episode_name):
     """Reads the prompts from the episode.json file in the specified episode folder."""
@@ -258,3 +251,28 @@ def generateFibbage3Files(selected_episodes, include_base_prompts=False, build_p
 def generateFibbage4Files(selected_episodes, include_base_prompts=False, lang="en", build_path=app_build_path):
     """Generates the necessary files for Fibbage 4 based on the provided prompts."""
     return generateFibbageFiles(selected_episodes, f"games/Fibbage4/content/{lang}/", fib4EAYTemplate, fib4EAYTemplate_Data, "eayblankie", build_path, include_base_prompts)
+
+def restore_base_game(game_content_path: Path, backup_path: Path):
+    """Restores the game to its original state using the backup_path provided."""
+    # 1. Define the specific EAY targets inside the game directory
+    target_file = game_content_path / "tmiShortie.jet"
+    target_folder = game_content_path / "tmiShortie"
+
+    # 2. Define the source files inside your backup directory
+    backup_file = backup_path / "tmiShortie.jet"
+    backup_folder = backup_path / "tmiShortie"
+
+    # Safety Check: Ensure the backup actually exists before we delete anything!
+    if not backup_file.exists() or not backup_folder.exists():
+        raise FileNotFoundError("Backup files are missing! Cannot restore.")
+
+    # 3. WIPE: Delete the current game files completely
+    # This automatically destroys all custom ID folders (0, 1, 2, etc.)
+    if target_folder.exists():
+        shutil.rmtree(target_folder)
+    if target_file.exists():
+        target_file.unlink()
+
+    # 4. REPLACE: Copy the backup files into the newly cleaned space
+    shutil.copytree(backup_folder, target_folder)
+    shutil.copy2(backup_file, target_file)
