@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from core.models import EAYCustomEpisode
-from core.fileManager import update_temp_episode_file, delete_temp_folder, place_temp_files_on_episode_folder
+from core.fileManager import remove_audio, update_temp_episode_file, delete_temp_folder, place_temp_files_on_episode_folder
 from ui.prompt_form import PromptFormWidget
 from ui.prompt_table import PromptTable
 
@@ -33,7 +33,10 @@ class EpisodeEditWidget(QWidget):
         self.prompt_table.update_prompt_in_table(index, prompt)
 
     def remove_prompt(self):
+        """Remove the selected prompt from the table, as well as its audio if it exists."""
         currentRow = self.prompt_table.remove_prompt_from_table()
+        if self.prompts[currentRow].hasAudio:
+            remove_audio(self.prompts[currentRow].audio)
         self.prompts.pop(currentRow)
 
     def clear_editor(self):
