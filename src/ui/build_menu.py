@@ -10,7 +10,7 @@ class BuildMenuWidget(QWidget):
         self.parent_window = parent_window
         self.setWindowTitle(self.tr("EAY Generator - Build Episode"))
         layout = QVBoxLayout()
-        link_game_label = QLabel(self.tr("You need to choose a game pack to:\n - Use base prompts\n - Apply episodes directly into the game"))
+        link_game_label = QLabel(self.tr("You need to choose a game pack to:\n - Include base prompts\n - Apply episodes directly into the game\n - Revert changes"))
         layout.addWidget(link_game_label)
         link_game_button = QPushButton(self.tr("Select Party Pack Folder"))
         link_game_button.clicked.connect(lambda: self.link_game_pack())
@@ -51,8 +51,11 @@ class BuildMenuWidget(QWidget):
         
         layout.addWidget(episode_display)
         layout.addWidget(generate_build_button)
-        
         layout.addWidget(generate_and_install_button)
+        revert_changes_button = QPushButton(self.tr("Revert Changes"))
+        revert_changes_button.setToolTip(self.tr("Reverts all changes made to the game pack by restoring the original files obtained from the backup."))
+        revert_changes_button.clicked.connect()
+        layout.addWidget(revert_changes_button)
 
         self.setLayout(layout)
         
@@ -80,7 +83,6 @@ class BuildMenuWidget(QWidget):
             self.build_episode(include_base_prompts, selected_episodes, game_path)
         else:
             QMessageBox.critical(self, self.tr("Error"), self.tr("No game pack linked for the selected game. Please link a game pack first."))
-        pass
     
     def build_episode(self, include_base_prompts, selected_episodes, build_path=None):
         if not selected_episodes:
