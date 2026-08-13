@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 from core.models import VALID_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
-from ui.constants import AUDIO_TYPE, SELECT_AUDIOFILE, UPDATE_AUDIOFILE
 
 def get_user_data_path():
     if getattr(sys, 'frozen', False):
@@ -47,16 +46,16 @@ def copy_temp_files_on_episode_folder(episode_name):
     
     if os.path.exists(original_path):
         os.rename(original_path, backup_path)
-        shutil.copy2(temp_path, original_path)
+        shutil.copytree(temp_path, original_path)
         if os.path.exists(backup_path):
-            shutil.rmtree(backup_path)            
+            shutil.rmtree(backup_path)
 
 def list_episode_folders():
     folderList = [f for f in os.listdir(episodes_path) if Path(episodes_path / f).is_dir()]
     return folderList
 
 def choose_audio_file(self):
-    source_file_path = QFileDialog.getOpenFileName(self, self.tr(SELECT_AUDIOFILE), "", self.tr(AUDIO_TYPE))
+    source_file_path = QFileDialog.getOpenFileName(self, self.tr("Select Audio File"), "", self.tr("Audio Files (*.ogg)"))
     return source_file_path[0]
 
 def delete_temp_folder():
@@ -205,18 +204,18 @@ def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileTy
             QMessageBox.critical(None, "Error", "Warning: Base game backup not found!")
             return False
         # Read base game main file from backup
-        main_jet_path = backup_path / base_folder_structure / fileName.with_suffix(".jet")
+        main_jet_path = Path(backup_path / base_folder_structure / fileName).with_suffix(".jet")
         with open(main_jet_path, 'r', encoding='utf-8') as f:
             base_data = json.load(f)
         tmi_shortie["content"].extend(base_data["content"])
         
         # Copy base game prompt data folders into the build
         source_dir = backup_path / base_folder_structure / fileName
-        copy_dir = target_path / fileName
+        copy_dir = Path(target_path / fileName)
         shutil.copytree(source_dir, copy_dir, dirs_exist_ok=True)
     
     # Create tmi_shortie.jet file in the proper directory
-    main_output_path = target_path / fileName.with_suffix(".jet")
+    main_output_path = Path(target_path / fileName).with_suffix(".jet")
     with open(main_output_path, 'w', encoding='utf-8') as f:
         json.dump(tmi_shortie, f, ensure_ascii=False, indent=4)
     
@@ -252,27 +251,38 @@ def generateFibbage4Files(selected_episodes, include_base_prompts=False, lang="e
     """Generates the necessary files for Fibbage 4 based on the provided prompts."""
     return generateFibbageFiles(selected_episodes, f"games/Fibbage4/content/{lang}/", fib4EAYTemplate, fib4EAYTemplate_Data, "eayblankie", build_path, include_base_prompts)
 
-def restore_base_game(game_content_path: Path, backup_path: Path):
+def restore_base_game(game_content_path: Path, backup_path: Path, internal_name):
     """Restores the game to its original state using the backup_path provided."""
-    # 1. Define the specific EAY targets inside the game directory
-    target_file = game_content_path / "tmiShortie.jet"
-    target_folder = game_content_path / "tmiShortie"
+    # GET GAME PATH
+    target_file = Path(game_content_path / internal_name).with_suffix(".jet")
+    target_folder = game_content_path / internal_name
 
-    # 2. Define the source files inside your backup directory
-    backup_file = backup_path / "tmiShortie.jet"
-    backup_folder = backup_path / "tmiShortie"
+    backup_file = Path(backup_path / internal_name).with_suffix(".jet")
+    backup_folder = backup_path / internal_name
 
-    # Safety Check: Ensure the backup actually exists before we delete anything!
+    # Check backup exists before deleting
     if not backup_file.exists() or not backup_folder.exists():
-        raise FileNotFoundError("Backup files are missing! Cannot restore.")
+        return False
 
-    # 3. WIPE: Delete the current game files completely
-    # This automatically destroys all custom ID folders (0, 1, 2, etc.)
+    # Delete folder and file
     if target_folder.exists():
         shutil.rmtree(target_folder)
     if target_file.exists():
         target_file.unlink()
 
-    # 4. REPLACE: Copy the backup files into the newly cleaned space
+    # Copy the backup files into the newly cleaned space
     shutil.copytree(backup_folder, target_folder)
     shutil.copy2(backup_file, target_file)
+    return True
+    
+def restore_fibbage_3():
+    game_content_path = Path(get_linked_game_pack_path(4)) / "games/Fibbage3/content"
+    backup_game_path = backup_path / "games/Fibbage3/content"
+    internal_name = "tmiShortie"
+    return restore_base_game(game_content_path, backup_game_path, internal_name)
+
+def restore_fibbage_4(lang):
+    game_content_path = Path(get_linked_game_pack_path(9)) / f"games/Fibbage4/content/{lang}"
+    backup_game_path = backup_path / f"games/Fibbage4/content/{lang}"
+    internal_name = "eayBlankie"
+    return restore_base_game(game_content_path, backup_game_path, internal_name)
