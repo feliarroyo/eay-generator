@@ -99,6 +99,7 @@ class MainMenuWidget(QWidget):
         """Retranslate UI from main window to impose translation."""
         self.toggle_lang_button.setText(self.tr("Cambiar idioma a español"))
         self.episode_label.setText(self.tr(EPISODE_NAME))
+        self.episode_input.setPlaceholderText(self.tr(EXAMPLE_EPISODE))
         self.new_episode_button.setText(self.tr(CREATE_EPISODE))
         self.edit_episode_button.setText(self.tr(EDIT_EPISODE))
         self.delete_episode_button.setText(self.tr(DELETE_EPISODE))
