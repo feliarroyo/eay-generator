@@ -1,8 +1,8 @@
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QMessageBox, QPushButton, QVBoxLayout, QWidget
 
 from core.models import EAYCustomEpisode
-from core.fileManager import remove_audio, update_temp_episode_file, delete_temp_folder, place_temp_files_on_episode_folder
-from ui.constants import EPISODE, RETURN_TO_MENU, SAVE_EPISODE
+from core.fileManager import copy_temp_files_on_episode_folder, remove_audio, update_temp_episode_file, delete_temp_folder
+from ui.constants import EPISODE, RETURN_TO_MENU, SAVE_EPISODE, YES
 from ui.prompt_form import PromptFormWidget
 from ui.prompt_table import PromptTable
 
@@ -13,10 +13,21 @@ class EpisodeEditWidget(QWidget):
         """Generate the episode file, place its contents on the episode folder, and return to the main menu."""
         episode_file = EAYCustomEpisode(self.episode_name, self.prompts)
         update_temp_episode_file(self.episode_name, episode_file)
-        place_temp_files_on_episode_folder(self.episode_name)
-        self.return_to_menu()
+        copy_temp_files_on_episode_folder(self.episode_name)
+        self.unsaved_changes = False
         
     def return_to_menu(self):
+        if self.unsaved_changes:
+            reply = QMessageBox.question(
+                self,
+                self.tr("Unsaved Changes"),
+                self.tr("You have unsaved changes. Do you want to save them before returning to the main menu?"),
+                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+            )
+            if reply == QMessageBox.Yes:
+                self.save_episode()
+            elif reply == QMessageBox.Cancel:
+                return  # Do not return to the main menu if the user cancels
         self.clear_editor()
         self.parent_window.switch_to_menu()
 
@@ -31,10 +42,12 @@ class EpisodeEditWidget(QWidget):
         self.prompt_table.add_prompt_to_table(prompt)
         self.prompt_form.clear_inputs()  # Clear the input fields after adding the prompt
         self.prompts.append(prompt)
+        self.unsaved_changes = True
         
     def edit_prompt_in_index(self, index, prompt):
         self.prompts[index] = prompt
         self.prompt_table.update_prompt_in_table(index, prompt)
+        self.unsaved_changes = True
 
     def remove_prompt(self):
         """Remove the selected prompt from the table, as well as its audio if it exists."""
@@ -42,6 +55,7 @@ class EpisodeEditWidget(QWidget):
         if self.prompts[currentRow].hasAudio:
             remove_audio(self.prompts[currentRow].audio)
         self.prompts.pop(currentRow)
+        self.unsaved_changes = True
 
     def clear_editor(self):
         self.prompt_form.clear_inputs()
@@ -52,6 +66,7 @@ class EpisodeEditWidget(QWidget):
 
     def __init__(self, parent_window):
         super().__init__()
+        self.unsaved_changes = True
         self.parent_window = parent_window
         self.prompts = []
         
