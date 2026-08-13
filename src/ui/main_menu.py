@@ -3,41 +3,39 @@ from core.fileManager import create_base_folder, get_user_data_path, update_temp
 from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
 from PySide6.QtCore import QCoreApplication, QEvent
 from core.assetsManager import change_app_language
-from ui.constants import APP_TITLE, APPLY_EPISODES, CREATE_EPISODE, DELETE_EPISODE, EDIT_EPISODE, EPISODE_NAME, EXAMPLE_EPISODE, OPEN_FOLDER, REFRESH_LIST
 from ui.build_menu import BuildMenuWidget
 create_base_folder()  # Ensure the base folder exists
-
 
 class MainMenuWidget(QWidget):
     def __init__(self, parent_window, parent=None):
         super().__init__(parent)
         self.parent_window = parent_window
-        self.parent_window.setWindowTitle(self.tr(APP_TITLE))
+        self.parent_window.setWindowTitle(self.tr("EAY Generator"))
 
         layout = QVBoxLayout()
         self.toggle_lang_button = QPushButton(self.tr("Cambiar idioma a español"))
         self.toggle_lang_button.clicked.connect(lambda: self.toggle_language())
         layout.addWidget(self.toggle_lang_button)
-        self.episode_label = QLabel(self.tr(EPISODE_NAME))
+        self.episode_label = QLabel(self.tr("Episode Name"))
         layout.addWidget(self.episode_label)
         self.episode_input = QLineEdit()
-        self.episode_input.setPlaceholderText(self.tr(EXAMPLE_EPISODE))
+        self.episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
         self.episode_input.textChanged.connect(lambda name: self.new_episode_button.setEnabled(self.validate_episode_name(name)))
         layout.addWidget(self.episode_input)
-        self.new_episode_button = QPushButton(self.tr(CREATE_EPISODE))
+        self.new_episode_button = QPushButton(self.tr("Create New Episode"))
         self.new_episode_button.clicked.connect(lambda: self.create_episode(self.episode_input.text()))
         self.new_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(self.new_episode_button)
 
-        self.edit_episode_button = QPushButton(self.tr(EDIT_EPISODE))
+        self.edit_episode_button = QPushButton(self.tr("Edit Selected Episode"))
         self.edit_episode_button.clicked.connect(lambda: self.load_episode(self.folder_display.currentItem().text()))
         self.edit_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(self.edit_episode_button)
-        self.delete_episode_button = QPushButton(self.tr(DELETE_EPISODE))
+        self.delete_episode_button = QPushButton(self.tr("Delete Selected Episode"))
         self.delete_episode_button.clicked.connect(lambda: self.delete_episode(self.folder_display.currentItem().text()))
         self.delete_episode_button.setEnabled(False)  # Disable the button by default
         layout.addWidget(self.delete_episode_button)
-        self.refresh_folders_button = QPushButton(self.tr(REFRESH_LIST))
+        self.refresh_folders_button = QPushButton(self.tr("Refresh Episode List"))
         self.refresh_folders_button.clicked.connect(self.update_folder_display)
         layout.addWidget(self.refresh_folders_button)
         self.folder_display = QListWidget()
@@ -46,11 +44,11 @@ class MainMenuWidget(QWidget):
         self.folder_display.currentItemChanged.connect(self.update_buttons)
         layout.addWidget(self.folder_display)
         self.language = "en"
-        self.open_folder_button = QPushButton(self.tr(OPEN_FOLDER))
+        self.open_folder_button = QPushButton(self.tr("Open Episode Folder"))
         episode_path = get_user_data_path() / "episodes"
         self.open_folder_button.clicked.connect(lambda: os.startfile(episode_path))
         layout.addWidget(self.open_folder_button)
-        self.apply_episodes_button = QPushButton(self.tr(APPLY_EPISODES))
+        self.apply_episodes_button = QPushButton(self.tr("Apply Custom Episodes"))
         layout.addWidget(self.apply_episodes_button)
         self.apply_episodes_button.clicked.connect(lambda: self.open_build_menu())
         self.setLayout(layout)
@@ -98,15 +96,15 @@ class MainMenuWidget(QWidget):
     def retranslate_ui(self):
         """Retranslate UI from main window to impose translation."""
         self.toggle_lang_button.setText(self.tr("Cambiar idioma a español"))
-        self.episode_label.setText(self.tr(EPISODE_NAME))
-        self.episode_input.setPlaceholderText(self.tr(EXAMPLE_EPISODE))
-        self.new_episode_button.setText(self.tr(CREATE_EPISODE))
-        self.edit_episode_button.setText(self.tr(EDIT_EPISODE))
-        self.delete_episode_button.setText(self.tr(DELETE_EPISODE))
-        self.refresh_folders_button.setText(self.tr(REFRESH_LIST))
-        self.open_folder_button.setText(self.tr(OPEN_FOLDER))
-        self.apply_episodes_button.setText(self.tr(APPLY_EPISODES))
-        self.window().setWindowTitle(self.tr(APP_TITLE))
+        self.episode_label.setText(self.tr("Episode Name"))
+        self.episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
+        self.new_episode_button.setText(self.tr("Create New Episode"))
+        self.edit_episode_button.setText(self.tr("Edit Selected Episode"))
+        self.delete_episode_button.setText(self.tr("Delete Selected Episode"))
+        self.refresh_folders_button.setText(self.tr("Refresh Episode List"))
+        self.open_folder_button.setText(self.tr("Open Episode Folder"))
+        self.apply_episodes_button.setText(self.tr("Apply Custom Episodes"))
+        self.window().setWindowTitle(self.tr("EAY Generator"))
 
     def changeEvent(self, event):
         """Qt automatically calls this when a global event happens."""

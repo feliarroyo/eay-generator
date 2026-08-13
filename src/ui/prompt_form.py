@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLin
 from PySide6.QtGui import QIcon, Qt
 from core.models import EAYPrompt
 from core.fileManager import choose_audio_file, save_temp_audio
-from ui.constants import ADD_AUDIO, ADD_BLANK, ADD_BLANK_TIP, ADD_PLAYER, ADD_PLAYER_TIP, ADD_PROMPT, ASSET_KEY, AUDIO_LOADED, BLANK_SYMBOL, NO_AUDIO, NOT_FAMILY_PROMPT, NOT_FAMILY_PROMPT_TIP, PERSONAL_PROMPT, PERSONAL_PROMPT_EXAMPLE, PERSONAL_PROMPT_TIP, PLAYER_SYMBOL, REMOVE_AUDIO, REMOVE_SUGGESTION, SCREEN_PROMPT, SCREEN_PROMPT_EXAMPLE, SCREEN_PROMPT_TIP, SUGGESTIONS, SUGGESTIONS_EXAMPLE, SUGGESTIONS_TIP, US_PROMPT, US_PROMPT_TIP
+from src.ui.constants import BLANK_SYMBOL, PLAYER_SYMBOL
 
 class CustomDialog(QDialog):
     def __init__(self):
@@ -49,13 +49,13 @@ class PromptFormWidget(QWidget):
         # Delete previous audio, if any
         if previous_audio_path is not None and os.path.exists(previous_audio_path):
             os.remove(previous_audio_path)
-        self.audio_label.setText(self.tr(AUDIO_LOADED))
+        self.audio_label.setText(self.tr("Audio loaded"))
         
     def remove_audio(self):
         if self.current_audio_path is not None and os.path.exists(self.current_audio_path):
             os.remove(self.current_audio_path)
         self.current_audio_path = None
-        self.audio_label.setText(self.tr(NO_AUDIO))
+        self.audio_label.setText(self.tr("(No audio)"))
     
     def add_suggestion_to_list(self):
         suggestion = self.suggestions_input.text().strip()
@@ -81,7 +81,7 @@ class PromptFormWidget(QWidget):
     def clear_inputs(self):
         self.personal_prompt_input.clear()
         self.screen_prompt_input.clear()
-        self.audio_label.setText(self.tr(NO_AUDIO))
+        self.audio_label.setText(self.tr("(No audio)"))
         self.current_audio_path = None
         self.suggestions_list.clear()
         self.us_checkbox.setChecked(False)
@@ -93,54 +93,55 @@ class PromptFormWidget(QWidget):
         layout = QVBoxLayout()
         
         # Personal Prompt
-        self.personal_prompt_label = QLabel(self.tr(PERSONAL_PROMPT))
-        self.personal_prompt_label.setToolTip(self.tr(PERSONAL_PROMPT_TIP))
+        self.personal_prompt_label = QLabel(self.tr("Personal Prompt"))
+        self.personal_prompt_label.setToolTip(self.tr("(Required Field)\nThis is the question that will be asked to the player in question on their device at the start."))
         self.personal_prompt_input = QLineEdit()
-        self.personal_prompt_input.setPlaceholderText(self.tr(PERSONAL_PROMPT_EXAMPLE))
+        self.personal_prompt_input.setPlaceholderText(self.tr("e.g. What is your favorite color?"))
         
         # Screen Prompt
-        self.screen_prompt_label = QLabel(self.tr(SCREEN_PROMPT))
-        self.screen_prompt_label.setToolTip(self.tr(SCREEN_PROMPT_TIP))
+        self.screen_prompt_label = QLabel(self.tr("Screen Prompt"))
+        self.screen_prompt_label.setToolTip(self.tr("(Required Field)\nThis is the question that will be shown to other players when coming up with lies, and will also be shown on screen alongside everyone's answers."))
         self.screen_prompt_input = QLineEdit()
-        self.screen_prompt_input.setPlaceholderText(self.tr(SCREEN_PROMPT_EXAMPLE))
-        self.add_player_button = QPushButton(self.tr(ADD_PLAYER))
-        self.add_player_button.setToolTip(self.tr(ADD_PLAYER_TIP))
+        self.screen_prompt_input.setPlaceholderText(self.tr("e.g. <PLAYER>'s favorite color is <BLANK>."))
+        self.add_player_button = QPushButton(self.tr("Insert Player Name into the Prompt"))
+        self.add_player_button.setToolTip(self.tr("Inserts the <PLAYER> placeholder into the prompt, which will be replaced with the player's name when the prompt is displayed."))
         self.add_player_button.clicked.connect(lambda: self.screen_prompt_input.insert(PLAYER_SYMBOL))
         self.add_player_button.setFocusPolicy(Qt.NoFocus)
-        self.add_blank_button = QPushButton(self.tr(ADD_BLANK))
-        self.add_blank_button.setToolTip(self.tr(ADD_BLANK_TIP))
+        self.add_blank_button = QPushButton(self.tr("Insert Blank into the Prompt"))
+        self.add_blank_button.setToolTip(self.tr("Inserts the <BLANK> placeholder into the prompt, which will be replaced with a blank when the prompt is displayed."))
         self.add_blank_button.clicked.connect(lambda: self.screen_prompt_input.insert(BLANK_SYMBOL))
         self.add_blank_button.setFocusPolicy(Qt.NoFocus)
         
         # Audio
-        self.audio_label = QLabel(self.tr(NO_AUDIO))
+        self.audio_label = QLabel(self.tr("(No audio)"))
         self.current_audio_path = None
-        self.add_audio_button = QPushButton(self.tr(ADD_AUDIO))
+        self.add_audio_button = QPushButton(self.tr("Set audio for current prompt (.ogg only)"))
         self.add_audio_button.clicked.connect(lambda: self.select_audio())
-        self.remove_audio_button = QPushButton(self.tr(REMOVE_AUDIO))
+        self.remove_audio_button = QPushButton(self.tr("Remove audio for current prompt"))
         self.remove_audio_button.clicked.connect(lambda: self.remove_audio())
         
         # Suggestions
-        self.suggestions_label = QLabel(self.tr(SUGGESTIONS))
-        self.suggestions_label.setToolTip(self.tr(SUGGESTIONS_TIP)) # Unknown if required or not so far, nor how many are needed if so (8-10?).
+        self.suggestions_label = QLabel(self.tr("Suggestions"))
+        self.suggestions_label.setToolTip(self.tr("Dummy answers, used for Audience Lies in both games, as well as Jackbox Lies and Lie For Me button on Fibbage 4 only.")) # Unknown if required or not so far, nor how many are needed if so (8-10?).
         self.suggestions_input = QLineEdit()
-        self.suggestions_input.setPlaceholderText(self.tr(SUGGESTIONS_EXAMPLE))
+        self.suggestions_input.setPlaceholderText(self.tr("e.g. chocolate"))
+        ASSET_KEY = "assets/keyboard-enter.png"
         key_icon = QIcon(ASSET_KEY)
         browse_action = self.suggestions_input.addAction(key_icon, QLineEdit.TrailingPosition)
         browse_action.triggered.connect(lambda: self.add_suggestion_to_list())
         self.suggestions_input.returnPressed.connect(lambda: self.add_suggestion_to_list())
-        self.remove_suggestion_button = QPushButton(self.tr(REMOVE_SUGGESTION))
+        self.remove_suggestion_button = QPushButton(self.tr("Remove Suggestion"))
         self.remove_suggestion_button.setEnabled(False)
         self.remove_suggestion_button.clicked.connect(lambda: [self.suggestions_list.takeItem(self.suggestions_list.currentRow()), self.remove_suggestion_button.setEnabled(self.suggestions_list.count() != 0)])
         self.suggestions_list = QListWidget()
         self.suggestions_list.currentItemChanged.connect(lambda: self.remove_suggestion_button.setEnabled(True))
         # Checkboxes
-        self.us_checkbox = QCheckBox(self.tr(US_PROMPT))
-        self.us_checkbox.setToolTip(self.tr(US_PROMPT_TIP))
-        self.x_checkbox = QCheckBox(self.tr(NOT_FAMILY_PROMPT))
-        self.x_checkbox.setToolTip(self.tr(NOT_FAMILY_PROMPT_TIP))
+        self.us_checkbox = QCheckBox(self.tr("Mark as U.S.-Centric Prompt"))
+        self.us_checkbox.setToolTip(self.tr("Check this box if the prompt is specific to U.S. culture, and should be removed when playing using the U.S. filter in compatible games."))
+        self.x_checkbox = QCheckBox(self.tr("Mark as Not Family-Friendly Prompt"))
+        self.x_checkbox.setToolTip(self.tr("Check this box if the prompt is not family-friendly, and should be removed when playing using the Family-Friendly Filter in compatible games."))
         # Add Prompt Button
-        self.add_prompt_button = QPushButton(self.tr(ADD_PROMPT))
+        self.add_prompt_button = QPushButton(self.tr("Add Prompt"))
         self.add_prompt_button.clicked.connect(lambda: self.add_prompt_if_valid())
         
         # Add elements to layout

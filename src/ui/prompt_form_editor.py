@@ -2,8 +2,9 @@ import os
 from pathlib import Path
 from core.fileManager import choose_audio_file, exists_audio, get_unique_filename, remove_audio, save_temp_audio
 from core.models import EAYPrompt
-from ui.constants import NO_AUDIO, PROMPT_EDITOR, UPDATE_AUDIOFILE, UPDATE_PROMPT
 from ui.prompt_form import CustomDialog, PromptFormWidget
+
+UPDATE_AUDIOFILE = "update.ogg"
 
 class PromptFormWidget_ForEditor(PromptFormWidget):
     def get_current_prompt(self):
@@ -29,7 +30,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         """Initialize fields and attributes with the data from the given prompt."""
         self.personal_prompt_input.setText(prompt.personal_question)
         self.screen_prompt_input.setText(prompt.screen_question)
-        self.audio_label.setText(prompt.audio if prompt.hasAudio else self.tr(NO_AUDIO))
+        self.audio_label.setText(prompt.audio if prompt.hasAudio else self.tr("(No audio)"))
         self.current_audio_path = prompt.audio if prompt.hasAudio else None
         self.original_audio_path = self.current_audio_path
         self.suggestions_list.clear()
@@ -47,9 +48,9 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
             # Replace the original audio with the update if it exists.
             if self.original_audio_path is not None and exists_audio(self.original_audio_path):
                 remove_audio(self.original_audio_path)
-            self.original_audio_path = save_temp_audio("update.ogg", self.new_name)
+            self.original_audio_path = save_temp_audio(UPDATE_AUDIOFILE, self.new_name)
         # Remove any update audio file that may have been left.
-        remove_audio("update.ogg")
+        remove_audio(UPDATE_AUDIOFILE)
         
     def update_prompt_if_valid(self):
             if self.replace_flag and self.original_audio_path is None:
@@ -66,7 +67,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
                 return
             self.update_audio_if_needed()
             self.parent_window.edit_prompt_in_index()
-            remove_audio("update.ogg")
+            remove_audio(UPDATE_AUDIOFILE)
     
     def select_updated_audio(self):
             """Savekeeps selected audio with an specific name, to replace if update is confirmed."""
@@ -88,7 +89,7 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         # Remove any update file that may have been originally selected, but not confirmed
         if Path(UPDATE_AUDIOFILE).is_file():
             remove_audio(UPDATE_AUDIOFILE)
-        self.audio_label.setText(self.tr(NO_AUDIO))
+        self.audio_label.setText(self.tr("No audio"))
     
     def __init__(self, parent_window):
         super().__init__(parent_window)
@@ -96,9 +97,9 @@ class PromptFormWidget_ForEditor(PromptFormWidget):
         self.replace_flag = False
         self.remove_audio_button.clicked.disconnect()
         self.remove_audio_button.clicked.connect(lambda: self.set_up_audio_removal())
-        self.setWindowTitle(self.tr(PROMPT_EDITOR))
+        self.setWindowTitle(self.tr("Prompt Editor"))
         self.add_audio_button.clicked.disconnect()
         self.add_audio_button.clicked.connect(lambda: self.select_updated_audio())
-        self.add_prompt_button.setText(self.tr(UPDATE_PROMPT))
+        self.add_prompt_button.setText(self.tr("Update Prompt"))
         self.add_prompt_button.clicked.disconnect()
         self.add_prompt_button.clicked.connect(lambda: self.update_prompt_if_valid())

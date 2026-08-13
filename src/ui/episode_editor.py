@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QMessageBox, QPushButton, QVB
 
 from core.models import EAYCustomEpisode
 from core.fileManager import copy_temp_files_on_episode_folder, remove_audio, update_temp_episode_file, delete_temp_folder
-from ui.constants import EPISODE, RETURN_TO_MENU, SAVE_EPISODE, YES
 from ui.prompt_form import PromptFormWidget
 from ui.prompt_table import PromptTable
 
@@ -33,7 +32,7 @@ class EpisodeEditWidget(QWidget):
 
     def load_episode(self, episode_name, prompts=[]):
         self.episode_name = episode_name
-        self.episode_label.setText(self.tr(EPISODE) + episode_name)
+        self.episode_label.setText(self.tr("Episode: ") + episode_name)
         self.prompt_table.set_prompts_on_table(prompts)
         self.prompts = prompts
 
@@ -71,15 +70,15 @@ class EpisodeEditWidget(QWidget):
         self.prompts = []
         
         # Save Button
-        self.episode_label = QLabel(self.tr(EPISODE))
+        self.episode_label = QLabel(self.tr("Episode: "))
         self.save_episode_button = QPushButton(
-            self.tr(SAVE_EPISODE)
+            self.tr("Save Episode")
         )
         self.save_episode_button.setCheckable(True)
         self.save_episode_button.clicked.connect(lambda: self.save_episode())
         
         # Discard Button
-        self.main_menu_button = QPushButton(self.tr(RETURN_TO_MENU))
+        self.main_menu_button = QPushButton(self.tr("Return to Main Menu"))
         self.main_menu_button.clicked.connect(lambda: self.return_to_menu())
         
         # Prompt Form

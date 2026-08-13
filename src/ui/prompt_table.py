@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QPushButton, QTableWidget, QTableWidgetItem
 from PySide6 import QtCore
-from ui.constants import EDIT, HAS_AUDIO, NO, NOT_FAMILY_PROMPT_SHORT, PERSONAL_PROMPT, REMOVE, SCREEN_PROMPT, SUGGESTIONS, US_PROMPT_SHORT, YES
 from ui.prompt_editor import PromptEditor
 
 class PromptTable(QTableWidget):
@@ -9,7 +8,7 @@ class PromptTable(QTableWidget):
         self.parent_window = parent_window
         self.setRowCount(0)
         self.setColumnCount(8)
-        self.setHorizontalHeaderLabels([self.tr(PERSONAL_PROMPT), self.tr(SCREEN_PROMPT), self.tr(HAS_AUDIO), self.tr(SUGGESTIONS), self.tr(NOT_FAMILY_PROMPT_SHORT), self.tr(US_PROMPT_SHORT), self.tr(EDIT), self.tr(REMOVE)])
+        self.setHorizontalHeaderLabels([self.tr("Personal Prompt"), self.tr("Screen Prompt"), self.tr("Audio?"), self.tr("Suggestions"), self.tr("Family-Unfriendly?"), self.tr("U.S.-Centric?"), self.tr("Edit"), self.tr("Remove")])
         
         # To size table properly
         self.resizeColumnsToContents()
@@ -38,9 +37,9 @@ class PromptTable(QTableWidget):
             row_position = self.rowCount()
         
         # Define buttons
-        edit_button = QPushButton(self.tr(EDIT))
+        edit_button = QPushButton(self.tr("Edit"))
         edit_button.clicked.connect(lambda: self.open_prompt_editor())
-        remove_button = QPushButton(self.tr(REMOVE))
+        remove_button = QPushButton(self.tr("Remove"))
         remove_button.clicked.connect(lambda: self.parent_window.remove_prompt())
         
         self.insertRow(row_position)
@@ -50,16 +49,16 @@ class PromptTable(QTableWidget):
         item = QTableWidgetItem(prompt.screen_question)
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 1, item)
-        item = QTableWidgetItem(self.tr(YES) if prompt.hasAudio else self.tr(NO))
+        item = QTableWidgetItem(self.tr("Yes") if prompt.hasAudio else self.tr("No"))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 2, item)
         item = QTableWidgetItem(", ".join(prompt.suggestions[i] for i in range(len(prompt.suggestions))))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 3, item)
-        item = QTableWidgetItem(self.tr(YES) if prompt.x else self.tr(NO))
+        item = QTableWidgetItem(self.tr("Yes") if prompt.x else self.tr("No"))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 4, item)
-        item = QTableWidgetItem(self.tr(YES) if prompt.us else self.tr(NO))
+        item = QTableWidgetItem(self.tr("Yes") if prompt.us else self.tr("No"))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 5, item)
         self.setCellWidget(row_position, 6, edit_button)
@@ -72,16 +71,16 @@ class PromptTable(QTableWidget):
         item = QTableWidgetItem(prompt.screen_question)
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 1, item)
-        item = QTableWidgetItem(self.tr(YES) if prompt.hasAudio else self.tr(NO))
+        item = QTableWidgetItem(self.tr("Yes") if prompt.hasAudio else self.tr("No"))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 2, item)
         item = QTableWidgetItem(", ".join(prompt.suggestions[i] for i in range(len(prompt.suggestions))))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 3, item)
-        item = QTableWidgetItem(self.tr(YES) if prompt.x else self.tr(NO))
+        item = QTableWidgetItem(self.tr("Yes") if prompt.x else self.tr("No"))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 4, item)
-        item = QTableWidgetItem(self.tr(YES) if prompt.us else self.tr(NO))
+        item = QTableWidgetItem(self.tr("Yes") if prompt.us else self.tr("No"))
         item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
         self.setItem(row_position, 5, item)
     

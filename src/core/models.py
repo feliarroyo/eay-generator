@@ -1,6 +1,7 @@
 from operator import index
 import os
 
+from src.ui.constants import BLANK_SYMBOL, BLANK_SYMBOL_F4, PLAYER_SYMBOL, PLAYER_SYMBOL_F4
 
 VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
 LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
@@ -134,7 +135,7 @@ class fib3EAYTemplate_Data:
 class fib4EAYTemplate:
     def adjust_formatting(self, text):
         # Replace <PLAYER> and <BLANK> with {{PLAYER}} and {{BLANK}}
-        text = text.replace("<PLAYER>", "{{PLAYER}}").replace("<BLANK>", "{{BLANK}}")
+        text = text.replace(PLAYER_SYMBOL, PLAYER_SYMBOL_F4).replace(BLANK_SYMBOL, BLANK_SYMBOL_F4)
         return text
     def __init__(self, prompts):
         self.content = [
@@ -165,7 +166,7 @@ class fib4EAYTemplate:
 class fib4EAYTemplate_Data:
     def adjust_formatting(self, text):
             # Replace <PLAYER> and <BLANK> with {{PLAYER}} and {{BLANK}}
-            text = text.replace("<PLAYER>", "{{PLAYER}}").replace("<BLANK>", "{{BLANK}}")
+            text = text.replace(PLAYER_SYMBOL, PLAYER_SYMBOL_F4).replace(BLANK_SYMBOL, BLANK_SYMBOL_F4)
             return text
     def __init__(self, prompt):
         self.fields = [
