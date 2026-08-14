@@ -1,7 +1,7 @@
 from operator import index
 import os
 
-from src.ui.constants import BLANK_SYMBOL, BLANK_SYMBOL_F4, PLAYER_SYMBOL, PLAYER_SYMBOL_F4
+from ui.constants import BLANK_SYMBOL, BLANK_SYMBOL_F4, PLAYER_SYMBOL, PLAYER_SYMBOL_F4
 
 VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
 LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
@@ -12,7 +12,7 @@ class EAYPrompt:
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
         self.personal_question = personal_question
         self.screen_question = screen_question
-        self.hasAudio = audio is not None
+        self.hasAudio = bool(audio)
         self.audio = audio
         self.suggestions = suggestions
         self.x = x
