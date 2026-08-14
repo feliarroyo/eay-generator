@@ -124,9 +124,9 @@ def read_episode_prompts(episode_name):
 def checkPackDirectory(path):
     """Checks if the provided path is a valid game pack directory for either Pack 4 or Pack 9."""
     # PACK 4
-    jpp4_path = Path(path / "./games/Fibbage3/content")
+    jpp4_path = Path(path) / "./games/Fibbage3/content"
     # PACK 9
-    jpp9_path = Path(path / "./games/Fibbage4/content")
+    jpp9_path = Path(path) / "./games/Fibbage4/content"
     
     if jpp4_path.is_dir():
         return 4
@@ -164,9 +164,9 @@ def get_linked_game_pack_path(pack_number):
 
 def backupFibbage3(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 3 game pack directory."""
-    jpp4_jet = path / "games/Fibbage3/content/tmishortie.jet"
+    jpp4_jet = Path(path) / "games/Fibbage3/content/tmishortie.jet"
     print (jpp4_jet)
-    jpp4_folder = path / "games/Fibbage3/content/tmishortie"
+    jpp4_folder = Path(path) / "games/Fibbage3/content/tmishortie"
     print (jpp4_folder)
     print (backup_path / "games/Fibbage3/content/tmishortie.jet")
     os.makedirs(os.path.dirname(backup_path / "games/Fibbage3/content/tmishortie"), exist_ok=True)
@@ -176,8 +176,8 @@ def backupFibbage3(path):
 def backupFibbage4(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 4 game pack directory."""
     for lang in VALID_LANGUAGES:
-        jpp9_jet = path / f"games/Fibbage4/content/{lang}/eayblankie.jet"
-        jpp9_folder = path / f"games/Fibbage4/content/{lang}/eayblankie"
+        jpp9_jet = Path(path) / f"games/Fibbage4/content/{lang}/eayblankie.jet"
+        jpp9_folder = Path(path) / f"games/Fibbage4/content/{lang}/eayblankie"
         os.makedirs(os.path.dirname(backup_path / f"./games/Fibbage4/content/{lang}/eayblankie"), exist_ok=True)
         shutil.copy2(jpp9_jet, backup_path / f"./games/Fibbage4/content/{lang}/eayblankie.jet")
         shutil.copytree(jpp9_folder, backup_path / f"./games/Fibbage4/content/{lang}/eayblankie", dirs_exist_ok=True)
