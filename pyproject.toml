@@ -1,0 +1,24 @@
+[project]
+name = "eay_generator"
+version = "0.2.0"
+description = "Prompt generator for Fibbage: Enough About You."
+
+[tool.pyside6-project]
+files = [
+    "src/main.py",
+    "src/core/fileManager.py",
+    "src/core/models.py",
+    "src/ui/build_menu.py",
+    "src/ui/constants.py",
+    "src/ui/episode_editor.py",
+    "src/ui/main_menu.py",
+    "src/ui/prompt_editor.py",
+    "src/ui/prompt_form_editor.py",
+    "src/ui/prompt_form.py",
+    "src/ui/prompt_table.py",
+    "src/ui/revert_menu.py",
+    "translations/de.ts",
+    "translations/fr.ts",
+    "translations/es.ts",
+    "translations/it.ts"
+]
