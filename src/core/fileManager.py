@@ -6,7 +6,7 @@ import uuid
 import sys
 from pathlib import Path
 
-from core.models import VALID_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
+from core.models import FIB4_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
 
 def get_user_data_path():
     if getattr(sys, 'frozen', False):
@@ -175,7 +175,7 @@ def backupFibbage3(path):
 
 def backupFibbage4(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 4 game pack directory."""
-    for lang in VALID_LANGUAGES:
+    for lang in FIB4_LANGUAGES:
         jpp9_jet = Path(path) / f"games/Fibbage4/content/{lang}/eayblankie.jet"
         jpp9_folder = Path(path) / f"games/Fibbage4/content/{lang}/eayblankie"
         os.makedirs(os.path.dirname(backup_path / f"./games/Fibbage4/content/{lang}/eayblankie"), exist_ok=True)
@@ -188,7 +188,7 @@ def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileTy
     if os.path.exists(build_path) and build_path == app_build_path:
         shutil.rmtree(build_path)
     # Create root directory for the files
-    target_path = build_path / base_folder_structure
+    target_path = Path(build_path) / base_folder_structure
     os.makedirs(target_path, exist_ok=True)
     
     # Read episode prompts from the selected episodes and create a shortie element
