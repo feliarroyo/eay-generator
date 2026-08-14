@@ -65,7 +65,7 @@ class EpisodeEditWidget(QWidget):
 
     def __init__(self, parent_window):
         super().__init__()
-        self.unsaved_changes = True
+        self.unsaved_changes = False
         self.parent_window = parent_window
         self.prompts = []
         
