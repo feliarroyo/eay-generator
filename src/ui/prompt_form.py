@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLin
 from PySide6.QtGui import QIcon, Qt
 from core.models import EAYPrompt
 from core.fileManager import choose_audio_file, save_temp_audio
-from src.ui.constants import BLANK_SYMBOL, PLAYER_SYMBOL
+from ui.constants import BLANK_SYMBOL, PLAYER_SYMBOL
 
 class CustomDialog(QDialog):
     def __init__(self):
@@ -26,7 +26,7 @@ class CustomDialog(QDialog):
 
 class PromptFormWidget(QWidget):
     def get_current_prompt(self):
-        audio_value = os.path.basename(self.current_audio_path) if self.current_audio_path is not None else None
+        audio_value = os.path.basename(self.current_audio_path) if self.current_audio_path else None
         # Get the values from the input fields
         return EAYPrompt(
             self.personal_prompt_input.text(),

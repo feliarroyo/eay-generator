@@ -14,6 +14,7 @@ class EpisodeEditWidget(QWidget):
         update_temp_episode_file(self.episode_name, episode_file)
         copy_temp_files_on_episode_folder(self.episode_name)
         self.unsaved_changes = False
+        self.save_episode_button.setEnabled(False)
         
     def return_to_menu(self):
         if self.unsaved_changes:
@@ -42,11 +43,13 @@ class EpisodeEditWidget(QWidget):
         self.prompt_form.clear_inputs()  # Clear the input fields after adding the prompt
         self.prompts.append(prompt)
         self.unsaved_changes = True
+        self.save_episode_button.setEnabled(True)
         
     def edit_prompt_in_index(self, index, prompt):
         self.prompts[index] = prompt
         self.prompt_table.update_prompt_in_table(index, prompt)
         self.unsaved_changes = True
+        self.save_episode_button.setEnabled(True)
 
     def remove_prompt(self):
         """Remove the selected prompt from the table, as well as its audio if it exists."""
@@ -55,6 +58,7 @@ class EpisodeEditWidget(QWidget):
             remove_audio(self.prompts[currentRow].audio)
         self.prompts.pop(currentRow)
         self.unsaved_changes = True
+        self.save_episode_button.setEnabled(True)
 
     def clear_editor(self):
         self.prompt_form.clear_inputs()
@@ -65,7 +69,6 @@ class EpisodeEditWidget(QWidget):
 
     def __init__(self, parent_window):
         super().__init__()
-        self.unsaved_changes = False
         self.parent_window = parent_window
         self.prompts = []
         
@@ -74,8 +77,9 @@ class EpisodeEditWidget(QWidget):
         self.save_episode_button = QPushButton(
             self.tr("Save Episode")
         )
-        self.save_episode_button.setCheckable(True)
         self.save_episode_button.clicked.connect(lambda: self.save_episode())
+        self.unsaved_changes = False
+        self.save_episode_button.setEnabled(False)
         
         # Discard Button
         self.main_menu_button = QPushButton(self.tr("Return to Main Menu"))
