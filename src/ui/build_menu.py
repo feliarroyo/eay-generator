@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QCheckBox, QComboBox, QFileDialog, QLabel, QListWidget, QMessageBox, QPushButton, QVBoxLayout, QWidget
 
 from core.fileManager import generateFibbage3Files, generateFibbage4Files, get_linked_game_pack_path, list_episode_folders, registerPack
-from core.models import LANGUAGE_NAMES, VALID_LANGUAGES
+from core.models import LANGUAGE_NAMES, FIB4_LANGUAGES
 from ui.revert_menu import RevertMenuWidget
 
 class BuildMenuWidget(QWidget):
@@ -20,8 +20,8 @@ class BuildMenuWidget(QWidget):
         layout.addWidget(choose_modding_game_label)
         self.choose_modding_game_combobox = QComboBox()
         self.choose_modding_game_combobox.addItem("Fibbage 3")
-        for lang in VALID_LANGUAGES:
-            text = f"Fibbage 4 - {LANGUAGE_NAMES[VALID_LANGUAGES.index(lang)]}"
+        for lang in FIB4_LANGUAGES:
+            text = f"Fibbage 4 - {LANGUAGE_NAMES[FIB4_LANGUAGES.index(lang)]}"
             self.choose_modding_game_combobox.addItem(text, lang)
         layout.addWidget(self.choose_modding_game_combobox)
         

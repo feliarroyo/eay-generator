@@ -1,8 +1,9 @@
 import os
 from core.fileManager import create_base_folder, get_user_data_path, update_temp_episode_file, list_episode_folders, load_episode_to_temp_folder, read_episode_prompts
-from PySide6.QtWidgets import QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
-from PySide6.QtCore import QCoreApplication, QEvent
+from PySide6.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtCore import QCoreApplication, QEvent, QSettings
 from core.assetsManager import change_app_language
+from core.models import FIB4_LANGUAGES, PROGRAM_LANGUAGE_NAMES, PROGRAM_LANGUAGES
 from ui.build_menu import BuildMenuWidget
 create_base_folder()  # Ensure the base folder exists
 
@@ -13,9 +14,20 @@ class MainMenuWidget(QWidget):
         self.parent_window.setWindowTitle(self.tr("EAY Generator"))
 
         layout = QVBoxLayout()
-        self.toggle_lang_button = QPushButton(self.tr("Cambiar idioma a español"))
-        self.toggle_lang_button.clicked.connect(lambda: self.toggle_language())
-        layout.addWidget(self.toggle_lang_button)
+        self.language_label = QLabel(self.tr("Select Language"))
+        layout.addWidget(self.language_label)
+        self.language_combobox = QComboBox()
+        for index, lang in enumerate(PROGRAM_LANGUAGES):
+            text = PROGRAM_LANGUAGE_NAMES[index]
+            self.language_combobox.addItem(text, lang)
+        settings = QSettings("EAYModding", "EAYGenerator")
+        self.language_combobox.setCurrentIndex(PROGRAM_LANGUAGES.index(settings.value("language", "en")))
+        self.language_combobox.currentIndexChanged.connect(lambda index: self.change_language(self.language_combobox.itemData(index)))
+        
+        layout.addWidget(self.language_combobox)
+        # self.toggle_lang_button = QPushButton(self.tr("Cambiar idioma a español"))
+        # self.toggle_lang_button.clicked.connect(lambda: self.toggle_language())
+        # layout.addWidget(self.toggle_lang_button)
         self.episode_label = QLabel(self.tr("Episode Name"))
         layout.addWidget(self.episode_label)
         self.episode_input = QLineEdit()
@@ -54,6 +66,11 @@ class MainMenuWidget(QWidget):
         self.setLayout(layout)
         parent_window.setFixedSize(layout.sizeHint().width(), layout.sizeHint().height())
 
+    def change_language(self, lang_code):
+        app = QCoreApplication.instance()
+        change_app_language(app, lang_code)
+        self.retranslate_ui()
+        
     def validate_episode_name(self, name):
         # For now, it only checks that it isn't empty or whitespace. When episode select is implemented, it must check that the name isn't already in use, and also typical file name restrictions
         episode_name = name.strip()
@@ -95,7 +112,7 @@ class MainMenuWidget(QWidget):
 
     def retranslate_ui(self):
         """Retranslate UI from main window to impose translation."""
-        self.toggle_lang_button.setText(self.tr("Cambiar idioma a español"))
+        self.language_label.setText(self.tr("Select Language"))
         self.episode_label.setText(self.tr("Episode Name"))
         self.episode_input.setPlaceholderText(self.tr("e.g. Inside Jokes"))
         self.new_episode_button.setText(self.tr("Create New Episode"))
@@ -114,15 +131,3 @@ class MainMenuWidget(QWidget):
             
         # Always call the parent class's changeEvent so PySide doesn't break!
         super().changeEvent(event)
-    
-    def toggle_language(self):
-        """Example function to trigger the change."""
-        app = QCoreApplication.instance() # Get the running QApplication
-        
-        # Flip between English and Spanish
-        if self.toggle_lang_button.text() == "Cambiar idioma a español":
-            change_app_language(app, "es")
-            self.toggle_lang_button.setText("Switch to English")
-        else:
-            change_app_language(app, "en")
-            self.toggle_lang_button.setText("Cambiar idioma a español")

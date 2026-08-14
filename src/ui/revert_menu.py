@@ -1,5 +1,5 @@
 from core.fileManager import get_linked_game_pack_path, restore_fibbage_3, restore_fibbage_4
-from core.models import LANGUAGE_NAMES, VALID_LANGUAGES
+from core.models import LANGUAGE_NAMES, FIB4_LANGUAGES
 from PySide6.QtWidgets import QComboBox, QLabel, QMessageBox, QPushButton, QVBoxLayout, QWidget
 class RevertMenuWidget(QWidget):
     def __init__(self, parent_window):
@@ -11,8 +11,8 @@ class RevertMenuWidget(QWidget):
         layout.addWidget(revert_label)
         self.choose_revert_game_combobox = QComboBox()
         self.choose_revert_game_combobox.addItem("Fibbage 3")
-        for lang in VALID_LANGUAGES:
-            text = f"Fibbage 4 - {LANGUAGE_NAMES[VALID_LANGUAGES.index(lang)]}"
+        for lang in FIB4_LANGUAGES:
+            text = f"Fibbage 4 - {LANGUAGE_NAMES[FIB4_LANGUAGES.index(lang)]}"
             self.choose_revert_game_combobox.addItem(text, lang)
         layout.addWidget(self.choose_revert_game_combobox)
         revert_changes_button = QPushButton(self.tr("Revert Changes"))

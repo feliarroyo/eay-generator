@@ -3,8 +3,10 @@ import os
 
 from ui.constants import BLANK_SYMBOL, BLANK_SYMBOL_F4, PLAYER_SYMBOL, PLAYER_SYMBOL_F4
 
-VALID_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
-LANGUAGE_NAMES = ["English", "French", "German", "Español (España)", "Español (América Latina)", "Italian"]
+PROGRAM_LANGUAGES = ["en", "fr", "de", "es", "it"]
+PROGRAM_LANGUAGE_NAMES = ["English", "Français - currently unimplemented", "Deutsch - currently unimplemented", "Español", "Italiano - currently unimplemented"]
+FIB4_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
+LANGUAGE_NAMES = ["English", "Français", "Deutsch", "Español (España)", "Español (América Latina)", "Italiano"]
 
 EARWAX_CATEGORIES = ["household", "tools", "alarm", "vehicle", "Animal", "cartoon", "Music", "voice", "bodily functions", "sports", "liquid", "electronic/machine", "human", "crowd", "violence", "weather", "sexual", "sci-fi", "explosion"]
 
