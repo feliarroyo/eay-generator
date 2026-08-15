@@ -66,7 +66,7 @@ class BuildMenuWidget(QWidget):
         if pack_path:
             pack_number = registerPack(pack_path)
             if pack_number:
-                QMessageBox.information(self, self.tr("Success"), f"Game Pack {pack_number} linked successfully.")
+                QMessageBox.information(self, self.tr("Success"), self.tr(f"Pack {pack_number} has been successfully detected."))
             else:
                 QMessageBox.critical(self, self.tr("Error"), self.tr("Invalid game pack directory selected."))
     

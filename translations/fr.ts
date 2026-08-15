@@ -83,6 +83,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/ui/build_menu.py" line="69"/>
+        <source>Pack {pack_number} has been successfully detected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/ui/build_menu.py" line="71"/>
         <source>Invalid game pack directory selected.</source>
         <translation type="unfinished"></translation>

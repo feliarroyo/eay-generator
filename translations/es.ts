@@ -401,6 +401,11 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
         <translation>Éxito</translation>
     </message>
     <message>
+        <location filename="../src/ui/build_menu.py" line="69"/>
+        <source>Pack {pack_number} has been successfully detected.</source>
+        <translation>Se ha detectado el Pack {pack_number} exitosamente.</translation>
+    </message>
+    <message>
         <location filename="../src/ui/build_menu.py" line="71"/>
         <source>Invalid game pack directory selected.</source>
         <translation>El directorio del pack del juego seleccionado no es válido</translation>
