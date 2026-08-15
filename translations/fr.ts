@@ -143,7 +143,8 @@
     </message>
     <message>
         <location filename="../src/ui/episode_editor.py" line="24"/>
-        <source>You have unsaved changes. Do you want to save them before returning to the main menu?</source>
+        <source>You have unsaved changes.
+Do you want to save them before returning to the main menu?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -231,121 +232,121 @@
 <context>
     <name>PromptFormWidget</name>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="52"/>
+        <location filename="../src/ui/prompt_form.py" line="53"/>
         <source>Audio loaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="58"/>
-        <location filename="../src/ui/prompt_form.py" line="84"/>
-        <location filename="../src/ui/prompt_form.py" line="116"/>
+        <location filename="../src/ui/prompt_form.py" line="59"/>
+        <location filename="../src/ui/prompt_form.py" line="85"/>
+        <location filename="../src/ui/prompt_form.py" line="117"/>
         <source>(No audio)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="96"/>
+        <location filename="../src/ui/prompt_form.py" line="97"/>
         <source>Personal Prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="97"/>
+        <location filename="../src/ui/prompt_form.py" line="98"/>
         <source>(Required Field)
 This is the question that will be asked to the player in question on their device at the start.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="99"/>
+        <location filename="../src/ui/prompt_form.py" line="100"/>
         <source>e.g. What is your favorite color?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="102"/>
+        <location filename="../src/ui/prompt_form.py" line="103"/>
         <source>Screen Prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="103"/>
+        <location filename="../src/ui/prompt_form.py" line="104"/>
         <source>(Required Field)
 This is the question that will be shown to other players when coming up with lies, and will also be shown on screen alongside everyone&apos;s answers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="105"/>
+        <location filename="../src/ui/prompt_form.py" line="106"/>
         <source>e.g. &lt;PLAYER&gt;&apos;s favorite color is &lt;BLANK&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="106"/>
+        <location filename="../src/ui/prompt_form.py" line="107"/>
         <source>Insert Player Name into the Prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="107"/>
+        <location filename="../src/ui/prompt_form.py" line="108"/>
         <source>Inserts the &lt;PLAYER&gt; placeholder into the prompt, which will be replaced with the player&apos;s name when the prompt is displayed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="110"/>
+        <location filename="../src/ui/prompt_form.py" line="111"/>
         <source>Insert Blank into the Prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="111"/>
+        <location filename="../src/ui/prompt_form.py" line="112"/>
         <source>Inserts the &lt;BLANK&gt; placeholder into the prompt, which will be replaced with a blank when the prompt is displayed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="118"/>
+        <location filename="../src/ui/prompt_form.py" line="119"/>
         <source>Set audio for current prompt (.ogg only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="120"/>
+        <location filename="../src/ui/prompt_form.py" line="121"/>
         <source>Remove audio for current prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="124"/>
+        <location filename="../src/ui/prompt_form.py" line="125"/>
         <source>Suggestions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="125"/>
+        <location filename="../src/ui/prompt_form.py" line="126"/>
         <source>Dummy answers, used for Audience Lies in both games, as well as Jackbox Lies and Lie For Me button on Fibbage 4 only.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="127"/>
+        <location filename="../src/ui/prompt_form.py" line="128"/>
         <source>e.g. chocolate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="133"/>
+        <location filename="../src/ui/prompt_form.py" line="134"/>
         <source>Remove Suggestion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="139"/>
+        <location filename="../src/ui/prompt_form.py" line="140"/>
         <source>Mark as U.S.-Centric Prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="140"/>
+        <location filename="../src/ui/prompt_form.py" line="141"/>
         <source>Check this box if the prompt is specific to U.S. culture, and should be removed when playing using the U.S. filter in compatible games.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="141"/>
+        <location filename="../src/ui/prompt_form.py" line="142"/>
         <source>Mark as Not Family-Friendly Prompt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="142"/>
+        <location filename="../src/ui/prompt_form.py" line="143"/>
         <source>Check this box if the prompt is not family-friendly, and should be removed when playing using the Family-Friendly Filter in compatible games.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/prompt_form.py" line="144"/>
+        <location filename="../src/ui/prompt_form.py" line="145"/>
         <source>Add Prompt</source>
         <translation type="unfinished"></translation>
     </message>

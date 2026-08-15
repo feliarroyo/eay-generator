@@ -21,7 +21,7 @@ class EpisodeEditWidget(QWidget):
             reply = QMessageBox.question(
                 self,
                 self.tr("Unsaved Changes"),
-                self.tr("You have unsaved changes. Do you want to save them before returning to the main menu?"),
+                self.tr("You have unsaved changes.\nDo you want to save them before returning to the main menu?"),
                 QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
             )
             if reply == QMessageBox.Yes:
