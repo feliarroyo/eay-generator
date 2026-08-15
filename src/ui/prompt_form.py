@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLin
 from PySide6.QtGui import QIcon, Qt
 from core.models import EAYPrompt
 from core.fileManager import choose_audio_file, save_temp_audio
+from core.assetsManager import get_internal_assets_path
 from ui.constants import BLANK_SYMBOL, PLAYER_SYMBOL
 
 class CustomDialog(QDialog):
@@ -126,7 +127,7 @@ class PromptFormWidget(QWidget):
         self.suggestions_input = QLineEdit()
         self.suggestions_input.setPlaceholderText(self.tr("e.g. chocolate"))
         ASSET_KEY = "assets/keyboard-enter.png"
-        key_icon = QIcon(ASSET_KEY)
+        key_icon = QIcon(str(get_internal_assets_path() / ASSET_KEY))
         browse_action = self.suggestions_input.addAction(key_icon, QLineEdit.TrailingPosition)
         browse_action.triggered.connect(lambda: self.add_suggestion_to_list())
         self.suggestions_input.returnPressed.connect(lambda: self.add_suggestion_to_list())
