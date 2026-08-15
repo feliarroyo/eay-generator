@@ -403,7 +403,7 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
     <message>
         <location filename="../src/ui/build_menu.py" line="71"/>
         <source>Invalid game pack directory selected.</source>
-        <translation>El directorio de pack de juego seleccionado no es válido.</translation>
+        <translation>El directorio del pack del juego seleccionado no es válido</translation>
     </message>
     <message>
         <location filename="../src/ui/build_menu.py" line="75"/>
