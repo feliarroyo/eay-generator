@@ -165,22 +165,17 @@ def get_linked_game_pack_path(pack_number):
 def backupFibbage3(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 3 game pack directory."""
     jpp4_jet = Path(path) / "games/Fibbage3/content/tmishortie.jet"
-    print (jpp4_jet)
-    jpp4_folder = Path(path) / "games/Fibbage3/content/tmishortie"
-    print (jpp4_folder)
-    print (backup_path / "games/Fibbage3/content/tmishortie.jet")
-    os.makedirs(os.path.dirname(backup_path / "games/Fibbage3/content/tmishortie"), exist_ok=True)
-    shutil.copy2(jpp4_jet, backup_path / "games/Fibbage3/content/tmishortie.jet")
-    shutil.copytree(jpp4_folder, backup_path / "games/Fibbage3/content/tmishortie", dirs_exist_ok=True)
+    jpp4_backup_path = Path(backup_path) / "games/Fibbage3/content"
+    os.makedirs(jpp4_backup_path, exist_ok=True)
+    shutil.copy2(jpp4_jet, jpp4_backup_path / "tmishortie.jet")
 
 def backupFibbage4(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 4 game pack directory."""
     for lang in FIB4_LANGUAGES:
         jpp9_jet = Path(path) / f"games/Fibbage4/content/{lang}/eayblankie.jet"
-        jpp9_folder = Path(path) / f"games/Fibbage4/content/{lang}/eayblankie"
-        os.makedirs(os.path.dirname(backup_path / f"./games/Fibbage4/content/{lang}/eayblankie"), exist_ok=True)
-        shutil.copy2(jpp9_jet, backup_path / f"./games/Fibbage4/content/{lang}/eayblankie.jet")
-        shutil.copytree(jpp9_folder, backup_path / f"./games/Fibbage4/content/{lang}/eayblankie", dirs_exist_ok=True)
+        jpp9_backup_path = Path(backup_path) / f"games/Fibbage4/content/{lang}"
+        os.makedirs(jpp9_backup_path, exist_ok=True)
+        shutil.copy2(jpp9_jet, jpp9_backup_path / "eayblankie.jet")
 
 def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileType, dataFileType, fileName, build_path=app_build_path, include_base_prompts=False):
     """Generates the proper files for Enough About You games."""
@@ -208,11 +203,6 @@ def generateFibbageFiles(selected_episodes, base_folder_structure, shortieFileTy
         with open(main_jet_path, 'r', encoding='utf-8') as f:
             base_data = json.load(f)
         tmi_shortie["content"].extend(base_data["content"])
-        
-        # Copy base game prompt data folders into the build
-        source_dir = backup_path / base_folder_structure / fileName
-        copy_dir = Path(target_path / fileName)
-        shutil.copytree(source_dir, copy_dir, dirs_exist_ok=True)
     
     # Create tmi_shortie.jet file in the proper directory
     main_output_path = Path(target_path / fileName).with_suffix(".jet")
