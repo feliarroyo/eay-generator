@@ -2,7 +2,7 @@ import os
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QSettings
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QCloseEvent, QIcon
 from core.fileManager import delete_temp_folder
 from core.assetsManager import change_app_language, get_internal_assets_path
 from ui.episode_editor import EpisodeEditWidget
@@ -26,6 +26,11 @@ class EditorWindow(QMainWindow):
         self.main_menu_window.main_menu.update_folder_display()
         self.main_menu_window.show()
         self.close()
+        
+    def closeEvent(self, event: QCloseEvent):
+        """Intercepts window close requests."""
+        self.episode_editor.return_to_menu()
+        event.ignore()
 
 class MainMenuWindow(QMainWindow):
     def __init__(self):
