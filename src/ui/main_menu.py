@@ -1,6 +1,6 @@
 import os
 from core.fileManager import create_base_folder, get_user_data_path, update_temp_episode_file, list_episode_folders, load_episode_to_temp_folder, read_episode_prompts
-from PySide6.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout, QWidget
 from PySide6.QtCore import QCoreApplication, QEvent, QSettings
 from core.assetsManager import change_app_language
 from core.models import FIB4_LANGUAGES, PROGRAM_LANGUAGE_NAMES, PROGRAM_LANGUAGES
@@ -88,10 +88,19 @@ class MainMenuWidget(QWidget):
     def delete_episode(self, episode_name):
         episode_path = get_user_data_path() / "episodes" / episode_name
         if os.path.exists(episode_path):
-            import shutil
-            shutil.rmtree(episode_path)
-            print(f"Episode folder '{episode_name}' deleted.")
-            self.update_folder_display()
+            reply = QMessageBox.question(
+                self,
+                self.tr("Confirm Deletion"),
+                self.tr("Are you sure you want to delete this episode?"),
+                QMessageBox.Yes | QMessageBox.No,
+            )
+            if reply == QMessageBox.Yes:
+                import shutil
+                shutil.rmtree(episode_path)
+                print(f"Episode folder '{episode_name}' deleted.")
+                self.update_folder_display()
+            else:
+                return  # Do not return to the main menu if the user cancels
         else:
             print(f"Episode folder '{episode_name}' does not exist.")
     
