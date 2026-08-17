@@ -161,6 +161,11 @@ def get_linked_game_pack_path(pack_number):
 
         with open(path_file, 'r') as f:
             return f.read().strip()
+        
+def is_pack_linked(pack_number):
+    """Check if any game packs are linked and return a boolean."""
+    pack_path = get_linked_game_pack_path(pack_number)
+    return pack_path is not None
 
 def backupFibbage3(path):
     """"Backups the contents of the path passed to the function, which should be the Fibbage 3 game pack directory."""

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QCheckBox, QComboBox, QFileDialog, QLabel, QListWidget, QMessageBox, QPushButton, QVBoxLayout, QWidget
 
-from core.fileManager import generateFibbage3Files, generateFibbage4Files, get_linked_game_pack_path, list_episode_folders, registerPack
+from core.fileManager import generateFibbage3Files, generateFibbage4Files, get_linked_game_pack_path, is_pack_linked, list_episode_folders, registerPack
 from core.models import LANGUAGE_NAMES, FIB4_LANGUAGES
 from ui.revert_menu import RevertMenuWidget
 
@@ -14,6 +14,11 @@ class BuildMenuWidget(QWidget):
         link_game_label = QLabel(self.tr("You need to choose a game pack to:\n - Include base prompts\n - Apply episodes directly into the game\n - Revert changes"))
         layout.addWidget(link_game_label)
         link_game_button = QPushButton(self.tr("Select Party Pack Folder"))
+        pack4_linked = self.tr("Linked") if is_pack_linked(4) else self.tr("Not Linked")
+        pack9_linked = self.tr("Linked") if is_pack_linked(9) else self.tr("Not Linked")
+        self.link_game_list = QLabel(self.tr(f"Pack 4 (Fibbage 3): {pack4_linked}\nPack 9 (Fibbage 4): {pack9_linked}"))
+        self.link_game_list.setStyleSheet("QLabel { font-weight: bold; }")
+        layout.addWidget(self.link_game_list)
         link_game_button.clicked.connect(lambda: self.link_game_pack())
         layout.addWidget(link_game_button)
         choose_modding_game_label = QLabel(self.tr("Choose game to set prompts on:"))
@@ -67,9 +72,15 @@ class BuildMenuWidget(QWidget):
             pack_number = registerPack(pack_path)
             if pack_number:
                 QMessageBox.information(self, self.tr("Success"), self.tr(f"Pack {pack_number} has been successfully detected."))
+                self.evaluate_link_status()
             else:
                 QMessageBox.critical(self, self.tr("Error"), self.tr("Invalid game pack directory selected."))
-    
+                
+    def evaluate_link_status(self):
+        pack4_linked = self.tr("Linked") if is_pack_linked(4) else self.tr("Not Linked")
+        pack9_linked = self.tr("Linked") if is_pack_linked(9) else self.tr("Not Linked")
+        self.link_game_list.setText(self.tr(f"Pack 4 (Fibbage 3): {pack4_linked}\nPack 9 (Fibbage 4): {pack9_linked}"))
+
     def build_and_apply_episode(self, include_base_prompts, selected_episodes):
         if not selected_episodes:
             QMessageBox.warning(self, self.tr("Warning"), self.tr("No episodes selected!"))
