@@ -60,6 +60,7 @@ class BuildMenuWidget(QWidget):
         revert_changes_button = QPushButton(self.tr("Revert Changes"))
         revert_changes_button.setToolTip(self.tr("Reverts all changes made to the game pack by restoring the original files obtained from the backup."))
         revert_changes_button.clicked.connect(self.open_revert_menu)
+        self.revert_menu = None
         layout.addWidget(revert_changes_button)
 
         self.setLayout(layout)

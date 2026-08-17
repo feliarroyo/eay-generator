@@ -31,7 +31,6 @@ class EditorWindow(QMainWindow):
     def closeEvent(self, event: QCloseEvent):
         """Intercepts window close requests and returns to the main menu."""
         self.episode_editor.return_to_menu()
-        event.ignore()
 
 class BuildMenuWindow(QMainWindow):
     def __init__(self, main_menu_window):
@@ -47,7 +46,7 @@ class BuildMenuWindow(QMainWindow):
     
     def closeEvent(self, event: QCloseEvent):
         """Intercepts window close requests and returns to the main menu."""
-        if self.build_menu.revert_menu:
+        if self.build_menu.revert_menu is not None:
             self.build_menu.revert_menu.close()
         self.switch_to_menu()
         event.ignore()
