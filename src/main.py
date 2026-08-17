@@ -5,6 +5,7 @@ from PySide6.QtCore import QSettings
 from PySide6.QtGui import QCloseEvent, QIcon
 from core.fileManager import delete_temp_folder
 from core.assetsManager import change_app_language, get_internal_assets_path
+from ui.build_menu import BuildMenuWidget
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
 
@@ -28,8 +29,24 @@ class EditorWindow(QMainWindow):
         self.close()
         
     def closeEvent(self, event: QCloseEvent):
-        """Intercepts window close requests."""
+        """Intercepts window close requests and returns to the main menu."""
         self.episode_editor.return_to_menu()
+        event.ignore()
+
+class BuildMenuWindow(QMainWindow):
+    def __init__(self, main_menu_window):
+        super().__init__()
+        self.main_menu_window = main_menu_window
+        self.build_menu = BuildMenuWidget(self)
+        self.setCentralWidget(self.build_menu)
+
+    def switch_to_menu(self):
+        self.main_menu_window.show()
+        self.close()
+    
+    def closeEvent(self, event: QCloseEvent):
+        """Intercepts window close requests and returns to the main menu."""
+        self.switch_to_menu()
         event.ignore()
 
 class MainMenuWindow(QMainWindow):
@@ -44,6 +61,11 @@ class MainMenuWindow(QMainWindow):
         self.editor_window = EditorWindow(self)
         self.editor_window.load_episode_data(episode_name, prompts)
         self.editor_window.show()
+        self.hide()
+        
+    def switch_to_build_menu(self):
+        self.build_menu_window = BuildMenuWindow(self)
+        self.build_menu_window.show()
         self.hide()
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ class MainMenuWidget(QWidget):
         layout.addWidget(self.open_folder_button)
         self.apply_episodes_button = QPushButton(self.tr("Apply Custom Episodes"))
         layout.addWidget(self.apply_episodes_button)
-        self.apply_episodes_button.clicked.connect(lambda: self.open_build_menu())
+        self.apply_episodes_button.clicked.connect(lambda: self.parent_window.switch_to_build_menu())
         self.setLayout(layout)
         parent_window.setFixedSize(layout.sizeHint().width(), layout.sizeHint().height())
 
@@ -112,12 +112,6 @@ class MainMenuWidget(QWidget):
         value = current is not None        
         self.delete_episode_button.setEnabled(value)
         self.edit_episode_button.setEnabled(value)
-        
-    def open_build_menu(self):
-        self.build_menu = BuildMenuWidget(self.parent_window)
-        self.build_menu.show()
-        self.setEnabled(False)
-        self.build_menu.closeEvent = lambda event: self.setEnabled(True)
 
     def retranslate_ui(self):
         """Retranslate UI from main window to impose translation."""
