@@ -323,17 +323,17 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
         <translation type="vanished">Vincular pack de juegos</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="19"/>
+        <location filename="../src/ui/build_menu.py" line="23"/>
         <source>Choose game to set prompts on:</source>
         <translation>Elige el juego para el que aplicar los enunciados:</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="29"/>
+        <location filename="../src/ui/build_menu.py" line="33"/>
         <source>Include base game prompts</source>
         <translation>Incluir enunciados base</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="31"/>
+        <location filename="../src/ui/build_menu.py" line="35"/>
         <source>Select episodes to include:</source>
         <translation>Elegir episodios a incluir:</translation>
     </message>
@@ -342,9 +342,8 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
         <translation type="vanished">Enunciados base</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="12"/>
         <source>EAY Generator - Build Episode</source>
-        <translation>EAY Generator - Aplicar episodio</translation>
+        <translation type="vanished">EAY Generator - Aplicar episodio</translation>
     </message>
     <message>
         <source>You need to choose a game pack to:
@@ -355,82 +354,106 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
  - Aplicar los episodios directamente en el juego</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="16"/>
+        <location filename="../src/ui/build_menu.py" line="15"/>
         <source>Select Party Pack Folder</source>
         <translation>Seleccionar carpeta del Party Pack</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="42"/>
+        <location filename="../src/ui/build_menu.py" line="16"/>
+        <location filename="../src/ui/build_menu.py" line="17"/>
+        <location filename="../src/ui/build_menu.py" line="79"/>
+        <location filename="../src/ui/build_menu.py" line="80"/>
+        <source>Linked</source>
+        <translation>Vinculado</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="16"/>
+        <location filename="../src/ui/build_menu.py" line="17"/>
+        <location filename="../src/ui/build_menu.py" line="79"/>
+        <location filename="../src/ui/build_menu.py" line="80"/>
+        <source>Not Linked</source>
+        <translation>No vinculado</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="18"/>
+        <location filename="../src/ui/build_menu.py" line="81"/>
+        <source>Pack 4 (Fibbage 3): {pack4_linked}
+Pack 9 (Fibbage 4): {pack9_linked}</source>
+        <translation>Pack 4 (Fibbage 3): {pack4_linked}
+Pack 9 (Fibbage 4): {pack9_linked}</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="46"/>
         <source>Generate Files On Build Folder</source>
         <translation>Generar archivos en la carpeta Build</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="44"/>
+        <location filename="../src/ui/build_menu.py" line="48"/>
         <source>Generates the necessary files for the selected game in the build folder. You can then manually copy them to the game pack.</source>
         <translation>Genera los archivos necesarios para el juego elegido en la carpeta &quot;folder&quot;. Luego puedes copiarlos manualmente en el directorio del juego.</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="46"/>
+        <location filename="../src/ui/build_menu.py" line="50"/>
         <source>Generate And Install On Game Pack</source>
         <translation>Generar archivos e instalar</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="48"/>
+        <location filename="../src/ui/build_menu.py" line="52"/>
         <source>Generates the necessary files for the selected game and installs them directly into the linked game pack.</source>
         <translation>Genera los archivos necesarios para el juego elegido y los instala directamente en el juego (si ha sido previamente registrado).</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="56"/>
+        <location filename="../src/ui/build_menu.py" line="60"/>
         <source>Revert Changes</source>
         <translation>Revertir cambios</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="57"/>
+        <location filename="../src/ui/build_menu.py" line="61"/>
         <source>Reverts all changes made to the game pack by restoring the original files obtained from the backup.</source>
         <translation>Revierte todos los cambios realizados al juego, utilizando los archivos obtenidos del backup.</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="65"/>
+        <location filename="../src/ui/build_menu.py" line="69"/>
         <source>Select the game pack directory</source>
         <translation>Elegir el directorio del pack de juegos</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="69"/>
-        <location filename="../src/ui/build_menu.py" line="101"/>
+        <location filename="../src/ui/build_menu.py" line="73"/>
+        <location filename="../src/ui/build_menu.py" line="111"/>
         <source>Success</source>
         <translation>Éxito</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="69"/>
+        <location filename="../src/ui/build_menu.py" line="73"/>
         <source>Pack {pack_number} has been successfully detected.</source>
         <translation>Se ha detectado el Pack {pack_number} exitosamente.</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="71"/>
+        <location filename="../src/ui/build_menu.py" line="76"/>
         <source>Invalid game pack directory selected.</source>
         <translation>El directorio del pack del juego seleccionado no es válido</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="75"/>
-        <location filename="../src/ui/build_menu.py" line="90"/>
+        <location filename="../src/ui/build_menu.py" line="85"/>
+        <location filename="../src/ui/build_menu.py" line="100"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="75"/>
-        <location filename="../src/ui/build_menu.py" line="90"/>
+        <location filename="../src/ui/build_menu.py" line="85"/>
+        <location filename="../src/ui/build_menu.py" line="100"/>
         <source>No episodes selected!</source>
         <translation>¡No se eligieron episodios!</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="71"/>
-        <location filename="../src/ui/build_menu.py" line="86"/>
-        <location filename="../src/ui/build_menu.py" line="103"/>
+        <location filename="../src/ui/build_menu.py" line="76"/>
+        <location filename="../src/ui/build_menu.py" line="96"/>
+        <location filename="../src/ui/build_menu.py" line="113"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="14"/>
+        <location filename="../src/ui/build_menu.py" line="13"/>
         <source>You need to choose a game pack to:
  - Include base prompts
  - Apply episodes directly into the game
@@ -441,9 +464,17 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
  - Revertir los cambios</translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="86"/>
+        <location filename="../src/ui/build_menu.py" line="96"/>
         <source>No game pack linked for the selected game. Please link a game pack first.</source>
         <translation>No hay directorio vinculado para el juego elegido. Vincula el directorio del juego antes de usar esta opción.</translation>
+    </message>
+</context>
+<context>
+    <name>BuildMenuWindow</name>
+    <message>
+        <location filename="../src/main.py" line="42"/>
+        <source>EAY Generator - Build Episode</source>
+        <translation>EAY Generator - Aplicar episodio</translation>
     </message>
 </context>
 <context>
@@ -461,7 +492,7 @@ Esta es la pregunta que se le muestra a los otros jugadores para que piensen en 
         <translation type="vanished">Volver al menú principal</translation>
     </message>
     <message>
-        <location filename="../src/main.py" line="21"/>
+        <location filename="../src/main.py" line="22"/>
         <source>EAY Generator - Episode: </source>
         <translation>EAY Generator - Episodio: </translation>
     </message>
@@ -513,7 +544,7 @@ Do you want to save them before returning to the main menu?</source>
     <name>MainMenuWidget</name>
     <message>
         <location filename="../src/ui/main_menu.py" line="14"/>
-        <location filename="../src/ui/main_menu.py" line="124"/>
+        <location filename="../src/ui/main_menu.py" line="127"/>
         <source>EAY Generator</source>
         <translation>EAY Generator</translation>
     </message>
@@ -523,63 +554,73 @@ Do you want to save them before returning to the main menu?</source>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="17"/>
-        <location filename="../src/ui/main_menu.py" line="115"/>
+        <location filename="../src/ui/main_menu.py" line="118"/>
         <source>Select Language</source>
         <translation>Elegir lenguaje del programa</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="31"/>
-        <location filename="../src/ui/main_menu.py" line="116"/>
+        <location filename="../src/ui/main_menu.py" line="119"/>
         <source>Episode Name</source>
         <translation>Nombre del episodio</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="34"/>
-        <location filename="../src/ui/main_menu.py" line="117"/>
+        <location filename="../src/ui/main_menu.py" line="120"/>
         <source>e.g. Inside Jokes</source>
         <translation>por ej.: Chistes internos</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="37"/>
-        <location filename="../src/ui/main_menu.py" line="118"/>
+        <location filename="../src/ui/main_menu.py" line="121"/>
         <source>Create New Episode</source>
         <translation>Crear nuevo episodio</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="42"/>
-        <location filename="../src/ui/main_menu.py" line="119"/>
+        <location filename="../src/ui/main_menu.py" line="122"/>
         <source>Edit Selected Episode</source>
         <translation>Editar episodio seleccionado</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="46"/>
-        <location filename="../src/ui/main_menu.py" line="120"/>
+        <location filename="../src/ui/main_menu.py" line="123"/>
         <source>Delete Selected Episode</source>
         <translation>Borrar episodio seleccionado</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="50"/>
-        <location filename="../src/ui/main_menu.py" line="121"/>
+        <location filename="../src/ui/main_menu.py" line="124"/>
         <source>Refresh Episode List</source>
         <translation>Actualizar lista de episodios</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="59"/>
-        <location filename="../src/ui/main_menu.py" line="122"/>
+        <location filename="../src/ui/main_menu.py" line="125"/>
         <source>Open Episode Folder</source>
         <translation>Abrir carpeta de episodios</translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="63"/>
-        <location filename="../src/ui/main_menu.py" line="123"/>
+        <location filename="../src/ui/main_menu.py" line="126"/>
         <source>Apply Custom Episodes</source>
         <translation>Aplicar episodios personalizados</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main_menu.py" line="93"/>
+        <source>Confirm Deletion</source>
+        <translation>Confirmar borrado</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main_menu.py" line="94"/>
+        <source>Are you sure you want to delete this episode?</source>
+        <translation>¿Seguro que deseas eliminar este episodio?</translation>
     </message>
 </context>
 <context>
     <name>MainMenuWindow</name>
     <message>
-        <location filename="../src/main.py" line="34"/>
+        <location filename="../src/main.py" line="59"/>
         <source>EAY Generator</source>
         <translation>EAY Generator</translation>
     </message>

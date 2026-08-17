@@ -17,102 +17,120 @@
 <context>
     <name>BuildMenuWidget</name>
     <message>
-        <location filename="../src/ui/build_menu.py" line="19"/>
+        <location filename="../src/ui/build_menu.py" line="23"/>
         <source>Choose game to set prompts on:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="29"/>
+        <location filename="../src/ui/build_menu.py" line="33"/>
         <source>Include base game prompts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="31"/>
+        <location filename="../src/ui/build_menu.py" line="35"/>
         <source>Select episodes to include:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="12"/>
-        <source>EAY Generator - Build Episode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/build_menu.py" line="16"/>
+        <location filename="../src/ui/build_menu.py" line="15"/>
         <source>Select Party Pack Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="42"/>
-        <source>Generate Files On Build Folder</source>
+        <location filename="../src/ui/build_menu.py" line="16"/>
+        <location filename="../src/ui/build_menu.py" line="17"/>
+        <location filename="../src/ui/build_menu.py" line="79"/>
+        <location filename="../src/ui/build_menu.py" line="80"/>
+        <source>Linked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="44"/>
-        <source>Generates the necessary files for the selected game in the build folder. You can then manually copy them to the game pack.</source>
+        <location filename="../src/ui/build_menu.py" line="16"/>
+        <location filename="../src/ui/build_menu.py" line="17"/>
+        <location filename="../src/ui/build_menu.py" line="79"/>
+        <location filename="../src/ui/build_menu.py" line="80"/>
+        <source>Not Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="18"/>
+        <location filename="../src/ui/build_menu.py" line="81"/>
+        <source>Pack 4 (Fibbage 3): {pack4_linked}
+Pack 9 (Fibbage 4): {pack9_linked}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/build_menu.py" line="46"/>
-        <source>Generate And Install On Game Pack</source>
+        <source>Generate Files On Build Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/build_menu.py" line="48"/>
+        <source>Generates the necessary files for the selected game in the build folder. You can then manually copy them to the game pack.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="50"/>
+        <source>Generate And Install On Game Pack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/build_menu.py" line="52"/>
         <source>Generates the necessary files for the selected game and installs them directly into the linked game pack.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="56"/>
+        <location filename="../src/ui/build_menu.py" line="60"/>
         <source>Revert Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="57"/>
+        <location filename="../src/ui/build_menu.py" line="61"/>
         <source>Reverts all changes made to the game pack by restoring the original files obtained from the backup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="65"/>
+        <location filename="../src/ui/build_menu.py" line="69"/>
         <source>Select the game pack directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="69"/>
-        <location filename="../src/ui/build_menu.py" line="101"/>
+        <location filename="../src/ui/build_menu.py" line="73"/>
+        <location filename="../src/ui/build_menu.py" line="111"/>
         <source>Success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="69"/>
+        <location filename="../src/ui/build_menu.py" line="73"/>
         <source>Pack {pack_number} has been successfully detected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="71"/>
+        <location filename="../src/ui/build_menu.py" line="76"/>
         <source>Invalid game pack directory selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="75"/>
-        <location filename="../src/ui/build_menu.py" line="90"/>
+        <location filename="../src/ui/build_menu.py" line="85"/>
+        <location filename="../src/ui/build_menu.py" line="100"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="75"/>
-        <location filename="../src/ui/build_menu.py" line="90"/>
+        <location filename="../src/ui/build_menu.py" line="85"/>
+        <location filename="../src/ui/build_menu.py" line="100"/>
         <source>No episodes selected!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="71"/>
-        <location filename="../src/ui/build_menu.py" line="86"/>
-        <location filename="../src/ui/build_menu.py" line="103"/>
+        <location filename="../src/ui/build_menu.py" line="76"/>
+        <location filename="../src/ui/build_menu.py" line="96"/>
+        <location filename="../src/ui/build_menu.py" line="113"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="14"/>
+        <location filename="../src/ui/build_menu.py" line="13"/>
         <source>You need to choose a game pack to:
  - Include base prompts
  - Apply episodes directly into the game
@@ -120,15 +138,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/build_menu.py" line="86"/>
+        <location filename="../src/ui/build_menu.py" line="96"/>
         <source>No game pack linked for the selected game. Please link a game pack first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BuildMenuWindow</name>
+    <message>
+        <location filename="../src/main.py" line="42"/>
+        <source>EAY Generator - Build Episode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>EditorWindow</name>
     <message>
-        <location filename="../src/main.py" line="21"/>
+        <location filename="../src/main.py" line="22"/>
         <source>EAY Generator - Episode: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -167,69 +193,79 @@ Do you want to save them before returning to the main menu?</source>
     <name>MainMenuWidget</name>
     <message>
         <location filename="../src/ui/main_menu.py" line="14"/>
-        <location filename="../src/ui/main_menu.py" line="124"/>
+        <location filename="../src/ui/main_menu.py" line="127"/>
         <source>EAY Generator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="17"/>
-        <location filename="../src/ui/main_menu.py" line="115"/>
+        <location filename="../src/ui/main_menu.py" line="118"/>
         <source>Select Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="31"/>
-        <location filename="../src/ui/main_menu.py" line="116"/>
+        <location filename="../src/ui/main_menu.py" line="119"/>
         <source>Episode Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="34"/>
-        <location filename="../src/ui/main_menu.py" line="117"/>
+        <location filename="../src/ui/main_menu.py" line="120"/>
         <source>e.g. Inside Jokes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="37"/>
-        <location filename="../src/ui/main_menu.py" line="118"/>
+        <location filename="../src/ui/main_menu.py" line="121"/>
         <source>Create New Episode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="42"/>
-        <location filename="../src/ui/main_menu.py" line="119"/>
+        <location filename="../src/ui/main_menu.py" line="122"/>
         <source>Edit Selected Episode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="46"/>
-        <location filename="../src/ui/main_menu.py" line="120"/>
+        <location filename="../src/ui/main_menu.py" line="123"/>
         <source>Delete Selected Episode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="50"/>
-        <location filename="../src/ui/main_menu.py" line="121"/>
+        <location filename="../src/ui/main_menu.py" line="124"/>
         <source>Refresh Episode List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="59"/>
-        <location filename="../src/ui/main_menu.py" line="122"/>
+        <location filename="../src/ui/main_menu.py" line="125"/>
         <source>Open Episode Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/main_menu.py" line="63"/>
-        <location filename="../src/ui/main_menu.py" line="123"/>
+        <location filename="../src/ui/main_menu.py" line="126"/>
         <source>Apply Custom Episodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main_menu.py" line="93"/>
+        <source>Confirm Deletion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main_menu.py" line="94"/>
+        <source>Are you sure you want to delete this episode?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainMenuWindow</name>
     <message>
-        <location filename="../src/main.py" line="34"/>
+        <location filename="../src/main.py" line="59"/>
         <source>EAY Generator</source>
         <translation type="unfinished"></translation>
     </message>

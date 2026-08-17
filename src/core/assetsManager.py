@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 from PySide6.QtCore import QLocale, QSettings, QTranslator
 
-from src.core.models import PROGRAM_LANGUAGES
+from core.models import PROGRAM_LANGUAGES
 
 def get_internal_assets_path():
     """For use with assets and translations bundled with the exe."""
