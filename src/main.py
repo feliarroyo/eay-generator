@@ -39,6 +39,7 @@ class BuildMenuWindow(QMainWindow):
         self.main_menu_window = main_menu_window
         self.build_menu = BuildMenuWidget(self)
         self.setCentralWidget(self.build_menu)
+        self.setWindowTitle(self.tr("EAY Generator - Build Episode"))
 
     def switch_to_menu(self):
         self.main_menu_window.show()
@@ -46,6 +47,8 @@ class BuildMenuWindow(QMainWindow):
     
     def closeEvent(self, event: QCloseEvent):
         """Intercepts window close requests and returns to the main menu."""
+        if self.build_menu.revert_menu:
+            self.build_menu.revert_menu.close()
         self.switch_to_menu()
         event.ignore()
 

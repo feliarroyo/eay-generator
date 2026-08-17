@@ -9,7 +9,6 @@ class BuildMenuWidget(QWidget):
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
-        self.setWindowTitle(self.tr("EAY Generator - Build Episode"))
         layout = QVBoxLayout()
         link_game_label = QLabel(self.tr("You need to choose a game pack to:\n - Include base prompts\n - Apply episodes directly into the game\n - Revert changes"))
         layout.addWidget(link_game_label)
