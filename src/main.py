@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QSettings
 from PySide6.QtGui import QCloseEvent, QIcon
 from core.fileManager import delete_temp_folder
-from core.assetsManager import change_app_language, get_internal_assets_path
+from core.assetsManager import change_app_language, get_internal_assets_path, get_system_default_language
 from ui.build_menu import BuildMenuWidget
 from ui.episode_editor import EpisodeEditWidget
 from ui.main_menu import MainMenuWidget
@@ -73,10 +73,9 @@ class MainMenuWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
     # Language settings
     settings = QSettings("EAYModding", "EAYGenerator")
-    saved_lang = settings.value("language", "en")
+    saved_lang = settings.value("language", get_system_default_language())
     change_app_language(app, saved_lang)
     # Add application icon
     icon_path = get_internal_assets_path() / "assets" / "icon.ico"
