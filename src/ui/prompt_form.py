@@ -1,6 +1,4 @@
 import os
-import shutil
-import uuid
 from PySide6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QLabel, QLineEdit, QListWidget, QPushButton,  QVBoxLayout, QWidget
 from PySide6.QtGui import QIcon, Qt
 from core.models import EAYPrompt
@@ -141,6 +139,7 @@ class PromptFormWidget(QWidget):
         self.us_checkbox.setToolTip(self.tr("Check this box if the prompt is specific to U.S. culture, and should be removed when playing using the U.S. filter in compatible games."))
         self.x_checkbox = QCheckBox(self.tr("Mark as Not Family-Friendly Prompt"))
         self.x_checkbox.setToolTip(self.tr("Check this box if the prompt is not family-friendly, and should be removed when playing using the Family-Friendly Filter in compatible games."))
+
         # Add Prompt Button
         self.add_prompt_button = QPushButton(self.tr("Add Prompt"))
         self.add_prompt_button.clicked.connect(lambda: self.add_prompt_if_valid())
