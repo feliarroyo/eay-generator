@@ -9,6 +9,8 @@ FIB4_LANGUAGES = ["en", "fr", "de", "es", "es-XL", "it"]
 LANGUAGE_NAMES = ["English", "Français", "Deutsch", "Español (España)", "Español (América Latina)", "Italiano"]
 
 EARWAX_CATEGORIES = ["household", "tools", "alarm", "vehicle", "Animal", "cartoon", "Music", "voice", "bodily functions", "sports", "liquid", "electronic/machine", "human", "crowd", "violence", "weather", "sexual", "sci-fi", "explosion"]
+SUPPORTED_GAMES_ID = ["fibbage_eay", "earwax"]
+SUPPORTED_GAMES_NAMES = ["Fibbage: Enough About You", "Earwax"]
 
 class EAYPrompt:
     def __init__(self, personal_question, screen_question, audio, suggestions, x, us):
@@ -42,14 +44,24 @@ class EAYPrompt:
         return True
 
 class EarwaxSound:
-    def __init__(self, name, short, x, category):
+    def __init__(self, name, short, x, audio, category):
         self.name = name
         self.short = short
+        self.audio = audio
         self.x = x
         self.category = category
+    
+    def get_prompt_data(self):
+        return {
+            "name": self.name,
+            "short": self.short,
+            "audio": self.audio,
+            "x": self.x,
+            "category": self.category
+        }
 
 # EAY Custom Episode template:
-class EAYCustomEpisode:
+class CustomEpisode:
     def __init__(self, episode_name, prompts):
         self.episode_name = episode_name
         self.prompts = prompts
