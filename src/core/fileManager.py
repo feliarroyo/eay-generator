@@ -6,7 +6,7 @@ import uuid
 import sys
 from pathlib import Path
 
-from core.models import FIB4_LANGUAGES, EAYCustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
+from core.models import FIB4_LANGUAGES, SUPPORTED_GAMES_ID, CustomEpisode, EAYPrompt, fib3EAYTemplate, fib3EAYTemplate_Data, fib4EAYTemplate, fib4EAYTemplate_Data
 
 def get_user_data_path():
     if getattr(sys, 'frozen', False):
@@ -25,22 +25,26 @@ def create_base_folder():
     """Creates the base folder for episodes if it doesn't exist."""
     if not os.path.exists(episodes_path):
         os.makedirs(episodes_path)
+    for game_id in SUPPORTED_GAMES_ID:
+        game_path = episodes_path / game_id
+        if not os.path.exists(game_path):
+            os.makedirs(game_path)
 
 def update_temp_episode_file(episode_name, content=None):
     """Creates a new folder for the episode with the given name and base file."""
     os.makedirs(temp_path, exist_ok=True)
     
     if content is None:
-        content = EAYCustomEpisode(episode_name, [])
+        content = CustomEpisode(episode_name, [])
     # move_audio_to_episode_folder(temp_path, content)
     # content.remove_temp_reference(temp_path)
     # print(content)
     # print(content.to_dict())
     json.dump(content.to_dict(), open(temp_path / "episode.json", 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
     
-def copy_temp_files_on_episode_folder(episode_name):
+def copy_temp_files_on_episode_folder(episode_name, game_id="fibbage_eay"):
     """Copy the contents of the temporary session folder to the episode directory."""
-    original_path = episodes_path / episode_name
+    original_path = episodes_path / game_id / episode_name
     os.makedirs(original_path, exist_ok=True)
     backup_path = original_path.parent / (original_path.name + ".bak")
     
@@ -50,8 +54,9 @@ def copy_temp_files_on_episode_folder(episode_name):
         if os.path.exists(backup_path):
             shutil.rmtree(backup_path)
 
-def list_episode_folders():
-    folderList = [f for f in os.listdir(episodes_path) if Path(episodes_path / f).is_dir()]
+def list_episode_folders(game_id="fibbage_eay"):
+    game_episode_path = episodes_path / game_id
+    folderList = [f for f in os.listdir(game_episode_path) if Path(game_episode_path / f).is_dir()]
     return folderList
 
 def choose_audio_file(self):
@@ -96,8 +101,9 @@ def save_temp_audio(audio_name, previous_audio_name=None):
     shutil.copy2(audio_path, temp_file_path)
     return temp_file_path
 
-def load_episode_to_temp_folder(episode_name):
-    episode_path = episodes_path / episode_name
+
+def load_episode_to_temp_folder(episode_name, game_id="fibbage_eay"):
+    episode_path = episodes_path / game_id / episode_name
     # Copy folder to .temp_session
     if not os.path.exists(episode_path):
         print(f"No episode folder found for '{episode_name}'.")
@@ -105,9 +111,9 @@ def load_episode_to_temp_folder(episode_name):
     
     shutil.copytree(episode_path, temp_path, dirs_exist_ok=True)
 
-def read_episode_prompts(episode_name):
+def read_episode_prompts(episode_name, game_id="fibbage_eay"):
     """Reads the prompts from the episode.json file in the specified episode folder."""
-    episode_path = episodes_path / episode_name
+    episode_path = episodes_path / game_id / episode_name
     episode_file_path = episode_path / "episode.json"
     
     if not os.path.exists(episode_file_path):
