@@ -390,7 +390,7 @@ Pack 9 (Fibbage 4): {pack9_linked}</translation>
     <message>
         <location filename="../src/ui/build_menu.py" line="48"/>
         <source>Generates the necessary files for the selected game in the build folder. You can then manually copy them to the game pack.</source>
-        <translation>Genera los archivos necesarios para el juego elegido en la carpeta &quot;folder&quot;. Luego puedes copiarlos manualmente en el directorio del juego.</translation>
+        <translation>Genera los archivos necesarios para el juego elegido en la carpeta &quot;build&quot;. Luego puedes copiarlos manualmente en el directorio del juego.</translation>
     </message>
     <message>
         <location filename="../src/ui/build_menu.py" line="50"/>
