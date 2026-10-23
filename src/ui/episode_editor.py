@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QMessageBox, QPushButton, QVBoxLayout, QWidget
 
-from core.models import EAYCustomEpisode
+from core.models import CustomEpisode
 from core.fileManager import copy_temp_files_on_episode_folder, remove_audio, update_temp_episode_file, delete_temp_folder
 from ui.prompt_form import PromptFormWidget
 from ui.prompt_table import PromptTable
@@ -10,7 +10,7 @@ class EpisodeEditWidget(QWidget):
 
     def save_episode(self):
         """Generate the episode file, place its contents on the episode folder, and return to the main menu."""
-        episode_file = EAYCustomEpisode(self.episode_name, self.prompts)
+        episode_file = CustomEpisode(self.episode_name, self.prompts)
         update_temp_episode_file(self.episode_name, episode_file)
         copy_temp_files_on_episode_folder(self.episode_name)
         self.unsaved_changes = False
