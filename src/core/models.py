@@ -1,6 +1,3 @@
-from operator import index
-import os
-
 from ui.constants import BLANK_SYMBOL, BLANK_SYMBOL_F4, PLAYER_SYMBOL, PLAYER_SYMBOL_F4
 
 PROGRAM_LANGUAGES = ["en", "fr", "de", "es", "it"]
