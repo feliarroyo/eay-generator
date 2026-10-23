@@ -256,23 +256,16 @@ def restore_base_game(game_content_path: Path, backup_path: Path, internal_name)
     """Restores the game to its original state using the backup_path provided."""
     # GET GAME PATH
     target_file = Path(game_content_path / internal_name).with_suffix(".jet")
-    target_folder = game_content_path / internal_name
-
     backup_file = Path(backup_path / internal_name).with_suffix(".jet")
-    backup_folder = backup_path / internal_name
 
     # Check backup exists before deleting
-    if not backup_file.exists() or not backup_folder.exists():
+    if not backup_file.exists():
         return False
 
-    # Delete folder and file
-    if target_folder.exists():
-        shutil.rmtree(target_folder)
     if target_file.exists():
         target_file.unlink()
 
     # Copy the backup files into the newly cleaned space
-    shutil.copytree(backup_folder, target_folder)
     shutil.copy2(backup_file, target_file)
     return True
     
