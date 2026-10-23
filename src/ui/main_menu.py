@@ -3,8 +3,7 @@ from core.fileManager import create_base_folder, get_user_data_path, update_temp
 from PySide6.QtWidgets import QComboBox, QLabel, QLineEdit, QListWidget, QMessageBox, QPushButton, QVBoxLayout, QWidget
 from PySide6.QtCore import QCoreApplication, QEvent, QSettings
 from core.assetsManager import change_app_language
-from core.models import FIB4_LANGUAGES, PROGRAM_LANGUAGE_NAMES, PROGRAM_LANGUAGES
-from ui.build_menu import BuildMenuWidget
+from core.models import PROGRAM_LANGUAGE_NAMES, PROGRAM_LANGUAGES
 create_base_folder()  # Ensure the base folder exists
 
 class MainMenuWidget(QWidget):
