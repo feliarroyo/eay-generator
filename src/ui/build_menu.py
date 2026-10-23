@@ -10,6 +10,21 @@ class BuildMenuWidget(QWidget):
         super().__init__()
         self.parent_window = parent_window
         layout = QVBoxLayout()
+        
+        # Checkboxes for episode
+        episode_label = QLabel(self.tr("Select episodes to include:"))
+        layout.addWidget(episode_label)
+        episode_checkboxes = [ ]
+        episode_display = QListWidget()
+        episode_display.setFixedHeight(100)
+        episode_display.setSelectionMode(QListWidget.MultiSelection)
+        for episode in list_episode_folders():
+            episode_display.addItem(episode)
+            episode_checkboxes.append(episode)
+        layout.addWidget(episode_display)
+        base_prompt_checkbox = QCheckBox(self.tr("Include base game prompts"))
+        layout.addWidget(base_prompt_checkbox)
+        
         link_game_label = QLabel(self.tr("You need to choose a game pack to:\n - Include base prompts\n - Apply episodes directly into the game\n - Revert changes"))
         layout.addWidget(link_game_label)
         link_game_button = QPushButton(self.tr("Select Party Pack Folder"))
@@ -28,19 +43,6 @@ class BuildMenuWidget(QWidget):
             text = f"Fibbage 4 - {LANGUAGE_NAMES[FIB4_LANGUAGES.index(lang)]}"
             self.choose_modding_game_combobox.addItem(text, lang)
         layout.addWidget(self.choose_modding_game_combobox)
-        
-        # Checkboxes for episode
-        base_prompt_checkbox = QCheckBox(self.tr("Include base game prompts"))
-        layout.addWidget(base_prompt_checkbox)
-        episode_label = QLabel(self.tr("Select episodes to include:"))
-        layout.addWidget(episode_label)
-        episode_checkboxes = [ ]
-        episode_display = QListWidget()
-        episode_display.setFixedHeight(100)
-        episode_display.setSelectionMode(QListWidget.MultiSelection)
-        for episode in list_episode_folders():
-            episode_display.addItem(episode)
-            episode_checkboxes.append(episode)
 
         # Apply episode button
         generate_build_button = QPushButton(self.tr("Generate Files On Build Folder"))
@@ -54,7 +56,7 @@ class BuildMenuWidget(QWidget):
         episode_display.itemSelectionChanged.connect(lambda: generate_build_button.setEnabled(len(episode_display.selectedItems()) > 0))
         episode_display.itemSelectionChanged.connect(lambda: generate_and_install_button.setEnabled(len(episode_display.selectedItems()) > 0)) # TO-DO: Also has to check if game pack was linked
         
-        layout.addWidget(episode_display)
+        
         layout.addWidget(generate_build_button)
         layout.addWidget(generate_and_install_button)
         revert_changes_button = QPushButton(self.tr("Revert Changes"))
